@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿// ReSharper disable all 
 
-namespace UnityTemplateProjects
+namespace EtAlii.FracturedPlanet.Examples
 {
+    using UnityEngine;
+
     public class SimpleCameraController : MonoBehaviour
     {
         class CameraState

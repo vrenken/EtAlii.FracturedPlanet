@@ -2,6 +2,9 @@
 using UnityEditor;
 using System.IO;
 using System.Reflection;
+using EtAlii.FracturedPlanet._Examples.TutorialInfo.Scripts;
+
+// ReSharper disable all 
 
 [CustomEditor(typeof(Readme))]
 [InitializeOnLoad]

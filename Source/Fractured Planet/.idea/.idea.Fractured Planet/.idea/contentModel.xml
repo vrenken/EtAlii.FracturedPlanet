@@ -18,17 +18,33 @@
             </e>
           </e>
         </e>
+        <e p="Navigation" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="Loader.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Sector" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="_Model" t="Include">
+              <e p="Sector.cs" t="Include" />
+            </e>
+            <e p="Loader.cs" t="Include" />
+          </e>
+        </e>
         <e p="World" t="Include">
           <e p="Scripts" t="Include">
+            <e p="Loader.cs" t="Include" />
             <e p="World.cs" t="Include" />
           </e>
         </e>
       </e>
+      <e p="EtAlii.FracturedPlanet.Navigation.csproj" t="IncludeRecursive" />
+      <e p="EtAlii.FracturedPlanet.Sector.csproj" t="IncludeRecursive" />
+      <e p="EtAlii.FracturedPlanet.World.csproj" t="IncludeRecursive" />
       <e p="Fractured Planet.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
-      <e p="WorldAssembly.csproj" t="IncludeRecursive" />
     </e>
     <e p="C:\Users\vrenk\.Rider2019.2\config\extensions" t="IncludeRecursive" />
     <e p="C:\Users\vrenk\.Rider2019.2\system\extResources" t="IncludeRecursive" />
