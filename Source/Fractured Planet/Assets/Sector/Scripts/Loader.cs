@@ -7,13 +7,10 @@
         // Start is called before the first frame update
         void Start()
         {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            // Conduct scene loading.
+                        
+            // No need to keep the loader intact. It's a Loader...
+            Destroy(gameObject);
         }
     }
 }
