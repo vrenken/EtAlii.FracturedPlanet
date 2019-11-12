@@ -7,10 +7,10 @@ namespace EtAlii.FracturedPlanet.World
 
     public class Loader : MonoBehaviour
     {
-        private const int SectorsToAdd = 200;
+        private const int SectorsToAdd = (int)(MaxX * MaxY * 0.8f);
 
-        private const int MaxU = 50;
-        private const int MaxV = 50;
+        private const int MaxX = 50;
+        private const int MaxY = 20;
         
         // Start is called before the first frame update
         void Start()
@@ -18,11 +18,17 @@ namespace EtAlii.FracturedPlanet.World
             
             for (var i = 0; i < SectorsToAdd; i++)
             {
-                var u = Random.Range(-MaxU,+MaxU);
-                var v = Random.Range(-MaxV, MaxV);
+                int x, y;
+                do
+                {
+                    x = Random.Range(0, MaxX);
+                    y = Random.Range(0, MaxY);
+                } while (SectorManager.Instance.IsPopulated(x, y)); // We need to find an empty place on the toroid.
+             
                 var id = Guid.NewGuid();
+                var sectorName = $"Sector [{x}-{y}]";
 
-                var sector = new Sector {U = u, V = v, Id = id, Name = $"Sector {id}"};
+                var sector = new Sector {X = x, Y = y, Id = id, Name = sectorName};
                 SectorManager.Instance.Add(sector);
             }
             

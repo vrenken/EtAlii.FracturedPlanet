@@ -1,27 +1,42 @@
 namespace EtAlii.FracturedPlanet.World
 {
+    using System;
+    using System.Collections;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.Linq;
     using EtAlii.FracturedPlanet.Sector;
 
     public class SectorManager
     {
-        public ReadOnlyObservableCollection<Sector> Sectors { get; }
+        public IEnumerable Sectors => _sectors;
         private readonly ObservableCollection<Sector> _sectors;
         
         public static SectorManager Instance { get; } = new SectorManager();
 
-        public SectorManager()
+        public event NotifyCollectionChangedEventHandler Changed
+        {
+            add => _sectors.CollectionChanged += value;
+            remove => _sectors.CollectionChanged -= value;
+        }
+        
+        private SectorManager()
         {
             _sectors = new ObservableCollection<Sector>();
-            Sectors = new ReadOnlyObservableCollection<Sector>(_sectors);
+        }
+
+        public bool IsPopulated(int x, int y)
+        {
+            return _sectors.Any(s => s.X == x && s.Y == y);
         }
         public void Add(Sector sector)
         {
-            if (_sectors.All(s => s.U != sector.U && s.V != sector.V && s.Id != sector.Id))
+            if (_sectors.Any(s => (s.X == sector.X && s.Y == sector.Y) || s.Id == sector.Id))
             {
-                _sectors.Add(sector);
+                throw new InvalidOperationException($"Unable to add sector {sector.Name} - [{sector.Id}].");
             }
+
+            _sectors.Add(sector);
         }
     }
 }

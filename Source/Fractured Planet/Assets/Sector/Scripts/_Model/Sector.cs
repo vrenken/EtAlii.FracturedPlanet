@@ -4,8 +4,8 @@ namespace EtAlii.FracturedPlanet.Sector
 
     public class Sector
     {
-        public int U;
-        public int V;
+        public int X;
+        public int Y;
 
         public Guid Id;
         public string Name;

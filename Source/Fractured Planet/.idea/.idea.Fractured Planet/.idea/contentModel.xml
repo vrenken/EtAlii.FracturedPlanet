@@ -36,7 +36,10 @@
             <e p="Loader.cs" t="Include" />
             <e p="Sector Reference.asmref" t="Include" />
             <e p="SectorManager.cs" t="Include" />
-            <e p="World.cs" t="Include" />
+            <e p="SectorTile.cs" t="Include" />
+            <e p="TorusDemo.cs" t="Include" />
+            <e p="TorusMath.cs" t="Include" />
+            <e p="WorldTorus.cs" t="Include" />
           </e>
         </e>
       </e>
