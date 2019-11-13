@@ -1,5 +1,6 @@
 ﻿namespace EtAlii.FracturedPlanet.World
 {
+    using System;
     using System.Collections.Specialized;
     using System.Linq;
     using EtAlii.FracturedPlanet.Sector;
@@ -22,7 +23,13 @@
         public int majorSegmentCount;
         public int minorSegmentCount;
 
+        private float _verticalRotation = 0;
+        private float _horizontalRotation = 0;
 
+        private float _rotationSpeed = 40f;
+
+        private SectorTile[] _sectorTiles;
+        
         // Start is called before the first frame update
         void Start()
         {
@@ -32,6 +39,26 @@
         void OnDestroy()
         {
             SectorManager.Instance.Changed -= OnSectorsChanged;
+        }
+
+        public void Update()
+        {
+            // Get the horizontal and vertical axis.
+            // By default they are mapped to the arrow keys.
+            // The value is in the range -1 to 1
+            var verticalRotation = Input.GetAxis("Vertical") * _rotationSpeed;
+            var horizontalRotation = Input.GetAxis("Horizontal") * _rotationSpeed;
+
+            // Make it move 10 meters per second instead of 10 meters per frame...
+            verticalRotation *= Time.deltaTime;
+            horizontalRotation *= Time.deltaTime;
+
+            if (!(Math.Abs(verticalRotation) > 0.001f) && !(Math.Abs(horizontalRotation) > 0.001f)) return;
+            
+            _verticalRotation += verticalRotation;
+            _horizontalRotation += horizontalRotation;
+
+            UpdateSectorPositionsOnWorld();
         }
 
         private void OnSectorsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -63,20 +90,21 @@
 
         private void RemoveAllSectors()
         {
-            var sectorTiles = gameObject.GetComponentsInChildren<SectorTile>().ToArray();
-            foreach(var sectorTile in sectorTiles)
+            foreach(var sectorTile in _sectorTiles)
             {
                 Destroy(sectorTile.gameObject);
             }
+            _sectorTiles = gameObject.GetComponentsInChildren<SectorTile>().ToArray();
         }
 
         private void RemoveSector(Sector sector)
         {
-            var sectorTile = gameObject.GetComponentsInChildren<SectorTile>().SingleOrDefault(st => st.sector == sector);
+            var sectorTile = _sectorTiles.SingleOrDefault(st => st.sector == sector);
             if (sectorTile != null)
             {
                 Destroy(sectorTile.gameObject);
             }
+            _sectorTiles = gameObject.GetComponentsInChildren<SectorTile>().ToArray();
         }
 
         private void AddSector(Sector sector)
@@ -85,18 +113,17 @@
             var sectorTile = sectorTileGameObject.GetComponent<SectorTile>();
             sectorTileGameObject.name = sector.Name;
             sectorTile.sector = sector;
+            _sectorTiles = gameObject.GetComponentsInChildren<SectorTile>().ToArray();
         }
 
         private void UpdateSectorPositionsOnWorld()
         {
-            var sectorTiles = gameObject.GetComponentsInChildren<SectorTile>().ToArray();
-            
-            majorSegmentCount = sectorTiles.Max(tile => tile.sector.X);
-            minorSegmentCount = sectorTiles.Max(tile => tile.sector.Y);
+            majorSegmentCount = _sectorTiles.Max(tile => tile.sector.X);
+            minorSegmentCount = _sectorTiles.Max(tile => tile.sector.Y);
 
-            foreach(var sectorTile in sectorTiles)
+            foreach(var sectorTile in _sectorTiles)
             {
-                sectorTile.UpdatePositionOnWorld(majorRadius, minorRadius, majorSegmentCount, minorSegmentCount);
+                sectorTile.UpdatePositionOnWorld(majorRadius, minorRadius, majorSegmentCount, minorSegmentCount, _horizontalRotation, _verticalRotation);
             }
         }
     }
