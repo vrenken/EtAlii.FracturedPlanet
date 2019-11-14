@@ -11,6 +11,10 @@ namespace EtAlii.FracturedPlanet.World
 
         private const int MaxX = 50;
         private const int MaxY = 20;
+
+        public Galaxy galaxy;
+        public MainMenu menu;
+        
         
         // Start is called before the first frame update
         void Start()
@@ -31,7 +35,10 @@ namespace EtAlii.FracturedPlanet.World
                 var sector = new Sector {X = x, Y = y, Id = id, Name = sectorName};
                 SectorManager.Instance.Add(sector);
             }
-            
+
+            menu.Activate();
+            //galaxy.Activate();
+
             // No need to keep the loader intact. It's a Loader...
             Destroy(gameObject); 
         }
