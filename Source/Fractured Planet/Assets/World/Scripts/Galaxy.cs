@@ -9,10 +9,20 @@
 
         public MainMenu mainMenu;
 
+        public WorldTorus world;
+        public Vector3 startPosition;
+        public Quaternion startRotation;
+
         // Start is called before the first frame update
         void Start()
         {
-
+            var galaxyCameraTransform = galaxyCamera.transform;
+            startPosition = galaxyCameraTransform.position; 
+            startRotation = galaxyCameraTransform.rotation;
+            
+            // Some stuff to make the intro a bit more interesting.
+            galaxyCameraTransform.position = new Vector3(startPosition.x, startPosition.y, -150f);
+            galaxyCameraTransform.rotation = startRotation * Quaternion.Euler(0f, -90f, 0f);
         }
 
         // Update is called once per frame
@@ -31,10 +41,6 @@
 
         public void Activate()
         {
-            var galaxyCameraTransform = galaxyCamera.transform;
-            var startPosition = galaxyCameraTransform.position; 
-            var startRotation = galaxyCameraTransform.rotation; 
-
             CameraTweener.Tween(
                 galaxyCamera,
                 menuCamera.transform,
@@ -47,6 +53,7 @@
                 },
                 () =>
                 {
+                    world.autoRotate = false;
                     mainMenu.gameObject.SetActive(false);
                     galaxyCamera.transform.SetPositionAndRotation(startPosition, startRotation);
                 });

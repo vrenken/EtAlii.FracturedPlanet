@@ -28,6 +28,8 @@
 
         private float _rotationSpeed = 40f;
 
+        public bool autoRotate = false;
+        
         private SectorTile[] _sectorTiles;
         
         // Start is called before the first frame update
@@ -46,8 +48,8 @@
             // Get the horizontal and vertical axis.
             // By default they are mapped to the arrow keys.
             // The value is in the range -1 to 1
-            var verticalRotation = Input.GetAxis("Vertical") * _rotationSpeed;
-            var horizontalRotation = Input.GetAxis("Horizontal") * _rotationSpeed;
+            var verticalRotation = !autoRotate ? Input.GetAxis("Vertical") * _rotationSpeed : 0.1f * _rotationSpeed;
+            var horizontalRotation = !autoRotate ? Input.GetAxis("Horizontal") * _rotationSpeed : 0.1f * _rotationSpeed;
 
             // Make it move 10 meters per second instead of 10 meters per frame...
             verticalRotation *= Time.deltaTime;

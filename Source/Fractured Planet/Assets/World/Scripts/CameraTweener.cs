@@ -6,12 +6,32 @@ namespace EtAlii.FracturedPlanet.World
 
     public static class CameraTweener
     {
-        public static float moveDuration = 0.5f;
+        public static float defaultMovementDuration = 0.5f;
+
+        public static void Tween(
+            Camera camera,
+            Transform sourceTransform,
+            Transform targetTransform,
+            Action<IEnumerator> startCoroutine,
+            Action onBefore = null,
+            Action onAfter = null)
+        {
+            Tween(
+                camera,
+                sourceTransform,
+                targetTransform,
+                startCoroutine,
+                defaultMovementDuration,
+                onBefore,
+                onAfter);
+        }
+
         public static void Tween(
             Camera camera, 
             Transform sourceTransform, 
             Transform targetTransform, 
-            Action<IEnumerator> startCoroutine, 
+            Action<IEnumerator> startCoroutine,
+            float moveDuration, 
             Action onBefore = null, 
             Action onAfter = null)
         {
@@ -25,10 +45,15 @@ namespace EtAlii.FracturedPlanet.World
             cameraTransform.position = sourcePosition;
             cameraTransform.rotation = sourceRotation;
             
-            startCoroutine(MoveTo(cameraTransform, sourcePosition, sourceRotation, targetPosition, targetRotation, onBefore, onAfter));
+            startCoroutine(MoveTo(cameraTransform, sourcePosition, sourceRotation, targetPosition, targetRotation, onBefore, onAfter, moveDuration));
         }
 
-        private static IEnumerator MoveTo(Transform cameraTransform, Vector3 sourcePosition, Quaternion sourceRotation, Vector3 targetPosition, Quaternion targetRotation, Action onBefore, Action onAfter)
+        private static IEnumerator MoveTo(
+            Transform cameraTransform, 
+            Vector3 sourcePosition, Quaternion sourceRotation, 
+            Vector3 targetPosition, Quaternion targetRotation, 
+            Action onBefore, Action onAfter,
+            float moveDuration)
         {
             cameraTransform.SetPositionAndRotation(sourcePosition, sourceRotation);
             yield return null;
