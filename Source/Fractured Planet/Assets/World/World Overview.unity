@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -448,6 +448,16 @@ PrefabInstance:
     - target: {fileID: 1750576371428314, guid: e4a44daee2cdaf941b4fcca5737bde8c, type: 3}
       propertyPath: m_Name
       value: Canvas Main
+      objectReference: {fileID: 0}
+    - target: {fileID: 114765212380392494, guid: e4a44daee2cdaf941b4fcca5737bde8c,
+        type: 3}
+      propertyPath: m_ShowToolkit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114765212380392494, guid: e4a44daee2cdaf941b4fcca5737bde8c,
+        type: 3}
+      propertyPath: m_ShowCustomSorter
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1245462717645480, guid: e4a44daee2cdaf941b4fcca5737bde8c, type: 3}
       propertyPath: m_Layer
@@ -2151,8 +2161,6 @@ MonoBehaviour:
   galaxyCamera: {fileID: 1845448323}
   mainMenu: {fileID: 1151587776}
   world: {fileID: 77034054}
-  startPosition: {x: 0, y: 0, z: 0}
-  startRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1845448321
 GameObject:
   m_ObjectHideFlags: 0
