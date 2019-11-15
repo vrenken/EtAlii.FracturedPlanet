@@ -27,29 +27,50 @@
 
         public void Activate()
         {
+            var galaxyCameraTransform = galaxyCamera.transform;
+
+            var startPosition = galaxyCameraTransform.position; 
+            var startRotation = galaxyCameraTransform.rotation;
+            
+            // Some stuff to make the intro a bit more interesting.
+            var introStartPosition = new Vector3(startPosition.x, startPosition.y, -150f);
+            var introStartRotation = startRotation * Quaternion.Euler(0f, -90f, 0f);
+
+            galaxyCameraTransform.position = _firstAnimation ? introStartPosition : startPosition;
+            galaxyCameraTransform.rotation = _firstAnimation ? introStartRotation : startRotation;
+
             var movementDuration = CameraTweener.defaultMovementDuration;
-            if (_firstAnimation)
+
+            var isFirstAnimation = _firstAnimation;
+
+            if (isFirstAnimation)
             {
-                _firstAnimation = false;
                 movementDuration = 5;
             }
 
-            var galaxyCameraTransform = galaxyCamera.transform;
-
-            gameObject.SetActive(true); 
             CameraTweener.Tween(
                 galaxyCamera, 
                 galaxyCameraTransform,
                 menuCamera.transform,
-                enumerator => StartCoroutine(enumerator),
+                enumerator => galaxy.StartCoroutine(enumerator),
                 movementDuration,
-                () => { world.autoRotate = true; },
                 () =>
                 {
+                    world.autoRotate = true;
+                    if (isFirstAnimation)
+                    {
+                        gameObject.SetActive(false);
+                    }
+                },
+                () =>
+                {
+                    gameObject.SetActive(true);
                     galaxyCamera.enabled = false;
                     menuCamera.enabled = true;
-                    galaxyCamera.transform.SetPositionAndRotation(galaxy.startPosition, galaxy.startRotation);
+                    galaxyCamera.transform.SetPositionAndRotation(startPosition, startRotation);
                 });
+            
+            _firstAnimation = false;
         }
     }
 }
