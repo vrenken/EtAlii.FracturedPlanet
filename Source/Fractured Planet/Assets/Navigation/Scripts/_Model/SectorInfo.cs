@@ -1,4 +1,4 @@
-namespace EtAlii.FracturedPlanet.Sector
+namespace EtAlii.FracturedPlanet.Navigation
 {
     using System;
 

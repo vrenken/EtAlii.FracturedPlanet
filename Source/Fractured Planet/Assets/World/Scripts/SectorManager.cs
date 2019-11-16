@@ -5,7 +5,7 @@ namespace EtAlii.FracturedPlanet.World
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
-    using EtAlii.FracturedPlanet.Sector;
+    using EtAlii.FracturedPlanet.Navigation;
 
     public class SectorManager
     {

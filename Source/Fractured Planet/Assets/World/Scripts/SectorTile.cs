@@ -1,6 +1,6 @@
 ﻿namespace EtAlii.FracturedPlanet.World
 {
-    using EtAlii.FracturedPlanet.Sector;
+    using EtAlii.FracturedPlanet.Navigation;
     using UnityEngine;
 
     public class SectorTile : MonoBehaviour

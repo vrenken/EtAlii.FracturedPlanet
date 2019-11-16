@@ -1,0 +1,15 @@
+{
+    "name": "EtAlii.FracturedPlanet.World",
+    "references": [
+        "EtAlii.FracturedPlanet.Navigation",
+        "EtAlii.FracturedPlanet.Sector"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

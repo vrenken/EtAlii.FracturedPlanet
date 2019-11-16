@@ -1,7 +1,7 @@
 namespace EtAlii.FracturedPlanet.World
 {
     using System;
-    using EtAlii.FracturedPlanet.Sector;
+    using EtAlii.FracturedPlanet.Navigation;
     using UnityEngine;
     using Random = UnityEngine.Random;
 

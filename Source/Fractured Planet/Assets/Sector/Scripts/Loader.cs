@@ -8,7 +8,7 @@
         void Start()
         {
             // Conduct scene loading.
-                        
+            
             // No need to keep the loader intact. It's a Loader...
             Destroy(gameObject);
         }

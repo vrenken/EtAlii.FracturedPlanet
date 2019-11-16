@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Specialized;
     using System.Linq;
-    using EtAlii.FracturedPlanet.Sector;
+    using EtAlii.FracturedPlanet.Navigation;
     using UnityEngine;
 
     public class WorldTorus : MonoBehaviour
