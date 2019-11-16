@@ -10,7 +10,7 @@ namespace EtAlii.FracturedPlanet.World
     public class SectorManager
     {
         public IEnumerable Sectors => _sectors;
-        private readonly ObservableCollection<Sector> _sectors;
+        private readonly ObservableCollection<SectorInfo> _sectors;
         
         public static SectorManager Instance { get; } = new SectorManager();
 
@@ -22,14 +22,14 @@ namespace EtAlii.FracturedPlanet.World
         
         private SectorManager()
         {
-            _sectors = new ObservableCollection<Sector>();
+            _sectors = new ObservableCollection<SectorInfo>();
         }
 
         public bool IsPopulated(int x, int y)
         {
             return _sectors.Any(s => s.X == x && s.Y == y);
         }
-        public void Add(Sector sector)
+        public void Add(SectorInfo sector)
         {
             if (_sectors.Any(s => (s.X == sector.X && s.Y == sector.Y) || s.Id == sector.Id))
             {

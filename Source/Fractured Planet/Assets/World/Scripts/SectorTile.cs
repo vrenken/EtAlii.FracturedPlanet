@@ -5,7 +5,7 @@
 
     public class SectorTile : MonoBehaviour
     {
-        public Sector sector;
+        public SectorInfo sector;
         
         public void UpdatePositionOnWorld(
             float majorRadius, float minorRadius, 

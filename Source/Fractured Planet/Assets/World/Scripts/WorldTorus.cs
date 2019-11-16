@@ -68,20 +68,20 @@
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (Sector sector in e.NewItems)
+                    foreach (SectorInfo sector in e.NewItems)
                     {
                         AddSector(sector);
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (Sector sector in e.OldItems)
+                    foreach (SectorInfo sector in e.OldItems)
                     {
                         RemoveSector(sector);
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     RemoveAllSectors();
-                    foreach (Sector sector in SectorManager.Instance.Sectors)
+                    foreach (SectorInfo sector in SectorManager.Instance.Sectors)
                     {
                         AddSector(sector);
                     }
@@ -99,7 +99,7 @@
             _sectorTiles = gameObject.GetComponentsInChildren<SectorTile>().ToArray();
         }
 
-        private void RemoveSector(Sector sector)
+        private void RemoveSector(SectorInfo sector)
         {
             var sectorTile = _sectorTiles.SingleOrDefault(st => st.sector == sector);
             if (sectorTile != null)
@@ -109,7 +109,7 @@
             _sectorTiles = gameObject.GetComponentsInChildren<SectorTile>().ToArray();
         }
 
-        private void AddSector(Sector sector)
+        private void AddSector(SectorInfo sector)
         {
             var sectorTileGameObject = Instantiate(sectorTilePrefab, transform, true);
             var sectorTile = sectorTileGameObject.GetComponent<SectorTile>();

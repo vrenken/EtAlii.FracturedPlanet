@@ -32,8 +32,8 @@ namespace EtAlii.FracturedPlanet.World
                 var id = Guid.NewGuid();
                 var sectorName = $"Sector [{x}-{y}]";
 
-                var sector = new Sector {X = x, Y = y, Id = id, Name = sectorName};
-                SectorManager.Instance.Add(sector);
+                var sectorInfo = new SectorInfo {X = x, Y = y, Id = id, Name = sectorName};
+                SectorManager.Instance.Add(sectorInfo);
             }
 
             menu.Activate();

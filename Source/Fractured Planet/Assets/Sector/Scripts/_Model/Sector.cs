@@ -2,7 +2,7 @@ namespace EtAlii.FracturedPlanet.Sector
 {
     using System;
 
-    public class Sector
+    public class SectorInfo
     {
         public int X;
         public int Y;
