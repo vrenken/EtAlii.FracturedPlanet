@@ -17,7 +17,7 @@ namespace EtAlii.FracturedPlanet.World
         
         
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             
             for (var i = 0; i < SectorsToAdd; i++)

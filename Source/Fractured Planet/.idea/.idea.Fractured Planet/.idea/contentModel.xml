@@ -24,6 +24,7 @@
               <e p="HeightMap.cs" t="Include" />
               <e p="SectorInfo.cs" t="Include" />
               <e p="Terrain.cs" t="Include" />
+              <e p="Voxel.cs" t="Include" />
             </e>
             <e p="HeightMapBuilder.cs" t="Include" />
             <e p="Loader.cs" t="Include" />
