@@ -136,6 +136,12 @@
             </e>
             <e p="HeightMapBuilder.cs" t="Include" />
             <e p="Loader.cs" t="Include" />
+            <e p="Math" t="Include">
+              <e p="Math3d.Float.cs" t="Include" />
+              <e p="Math3d.Int.cs" t="Include" />
+              <e p="Math3d.Vector3.cs" t="Include" />
+              <e p="Math3d.Vector3Int.cs" t="Include" />
+            </e>
             <e p="Sector.cs" t="Include" />
             <e p="TerrainMeshBuilder.cs" t="Include" />
           </e>
