@@ -21,21 +21,20 @@
             var sectorPosY = position.y;
             var sectorPosZ = position.z;
 
-            chunk.points = new Point[chunkSize + 1, chunkSize + 1, chunkSize + 1];
+            chunk.voxels = new Voxel[chunkSize + 1, chunkSize + 1, chunkSize + 1];
 
             chunk.seed = sector.seed;
-            chunk.marchingCubesMeshBuilder = new MarchingCubesMeshBuilder(chunk.points, chunk.isoLevel, chunk.seed);
+            chunk.marchingCubesMeshBuilder = new MarchingCubesMeshBuilder(chunk.voxels, chunk.isoLevel, chunk.seed);
 
-            for (var x = 0; x < chunk.points.GetLength(0); x++)
+            for (var x = 0; x < chunk.voxels.GetLength(0); x++)
             {
-                for (var y = 0; y < chunk.points.GetLength(1); y++)
+                for (var y = 0; y < chunk.voxels.GetLength(1); y++)
                 {
-                    for (var z = 0; z < chunk.points.GetLength(2); z++)
+                    for (var z = 0; z < chunk.voxels.GetLength(2); z++)
                     {
-                        chunk.points[x, y, z] = new Point(
-                            new Vector3Int(x, y, z),
-                            _densityGenerator.CalculateDensity(x + sectorPosX, y + sectorPosY, z + sectorPosZ)
-                        );
+                        var voxelPosition = new Vector3Int(x, y, z);
+                        var density = _densityGenerator.CalculateDensity(x + sectorPosX, y + sectorPosY, z + sectorPosZ); 
+                        chunk.voxels[x, y, z] = new Voxel(voxelPosition, density);
                     }
                 }
             }

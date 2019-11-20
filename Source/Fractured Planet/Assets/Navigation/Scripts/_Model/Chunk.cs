@@ -6,7 +6,7 @@
     public class Chunk : MonoBehaviour
     {
         [HideInInspector] public bool readyForUpdate;
-        [HideInInspector] public Point[,,] points;
+        [HideInInspector] public Voxel[,,] voxels;
         [HideInInspector] public int chunkSize;
         [HideInInspector] public Vector3Int position;
 
@@ -39,19 +39,19 @@
 
         private void Generate()
         {
-            var mesh = marchingCubesMeshBuilder.Build(points);
+            var mesh = marchingCubesMeshBuilder.Build(voxels);
             _meshFilter.sharedMesh = mesh;
             _meshCollider.sharedMesh = mesh;
         }
 
-        public Point GetPoint(int x, int y, int z)
+        public Voxel GetPoint(int x, int y, int z)
         {
-            return points[x, y, z];
+            return voxels[x, y, z];
         }
 
         public void SetDensity(float density, int x, int y, int z)
         {
-            points[x, y, z].density = density;
+            voxels[x, y, z].density = density;
         }
 
         public void SetDensity(float density, Vector3Int pos)

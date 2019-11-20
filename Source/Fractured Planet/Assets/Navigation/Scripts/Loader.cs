@@ -25,9 +25,9 @@ namespace EtAlii.FracturedPlanet.Navigation
             var sectorGameObject = Instantiate(sectorPrefab, terrain.transform);
             var sector = sectorGameObject.GetComponent<Sector>();
             sectorGameObject.name = sectorInfo.Name;
-            sector.info = sectorInfo;
+            //sector.info = sectorInfo;
             
-            sector.terrain = new Terrain(heightMap);
+            //sector.terrain = new Terrain(heightMap);
 
             new TerrainMeshBuilder().Build(sector, voxelPrefab);
             

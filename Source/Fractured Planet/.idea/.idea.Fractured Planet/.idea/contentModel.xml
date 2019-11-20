@@ -136,7 +136,6 @@
             <e p="_Model" t="Include">
               <e p="Chunk.cs" t="Include" />
               <e p="HeightMap.cs" t="Include" />
-              <e p="Point.cs" t="Include" />
               <e p="Sector.cs" t="Include" />
               <e p="SectorInfo.cs" t="Include" />
               <e p="Terrain.cs" t="Include" />

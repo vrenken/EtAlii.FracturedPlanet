@@ -95,7 +95,7 @@
             return GetDensity(pos.x, pos.y, pos.z);
         }
 
-        public Point GetPoint(int x, int y, int z)
+        public Voxel GetPoint(int x, int y, int z)
         {
             var chunk = GetChunk(x, y, z);
 
