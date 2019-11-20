@@ -127,23 +127,42 @@
           </e>
         </e>
         <e p="Navigation" t="Include">
+          <e p="Assets" t="Include">
+            <e p="FastNoise" t="Include">
+              <e p="FastNoise.cs" t="Include" />
+            </e>
+          </e>
           <e p="Scripts" t="Include">
             <e p="_Model" t="Include">
+              <e p="Chunk.cs" t="Include" />
               <e p="HeightMap.cs" t="Include" />
+              <e p="Point.cs" t="Include" />
+              <e p="Sector.cs" t="Include" />
               <e p="SectorInfo.cs" t="Include" />
               <e p="Terrain.cs" t="Include" />
               <e p="Voxel.cs" t="Include" />
             </e>
+            <e p="ChunkBuilder.cs" t="Include" />
+            <e p="DensityGenerator.cs" t="Include" />
             <e p="HeightMapBuilder.cs" t="Include" />
             <e p="Loader.cs" t="Include" />
             <e p="Math" t="Include">
+              <e p="MarchingCubes" t="Include">
+                <e p="LookupTables.cs" t="Include" />
+                <e p="LookupTables.Cube.cs" t="Include" />
+                <e p="MarchingCubesMeshBuilder.cs" t="Include" />
+              </e>
               <e p="Math3d.Float.cs" t="Include" />
               <e p="Math3d.Int.cs" t="Include" />
               <e p="Math3d.Vector3.cs" t="Include" />
               <e p="Math3d.Vector3Int.cs" t="Include" />
             </e>
-            <e p="Sector.cs" t="Include" />
+            <e p="SectorBuilder.cs" t="Include" />
+            <e p="SectorEditor.cs" t="Include" />
             <e p="TerrainMeshBuilder.cs" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="Triplanar Shader.shader" t="Include" />
           </e>
         </e>
         <e p="Sector" t="Include">
