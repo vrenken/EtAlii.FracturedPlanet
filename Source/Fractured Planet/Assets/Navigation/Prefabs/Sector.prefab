@@ -49,4 +49,5 @@ MonoBehaviour:
   sectorDepth: 5
   isolevel: 1
   seed: 3081
-  chunkPrefab: {fileID: 0}
+  chunkPrefab: {fileID: 7489232383384105734, guid: 58c1dc75b64dbec41a572954c3bcd523,
+    type: 3}

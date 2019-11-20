@@ -8,7 +8,7 @@ namespace EtAlii.FracturedPlanet.Navigation
         public GameObject terrain;
 
         public GameObject voxelPrefab;
-        public GameObject sectorTerrainPrefab;
+        public GameObject sectorPrefab;
         
         // Start is called before the first frame update
         void Start()
@@ -22,10 +22,11 @@ namespace EtAlii.FracturedPlanet.Navigation
             var sectorInfo = new SectorInfo { Id = Guid.NewGuid(), Name = sectorName, X = x, Y = y };
             var heightMap = new HeightMapBuilder().Build();
             
-            var sectorGameObject = Instantiate(sectorTerrainPrefab, terrain.transform);
+            var sectorGameObject = Instantiate(sectorPrefab, terrain.transform);
             var sector = sectorGameObject.GetComponent<Sector>();
             sectorGameObject.name = sectorInfo.Name;
             sector.info = sectorInfo;
+            
             sector.terrain = new Terrain(heightMap);
 
             new TerrainMeshBuilder().Build(sector, voxelPrefab);
