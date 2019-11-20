@@ -14,9 +14,7 @@
 
         public void Build(Sector sector)
         {
-            sector.chunks =
-                new Dictionary<Vector3Int, Chunk>(sector.sectorWidth * sector.sectorHeight * sector.sectorDepth);
-            ;
+            sector.chunks = new Dictionary<Vector3Int, Chunk>(sector.sectorWidth * sector.sectorHeight * sector.sectorDepth);
 
             for (var x = 0; x < sector.sectorWidth; x++)
             {
@@ -24,24 +22,11 @@
                 {
                     for (var z = 0; z < sector.sectorDepth; z++)
                     {
-                        CreateChunk(sector, x * sector.chunkSize, y * sector.chunkSize, z * sector.chunkSize);
+                        var chunk = _chunkBuilder.Build(sector, x * sector.chunkSize, y * sector.chunkSize, z * sector.chunkSize, out var position);
+                        sector.chunks.Add(position, chunk);
                     }
                 }
             }
-        }
-
-        private void CreateChunk(Sector sector, int x, int y, int z)
-        {
-            var position = new Vector3Int(x, y, z);
-
-            var gameObject = Object.Instantiate(sector.chunkPrefab, position, Quaternion.identity);
-            gameObject.name = $"Chunk [{x}, {y}, {z}]";
-            gameObject.transform.parent = sector.transform;
-
-            var chunk = gameObject.GetComponent<Chunk>();
-
-            _chunkBuilder.Initialize(chunk, sector, sector.chunkSize, position);
-            sector.chunks.Add(position, chunk);
         }
     }
 }

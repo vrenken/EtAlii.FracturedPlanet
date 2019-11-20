@@ -11,8 +11,17 @@
             _densityGenerator = densityGenerator;
         }
 
-        public void Initialize(Chunk chunk, Sector sector, int chunkSize, Vector3Int position)
+        public Chunk Build(Sector sector, int chunkX, int chunkY, int chunkZ, out Vector3Int position)
         {
+            var chunkSize = sector.chunkSize;
+            position = new Vector3Int(chunkX, chunkY, chunkZ);
+
+            var gameObject = Object.Instantiate(sector.chunkPrefab, position, Quaternion.identity);
+            gameObject.name = $"Chunk [{chunkX}, {chunkY}, {chunkZ}]";
+            gameObject.transform.parent = sector.transform;
+
+            var chunk = gameObject.GetComponent<Chunk>();
+
             chunk.chunkSize = chunkSize;
             chunk.position = position;
             chunk.isoLevel = sector.isolevel;
@@ -38,6 +47,8 @@
                     }
                 }
             }
+
+            return chunk;
         }
     }
 }
