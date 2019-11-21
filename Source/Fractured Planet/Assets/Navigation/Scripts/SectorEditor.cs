@@ -11,11 +11,8 @@
         public Sector sector;
         public Transform playerCamera;
 
-        Chunk[] _initChunks;
-
         private void Start()
         {
-            _initChunks = new Chunk[8];
             Cursor.lockState = CursorLockMode.Locked;
         }
 
@@ -103,7 +100,7 @@
 
                         newDensity = Math3d.Clamp01(newDensity);
 
-                        sector.SetDensity(newDensity, offsetX, offsetY, offsetZ, true, _initChunks);
+                        sector.SetDensity(newDensity, offsetX, offsetY, offsetZ, true);
                     }
                 }
             }

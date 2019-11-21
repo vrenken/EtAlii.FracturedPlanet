@@ -7,17 +7,20 @@
     {
         [HideInInspector] public bool readyForUpdate;
         [HideInInspector] public Voxel[,,] voxels;
-        [HideInInspector] public int chunkSize;
         [HideInInspector] public Vector3Int position;
-
-        [HideInInspector] public float isoLevel;
-        [HideInInspector] public int seed;
 
         [HideInInspector] public MarchingCubesMeshBuilder marchingCubesMeshBuilder;
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
         private DensityGenerator _densityGenerator;
 
+//        private Bounds _bounds;
+
+//        private void OnDrawGizmos()
+//        {
+//            Gizmos.DrawWireCube(_bounds.center, _bounds.size);
+//        }
+//
         private void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
@@ -26,6 +29,8 @@
 
         private void Start()
         {
+//            UpdateBounds();
+
             Generate();
         }
 
@@ -58,5 +63,14 @@
         {
             SetDensity(density, pos.x, pos.y, pos.z);
         }
+        
+//        private void UpdateBounds()
+//        {
+//            var size = new Vector3Int(chunkSize,chunkSize,chunkSize);
+//
+//            _bounds.center = transform.position;// midPos;
+//            _bounds.size = size;
+//        }
+
     }
 }

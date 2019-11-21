@@ -34,7 +34,7 @@
         public int sectorHeight = 5;
         public int sectorDepth = 5;
 
-        public float isolevel;
+        public float isoLevel = 1;
 
         public int seed;
 
@@ -42,7 +42,7 @@
 
         public Dictionary<Vector3Int, Chunk> chunks;
 
-        private Bounds sectorBounds;
+        private Bounds _bounds;
 
         private DensityGenerator _densityGenerator;
         private ChunkBuilder _chunkBuilder;
@@ -57,12 +57,11 @@
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireCube(sectorBounds.center, sectorBounds.size);
+            Gizmos.DrawWireCube(_bounds.center, _bounds.size);
         }
 
         private void Start()
         {
-            sectorBounds = new Bounds();
             UpdateBounds();
 
             _sectorBuilder.Build(this);
@@ -107,8 +106,10 @@
             return p;
         }
 
-        public void SetDensity(float density, int sectorPosX, int sectorPosY, int sectorPosZ, bool setReadyForUpdate,
-            Chunk[] initChunks)
+        public void SetDensity(
+            float density, 
+            int sectorPosX, int sectorPosY, int sectorPosZ, 
+            bool setReadyForUpdate)
         {
             var dp = new Vector3Int(sectorPosX, sectorPosY, sectorPosZ);
 
@@ -135,9 +136,9 @@
             }
         }
 
-        public void SetDensity(float density, Vector3Int pos, bool setReadyForUpdate, Chunk[] initChunks)
+        public void SetDensity(float density, Vector3Int pos, bool setReadyForUpdate)
         {
-            SetDensity(density, pos.x, pos.y, pos.z, setReadyForUpdate, initChunks);
+            SetDensity(density, pos.x, pos.y, pos.z, setReadyForUpdate);
         }
 
         private void UpdateBounds()
@@ -148,13 +149,15 @@
 
             var midPos = new Vector3(middleX, middleY, middleZ);
 
+            var position = new Vector3(sectorWidth * info.X, 0, sectorDepth * info.Y);            
+            
             var size = new Vector3Int(
                 sectorWidth * chunkSize,
                 sectorHeight * chunkSize,
                 sectorDepth * chunkSize);
 
-            sectorBounds.center = midPos;
-            sectorBounds.size = size;
+            _bounds.center = midPos + position;
+            _bounds.size = size;
         }
 
         public bool IsPointInsideSector(int x, int y, int z)
@@ -164,7 +167,7 @@
 
         public bool IsPointInsideSector(Vector3Int point)
         {
-            return sectorBounds.Contains(point);
+            return _bounds.Contains(point);
         }
 
     }

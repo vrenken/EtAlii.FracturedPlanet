@@ -22,18 +22,14 @@
 
             var chunk = gameObject.GetComponent<Chunk>();
 
-            chunk.chunkSize = chunkSize;
             chunk.position = position;
-            chunk.isoLevel = sector.isolevel;
 
             var sectorPosX = position.x;
             var sectorPosY = position.y;
             var sectorPosZ = position.z;
 
             chunk.voxels = new Voxel[chunkSize + 1, chunkSize + 1, chunkSize + 1];
-
-            chunk.seed = sector.seed;
-            chunk.marchingCubesMeshBuilder = new MarchingCubesMeshBuilder(chunk.voxels, chunk.isoLevel, chunk.seed);
+            chunk.marchingCubesMeshBuilder = new MarchingCubesMeshBuilder(sector.isoLevel);
 
             for (var x = 0; x < chunk.voxels.GetLength(0); x++)
             {

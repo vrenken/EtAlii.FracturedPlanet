@@ -11,13 +11,9 @@
         private int _vertexIndex;
 
         private Vector3[] _vertexList;
-        private Voxel[] _initVoxels;
         private readonly Mesh _mesh;
-        private int[,,] _cubeIndexes;
 
-        private readonly Vector3 _zero = Vector3.zero;
-
-        public MarchingCubesMeshBuilder(Voxel[,,] voxels, float isoLevel, int seed)
+        public MarchingCubesMeshBuilder(float isoLevel)
         {
             _isoLevel = isoLevel;
 
@@ -26,8 +22,6 @@
             _vertexIndex = 0;
 
             _vertexList = new Vector3[12];
-            _initVoxels = new Voxel[8];
-            _cubeIndexes = new int[voxels.GetLength(0) - 1, voxels.GetLength(1) - 1, voxels.GetLength(2) - 1];
         }
 
         private Vector3 VertexInterpolate(Vector3 p1, Vector3 p2, float v1, float v2)
@@ -82,17 +76,16 @@
         {
             for (var i = 0; i < 12; i++)
             {
-                if ((edgeIndex & (1 << i)) != 0)
-                {
-                    var edgePair = LookupTables.EdgeIndexTable[i];
-                    var edge1 = edgePair[0];
-                    var edge2 = edgePair[1];
+                if ((edgeIndex & (1 << i)) == 0) continue;
+                
+                var edgePair = LookupTables.EdgeIndexTable[i];
+                var edge1 = edgePair[0];
+                var edge2 = edgePair[1];
 
-                    var voxel1 = voxels[edge1];
-                    var voxel2 = voxels[edge2];
+                var voxel1 = voxels[edge1];
+                var voxel2 = voxels[edge2];
 
-                    _vertexList[i] = VertexInterpolate(voxel1.localPosition, voxel2.localPosition, voxel1.density, voxel2.density);
-                }
+                _vertexList[i] = VertexInterpolate(voxel1.localPosition, voxel2.localPosition, voxel1.density, voxel2.density);
             }
 
             return _vertexList;
@@ -115,8 +108,8 @@
 
         public Mesh Build(Voxel[,,] voxels)
         {
-            _cubeIndexes = GenerateCubeIndexes(voxels);
-            var vertexCount = GenerateVertexCount(_cubeIndexes);
+            var cubeIndexes = GenerateCubeIndexes(voxels);
+            var vertexCount = GenerateVertexCount(cubeIndexes);
 
             if (vertexCount <= 0)
             {
@@ -132,7 +125,7 @@
                 {
                     for (var z = 0; z < voxels.GetLength(2) - 1; z++)
                     {
-                        var cubeIndex = _cubeIndexes[x, y, z];
+                        var cubeIndex = cubeIndexes[x, y, z];
                         if (cubeIndex == 0 || cubeIndex == 255) continue;
 
                         March(GetPoints(x, y, z, voxels), cubeIndex);
@@ -153,32 +146,37 @@
 
         private Voxel[] GetPoints(int x, int y, int z, Voxel[,,] voxels)
         {
+            var initVoxels = new Voxel[8];
+
             for (var i = 0; i < 8; i++)
             {
-                var p = voxels[x + LookupTables.CubePointsX[i], y + LookupTables.CubePointsY[i],
+                var p = voxels[
+                    x + LookupTables.CubePointsX[i], 
+                    y + LookupTables.CubePointsY[i],
                     z + LookupTables.CubePointsZ[i]];
-                _initVoxels[i] = p;
+                initVoxels[i] = p;
             }
 
-            return _initVoxels;
+            return initVoxels;
         }
 
         private int[,,] GenerateCubeIndexes(Voxel[,,] voxels)
         {
+            var cubeIndexes = new int[voxels.GetLength(0) - 1, voxels.GetLength(1) - 1, voxels.GetLength(2) - 1];
+
             for (var x = 0; x < voxels.GetLength(0) - 1; x++)
             {
                 for (var y = 0; y < voxels.GetLength(1) - 1; y++)
                 {
                     for (var z = 0; z < voxels.GetLength(2) - 1; z++)
                     {
-                        _initVoxels = GetPoints(x, y, z, voxels);
+                        var initVoxels = GetPoints(x, y, z, voxels);
 
-                        _cubeIndexes[x, y, z] = CalculateCubeIndex(_initVoxels, _isoLevel);
+                        cubeIndexes[x, y, z] = CalculateCubeIndex(initVoxels, _isoLevel);
                     }
                 }
             }
-
-            return _cubeIndexes;
+            return cubeIndexes;
         }
 
         private int GenerateVertexCount(int[,,] cubeIndexes)
