@@ -62,10 +62,10 @@
                 }
             }
 
-            EditSector(hitPoint, addMaterial, force, range);
+            EditSector(hitPoint, addMaterial);
         }
 
-        private void EditSector(Vector3 point, bool addMaterial, float force, float range)
+        private void EditSector(Vector3 point, bool addMaterial)
         {
             var buildModifier = addMaterial ? 1 : -1;
 
