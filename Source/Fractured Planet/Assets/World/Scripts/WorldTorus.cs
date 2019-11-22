@@ -4,6 +4,7 @@
     using System.Collections.Specialized;
     using System.Linq;
     using EtAlii.FracturedPlanet.Navigation;
+    using Unity.Mathematics;
     using UnityEngine;
 
     public class WorldTorus : MonoBehaviour
@@ -55,7 +56,7 @@
             verticalRotation *= Time.deltaTime;
             horizontalRotation *= Time.deltaTime;
 
-            if (!(Math.Abs(verticalRotation) > 0.001f) && !(Math.Abs(horizontalRotation) > 0.001f)) return;
+            if (!(math.abs(verticalRotation) > 0.001f) && !(Math.Abs(horizontalRotation) > 0.001f)) return;
             
             _verticalRotation += verticalRotation;
             _horizontalRotation += horizontalRotation;

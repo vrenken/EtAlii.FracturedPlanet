@@ -20,7 +20,8 @@ namespace EtAlii.FracturedPlanet.Navigation
             var sectorName = $"Sector [{x}-{y}]";
 
             var sectorInfo = new SectorInfo { Id = Guid.NewGuid(), Name = sectorName, X = x, Y = y };
-            var heightMap = new HeightMapBuilder().Build();
+            //var heightMap = 
+                new HeightMapBuilder().Build();
             
             var sectorGameObject = Instantiate(sectorPrefab, terrain.transform);
             var sector = sectorGameObject.GetComponent<Sector>();

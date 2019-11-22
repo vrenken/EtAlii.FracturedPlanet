@@ -2,7 +2,9 @@
     "name": "EtAlii.FracturedPlanet.World",
     "references": [
         "EtAlii.FracturedPlanet.Navigation",
-        "EtAlii.FracturedPlanet.Sector"
+        "EtAlii.FracturedPlanet.Sector",
+        "Unity.Entities",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

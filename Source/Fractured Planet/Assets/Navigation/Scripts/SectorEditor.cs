@@ -52,7 +52,8 @@
 
             if (addMaterial)
             {
-                var hits = Physics.OverlapSphere(hitPoint, range / 2f * 0.8f);
+                var hits = new Collider[] { };
+                Physics.OverlapSphereNonAlloc(hitPoint, range / 2f * 0.8f, hits);
                 foreach (var hit in hits)
                 {
                     if (hit.CompareTag("Player"))

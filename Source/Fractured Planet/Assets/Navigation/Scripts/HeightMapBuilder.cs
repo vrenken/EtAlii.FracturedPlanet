@@ -24,6 +24,7 @@ namespace EtAlii.FracturedPlanet.Navigation
             Debug.Assert(Sector.TerrainVoxels % 2 == 0, $"Only even sector sizes are supported by the {nameof(IterateInsideOut)} algorithm." );
 
             var positionX = Sector.TerrainVoxels / 2; // The middle of the matrix
+            // ReSharper disable once UnreachableCode
             var positionY = Sector.TerrainVoxels % 2 == 0 ? (Sector.TerrainVoxels / 2) - 1 : (Sector.TerrainVoxels / 2);
 
             var direction = 0; // The initial direction is "down"

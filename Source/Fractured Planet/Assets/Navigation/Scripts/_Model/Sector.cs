@@ -98,10 +98,10 @@
         {
             var chunk = GetChunk(x, y, z);
 
-            var p = chunk.GetPoint(
+            var p = chunk.voxels[
                 Math3d.Mod(x, chunkSize),
                 Math3d.Mod(y, chunkSize),
-                Math3d.Mod(z, chunkSize));
+                Math3d.Mod(z, chunkSize)];
 
             return p;
         }

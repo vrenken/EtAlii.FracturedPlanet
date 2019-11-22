@@ -171,6 +171,10 @@
         </e>
         <e p="World" t="Include">
           <e p="Scripts" t="Include">
+            <e p="_Model" t="Include">
+              <e p="SectorComponent.cs" t="Include" />
+              <e p="WorldComponent.cs" t="Include" />
+            </e>
             <e p="CameraTweener.cs" t="Include" />
             <e p="Galaxy.cs" t="Include" />
             <e p="Loader.cs" t="Include" />
