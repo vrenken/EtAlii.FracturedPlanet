@@ -4,13 +4,13 @@
 
     public struct Voxel
     {
-        public Vector3Int localPosition;
-        public float density;
+        public Vector3Int LocalPosition;
+        public float Density;
 
         public Voxel(Vector3Int localPosition, float density)
         {
-            this.localPosition = localPosition;
-            this.density = density;
+            this.LocalPosition = localPosition;
+            this.Density = density;
         }
     }
 }

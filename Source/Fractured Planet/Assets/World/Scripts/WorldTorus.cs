@@ -23,12 +23,12 @@
         public int majorSegmentCount;
         public int minorSegmentCount;
 
-        private float _verticalRotation = 0;
-        private float _horizontalRotation = 0;
+        private float _verticalRotation;
+        private float _horizontalRotation;
 
         private float _rotationSpeed = 40f;
 
-        public bool autoRotate = false;
+        public bool autoRotate;
         
         private SectorTile[] _sectorTiles;
         

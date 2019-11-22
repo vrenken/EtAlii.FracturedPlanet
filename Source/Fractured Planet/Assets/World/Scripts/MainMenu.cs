@@ -13,18 +13,6 @@
         
         private bool _firstAnimation = true;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
         public void Activate()
         {
             var galaxyCameraTransform = galaxyCamera.transform;
@@ -39,7 +27,7 @@
             galaxyCameraTransform.position = _firstAnimation ? introStartPosition : startPosition;
             galaxyCameraTransform.rotation = _firstAnimation ? introStartRotation : startRotation;
 
-            var movementDuration = CameraTweener.defaultMovementDuration;
+            var movementDuration = CameraTweener.DefaultMovementDuration;
 
             var isFirstAnimation = _firstAnimation;
 

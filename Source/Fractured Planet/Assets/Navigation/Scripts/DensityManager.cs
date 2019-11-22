@@ -1,10 +1,12 @@
 ﻿namespace EtAlii.FracturedPlanet.Navigation
 {
-    public class DensityGenerator
+    using UnityEngine;
+
+    public class DensityManager
     {
         public FastNoise Noise { get; }
 
-        public DensityGenerator(int seed)
+        public DensityManager(int seed)
         {
             Noise = new FastNoise(seed);
         }
@@ -24,6 +26,16 @@
         {
             var noise = Noise.GetPerlin(sectorPosX / noiseScale, sectorPosZ / noiseScale);
             return sectorPosY - Math3d.Map(noise, -1, 1, 0, 1) * 10 - 10;
+        }
+
+        public void SetDensity(Chunk chunk, float density, int x, int y, int z)
+        {
+            chunk.voxels[x, y, z].Density = density;
+        }
+
+        public void SetDensity(Chunk chunk, float density, Vector3Int pos)
+        {
+            SetDensity(chunk, density, pos.x, pos.y, pos.z);
         }
 
         public float FlatPlane(int y, float height)

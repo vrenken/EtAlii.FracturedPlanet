@@ -197,13 +197,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 304117059}
-  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0, y: 3, z: -10}
+  m_LocalRotation: {x: 0.39341804, y: -0.36370823, z: 0.17314498, w: 0.8264136}
+  m_LocalPosition: {x: 0, y: 35.71491, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50.914, y: -47.509, z: 0}
 --- !u!114 &304117063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
   terrain: {fileID: 1818600763}
   voxelPrefab: {fileID: 7589975174520794777, guid: d4989bc160d1d3e41a759f8c546f34cb,
     type: 3}
-  sectorTerrainPrefab: {fileID: 6600633182359257657, guid: 085b6f9b6895ed7418d7c6c609b2e0a8,
+  sectorPrefab: {fileID: 6600633182359257657, guid: 085b6f9b6895ed7418d7c6c609b2e0a8,
     type: 3}
 --- !u!4 &1510330302
 Transform:

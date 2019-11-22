@@ -4,11 +4,11 @@
 
     public class ChunkBuilder
     {
-        private readonly DensityGenerator _densityGenerator;
+        private readonly DensityManager _densityManager;
 
-        public ChunkBuilder(DensityGenerator densityGenerator)
+        public ChunkBuilder(DensityManager densityManager)
         {
-            _densityGenerator = densityGenerator;
+            _densityManager = densityManager;
         }
 
         public Chunk Build(Sector sector, int chunkX, int chunkY, int chunkZ, out Vector3Int position)
@@ -38,7 +38,7 @@
                     for (var z = 0; z < chunk.voxels.GetLength(2); z++)
                     {
                         var voxelPosition = new Vector3Int(x, y, z);
-                        var density = _densityGenerator.CalculateDensity(x + sectorPosX, y + sectorPosY, z + sectorPosZ); 
+                        var density = _densityManager.CalculateDensity(x + sectorPosX, y + sectorPosY, z + sectorPosZ); 
                         chunk.voxels[x, y, z] = new Voxel(voxelPosition, density);
                     }
                 }

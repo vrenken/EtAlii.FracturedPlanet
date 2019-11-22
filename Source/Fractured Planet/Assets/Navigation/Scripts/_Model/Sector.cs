@@ -44,14 +44,14 @@
 
         private Bounds _bounds;
 
-        private DensityGenerator _densityGenerator;
+        private DensityManager _densityManager;
         private ChunkBuilder _chunkBuilder;
         private SectorBuilder _sectorBuilder;
 
         private void Awake()
         {
-            _densityGenerator = new DensityGenerator(seed);
-            _chunkBuilder = new ChunkBuilder(_densityGenerator);
+            _densityManager = new DensityManager(seed);
+            _chunkBuilder = new ChunkBuilder(_densityManager);
             _sectorBuilder = new SectorBuilder(_chunkBuilder);
         }
 
@@ -86,7 +86,7 @@
         {
             var p = GetPoint(x, y, z);
 
-            return p.density;
+            return p.Density;
         }
 
         public float GetDensity(Vector3Int pos)
@@ -113,24 +113,24 @@
         {
             var dp = new Vector3Int(sectorPosX, sectorPosY, sectorPosZ);
 
-            var lastChunkPos = Math3d.FloorToNearestX(dp, chunkSize);
+            var lastChunkPosition = Math3d.FloorToNearestX(dp, chunkSize);
 
             for (var i = 0; i < 8; i++)
             {
                 var chunkPos = Math3d.FloorToNearestX(dp - LookupTables.CubePoints[i], chunkSize);
 
-                if (i != 0 && chunkPos == lastChunkPos)
+                if (i != 0 && chunkPos == lastChunkPosition)
                 {
                     continue;
                 }
 
                 var chunk = GetChunk(chunkPos);
 
-                lastChunkPos = chunk.position;
+                lastChunkPosition = chunk.position;
 
-                var localPos = Math3d.Mod(dp - chunk.position, chunkSize + 1);
+                var localPosition = Math3d.Mod(dp - chunk.position, chunkSize + 1);
 
-                chunk.SetDensity(density, localPos);
+                _densityManager.SetDensity(chunk, density, localPosition);
                 if (setReadyForUpdate)
                     chunk.readyForUpdate = true;
             }

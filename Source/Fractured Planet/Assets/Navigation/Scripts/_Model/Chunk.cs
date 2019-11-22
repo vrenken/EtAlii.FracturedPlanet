@@ -12,7 +12,7 @@
         [HideInInspector] public MarchingCubesMeshBuilder marchingCubesMeshBuilder;
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
-        private DensityGenerator _densityGenerator;
+        private DensityManager _densityManager;
 
 //        private Bounds _bounds;
 
@@ -54,16 +54,6 @@
             return voxels[x, y, z];
         }
 
-        public void SetDensity(float density, int x, int y, int z)
-        {
-            voxels[x, y, z].density = density;
-        }
-
-        public void SetDensity(float density, Vector3Int pos)
-        {
-            SetDensity(density, pos.x, pos.y, pos.z);
-        }
-        
 //        private void UpdateBounds()
 //        {
 //            var size = new Vector3Int(chunkSize,chunkSize,chunkSize);

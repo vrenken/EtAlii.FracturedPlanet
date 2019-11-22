@@ -85,7 +85,7 @@
                 var voxel1 = voxels[edge1];
                 var voxel2 = voxels[edge2];
 
-                _vertexList[i] = VertexInterpolate(voxel1.localPosition, voxel2.localPosition, voxel1.density, voxel2.density);
+                _vertexList[i] = VertexInterpolate(voxel1.LocalPosition, voxel2.LocalPosition, voxel1.Density, voxel2.Density);
             }
 
             return _vertexList;
@@ -97,7 +97,7 @@
 
             for (var i = 0; i < 8; i++)
             {
-                if (voxels[i].density < iso)
+                if (voxels[i].Density < iso)
                 {
                     cubeIndex |= 1 << i;
                 }

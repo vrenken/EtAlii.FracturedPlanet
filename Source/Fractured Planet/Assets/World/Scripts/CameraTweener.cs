@@ -6,7 +6,7 @@ namespace EtAlii.FracturedPlanet.World
 
     public static class CameraTweener
     {
-        public static float defaultMovementDuration = 0.5f;
+        public static float DefaultMovementDuration = 0.5f;
 
         public static void Tween(
             Camera camera,
@@ -21,7 +21,7 @@ namespace EtAlii.FracturedPlanet.World
                 sourceTransform,
                 targetTransform,
                 startCoroutine,
-                defaultMovementDuration,
+                DefaultMovementDuration,
                 onBefore,
                 onAfter);
         }
