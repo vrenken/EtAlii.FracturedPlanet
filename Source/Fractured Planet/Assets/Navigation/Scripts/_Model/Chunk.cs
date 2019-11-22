@@ -14,13 +14,6 @@
         private MeshCollider _meshCollider;
         private DensityManager _densityManager;
 
-//        private Bounds _bounds;
-
-//        private void OnDrawGizmos()
-//        {
-//            Gizmos.DrawWireCube(_bounds.center, _bounds.size);
-//        }
-//
         private void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
@@ -29,8 +22,6 @@
 
         private void Start()
         {
-//            UpdateBounds();
-
             Generate();
         }
 
@@ -48,19 +39,5 @@
             _meshFilter.sharedMesh = mesh;
             _meshCollider.sharedMesh = mesh;
         }
-
-        public Voxel GetPoint(int x, int y, int z)
-        {
-            return voxels[x, y, z];
-        }
-
-//        private void UpdateBounds()
-//        {
-//            var size = new Vector3Int(chunkSize,chunkSize,chunkSize);
-//
-//            _bounds.center = transform.position;// midPos;
-//            _bounds.size = size;
-//        }
-
     }
 }
