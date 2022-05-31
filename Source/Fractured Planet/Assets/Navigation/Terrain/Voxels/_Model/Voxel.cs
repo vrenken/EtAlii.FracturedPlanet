@@ -9,8 +9,8 @@
 
         public Voxel(Vector3Int localPosition, float density)
         {
-            this.LocalPosition = localPosition;
-            this.Density = density;
+            LocalPosition = localPosition;
+            Density = density;
         }
     }
 }

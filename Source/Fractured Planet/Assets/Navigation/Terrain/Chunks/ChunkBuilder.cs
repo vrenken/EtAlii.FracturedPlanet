@@ -38,7 +38,7 @@
                     for (var z = 0; z < chunk.voxels.GetLength(2); z++)
                     {
                         var voxelPosition = new Vector3Int(x, y, z);
-                        var density = _densityManager.CalculateDensity(x + sectorPosX, y + sectorPosY, z + sectorPosZ); 
+                        var density = _densityManager.CalculateDensity(x + sectorPosX, y + sectorPosY, z + sectorPosZ);
                         chunk.voxels[x, y, z] = new Voxel(voxelPosition, density);
                     }
                 }

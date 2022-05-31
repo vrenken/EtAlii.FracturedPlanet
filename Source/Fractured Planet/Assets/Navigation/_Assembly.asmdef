@@ -1,5 +1,6 @@
 {
     "name": "EtAlii.FracturedPlanet.Navigation",
+    "rootNamespace": "EtAlii.FracturedPlanet.Navigation",
     "references": [
         "Unity.Entities",
         "Unity.Mathematics"
@@ -11,5 +12,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

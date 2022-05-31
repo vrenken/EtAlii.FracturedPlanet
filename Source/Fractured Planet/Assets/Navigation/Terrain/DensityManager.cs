@@ -13,7 +13,7 @@
 
         public float CalculateDensity(int sectorPosX, int sectorPosY, int sectorPosZ)
         {
-            var result = SectorDensity(sectorPosX, sectorPosY, sectorPosZ, .1f);
+            var result = SectorDensity(sectorPosX, sectorPosY, sectorPosZ, .4f);
             return Math3d.Clamp01(result);
         }
 
@@ -22,13 +22,13 @@
             return sectorPosX * sectorPosX + sectorPosY * sectorPosY + sectorPosZ * sectorPosZ - radius * radius;
         }
 
-        public float SectorDensity(int sectorPosX, int sectorPosY, int sectorPosZ, float noiseScale)
+        private float SectorDensity(int sectorPosX, int sectorPosY, int sectorPosZ, float noiseScale)
         {
             var noise = Noise.GetPerlin(sectorPosX / noiseScale, sectorPosZ / noiseScale);
             return sectorPosY - Math3d.Map(noise, -1, 1, 0, 1) * 10 - 10;
         }
 
-        public void SetDensity(Chunk chunk, float density, int x, int y, int z)
+        private void SetDensity(Chunk chunk, float density, int x, int y, int z)
         {
             chunk.voxels[x, y, z].Density = density;
         }

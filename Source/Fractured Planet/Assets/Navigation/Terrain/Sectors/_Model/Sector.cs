@@ -21,7 +21,7 @@
         public const float SectorSizeHalf = SectorSize / 2f;
 
         /// <summary>
-        /// The size of one single voxel (both width, height and depth). 
+        /// The size of one single voxel (both width, height and depth).
         /// </summary>
         public const float VoxelSize = SectorSize / SectorSize;
 
@@ -107,8 +107,8 @@
         }
 
         public void SetDensity(
-            float density, 
-            int sectorPosX, int sectorPosY, int sectorPosZ, 
+            float density,
+            int sectorPosX, int sectorPosY, int sectorPosZ,
             bool setReadyForUpdate)
         {
             var dp = new Vector3Int(sectorPosX, sectorPosY, sectorPosZ);
@@ -149,8 +149,8 @@
 
             var midPos = new Vector3(middleX, middleY, middleZ);
 
-            var position = new Vector3(sectorWidth * info.X, 0, sectorDepth * info.Y);            
-            
+            var position = new Vector3(sectorWidth * info.X, 0, sectorDepth * info.Y);
+
             var size = new Vector3Int(
                 sectorWidth * chunkSize,
                 sectorHeight * chunkSize,
@@ -169,6 +169,5 @@
         {
             return _bounds.Contains(point);
         }
-
     }
 }
