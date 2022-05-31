@@ -1,5 +1,6 @@
 {
     "name": "EtAlii.FracturedPlanet.Sector",
+    "rootNamespace": "EtAlii.FracturedPlanet.Sector",
     "references": [
         "Unity.Entities",
         "Unity.Mathematics"
@@ -11,5 +12,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
