@@ -13,7 +13,7 @@
 
         public float CalculateDensity(int sectorPosX, int sectorPosY, int sectorPosZ)
         {
-            var result = SectorDensity(sectorPosX, sectorPosY, sectorPosZ, .4f);
+            var result = SectorDensity(sectorPosX, sectorPosY, sectorPosZ, .1f);
             return Math3d.Clamp01(result);
         }
 

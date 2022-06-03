@@ -88,7 +88,7 @@ public class MainMenuNew : MonoBehaviour {
 	public void  ReturnMenu (){
 		playMenu.gameObject.SetActive(false);
 		exitMenu.gameObject.SetActive(false);
-		mainMenu.gameObject.SetActive(true);
+ 		mainMenu.gameObject.SetActive(true);
 	}
 
 	public void NewGame(){
