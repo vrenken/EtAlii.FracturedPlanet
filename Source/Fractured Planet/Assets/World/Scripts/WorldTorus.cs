@@ -12,7 +12,7 @@
         public GameObject sectorTilePrefab;
 
         /// <summary>
-        /// The radius of the torus itself, i.e. the donut radius. 
+        /// The radius of the torus itself, i.e. the donut radius.
         /// </summary>
         public float majorRadius;
 
@@ -30,16 +30,16 @@
         private float _rotationSpeed = 40f;
 
         public bool autoRotate;
-        
+
         private SectorTile[] _sectorTiles;
-        
+
         // Start is called before the first frame update
-        void Start()
+        public void Start()
         {
             SectorManager.Instance.Changed += OnSectorsChanged;
         }
-        
-        void OnDestroy()
+
+        public void OnDestroy()
         {
             SectorManager.Instance.Changed -= OnSectorsChanged;
         }
@@ -57,7 +57,7 @@
             horizontalRotation *= Time.deltaTime;
 
             if (!(math.abs(verticalRotation) > 0.001f) && !(Math.Abs(horizontalRotation) > 0.001f)) return;
-            
+
             _verticalRotation += verticalRotation;
             _horizontalRotation += horizontalRotation;
 

@@ -12,14 +12,14 @@
         public WorldTorus world;
 
         // Update is called once per frame
-        void Update()
+        public void Update()
         {
             if (Input.GetKey(KeyCode.Escape))
             {
                 mainMenu.Activate();
                 //Application.Quit();
 //#if UNITY_EDITOR
-//                UnityEditor.EditorApplication.isPlaying = false; 
+//                UnityEditor.EditorApplication.isPlaying = false;
 //#endif
             }
 
@@ -29,7 +29,7 @@
         {
             var galaxyCameraTransform = galaxyCamera.transform;
 
-            var startPosition = galaxyCameraTransform.position; 
+            var startPosition = galaxyCameraTransform.position;
             var startRotation = galaxyCameraTransform.rotation;
 
             CameraTweener.Tween(

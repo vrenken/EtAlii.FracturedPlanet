@@ -1,5 +1,6 @@
 {
     "name": "EtAlii.FracturedPlanet.World",
+    "rootNamespace": "EtAlii.FracturedPlanet.World",
     "references": [
         "EtAlii.FracturedPlanet.Navigation",
         "EtAlii.FracturedPlanet.Sector",
