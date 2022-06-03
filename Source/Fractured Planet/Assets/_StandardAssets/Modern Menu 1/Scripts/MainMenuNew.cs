@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+// ReSharper disable All
 
 public class MainMenuNew : MonoBehaviour {
 
@@ -10,7 +11,7 @@ public class MainMenuNew : MonoBehaviour {
 
 	[Header("Loaded Scene")]
 	[Tooltip("The name of the scene in the build settings that will load")]
-	public string sceneName = ""; 
+	public string sceneName = "";
 
 	[Header("Panels")]
 	[Tooltip("The UI Panel parenting all sub menus")]
@@ -77,7 +78,7 @@ public class MainMenuNew : MonoBehaviour {
 		exitMenu.gameObject.SetActive(false);
 		playMenu.gameObject.SetActive(true);
 	}
-	
+
 	public void  PlayCampaignMobile (){
 		exitMenu.gameObject.SetActive(false);
 		playMenu.gameObject.SetActive(true);
@@ -233,7 +234,7 @@ public class MainMenuNew : MonoBehaviour {
 						operation.allowSceneActivation = true;
 					}
 				}
-				
+
 				yield return null;
 			}
 		}

@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
+// ReSharper disable All
 
 
 namespace TMPro.Examples
 {
-    
+
     public class TextMeshProFloatingText : MonoBehaviour
     {
         public Font TheFont;
@@ -43,7 +44,7 @@ namespace TMPro.Examples
                 // TextMesh Pro Implementation
                 m_textMeshPro = m_floatingText.AddComponent<TextMeshPro>();
                 m_textMeshPro.rectTransform.sizeDelta = new Vector2(3, 3);
-                
+
                 m_floatingText_Transform = m_floatingText.transform;
                 m_floatingText_Transform.position = m_transform.position + new Vector3(0, 15f, 0);
 
@@ -101,7 +102,7 @@ namespace TMPro.Examples
 
         public IEnumerator DisplayTextMeshProFloatingText()
         {
-            float CountDuration = 2.0f; // How long is the countdown alive.    
+            float CountDuration = 2.0f; // How long is the countdown alive.
             float starting_Count = Random.Range(5f, 20f); // At what number is the counter starting at.
             float current_Count = starting_Count;
 
@@ -157,7 +158,7 @@ namespace TMPro.Examples
 
         public IEnumerator DisplayTextMeshFloatingText()
         {
-            float CountDuration = 2.0f; // How long is the countdown alive.    
+            float CountDuration = 2.0f; // How long is the countdown alive.
             float starting_Count = Random.Range(5f, 20f); // At what number is the counter starting at.
             float current_Count = starting_Count;
 

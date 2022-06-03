@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+// ReSharper disable All
 
 public class ResetDemo : MonoBehaviour {
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+// ReSharper disable All
 
 
 namespace TMPro.Examples
@@ -59,7 +60,7 @@ namespace TMPro.Examples
                 if (hasTextChanged)
                 {
                     totalVisibleCharacters = textInfo.characterCount; // Update visible character count.
-                    hasTextChanged = false; 
+                    hasTextChanged = false;
                 }
 
                 if (visibleCount > totalVisibleCharacters)

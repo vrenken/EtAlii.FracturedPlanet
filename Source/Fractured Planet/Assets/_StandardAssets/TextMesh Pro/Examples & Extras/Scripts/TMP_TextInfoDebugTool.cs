@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+// ReSharper disable All
 
 
 namespace TMPro.Examples
@@ -466,7 +467,7 @@ namespace TMPro.Examples
         void DrawBounds()
         {
             Bounds meshBounds = m_TextComponent.bounds;
-            
+
             // Get Bottom Left and Top Right position of each word
             Vector3 bottomLeft = m_TextComponent.transform.position + (meshBounds.center - meshBounds.extents);
             Vector3 topRight = m_TextComponent.transform.position + (meshBounds.center + meshBounds.extents);

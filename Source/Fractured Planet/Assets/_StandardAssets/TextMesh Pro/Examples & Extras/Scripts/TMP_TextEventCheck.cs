@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+// ReSharper disable All
 
 
 namespace TMPro.Examples

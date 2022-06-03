@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System;
+// ReSharper disable All
 
 
 namespace TMPro
@@ -192,7 +193,7 @@ namespace TMPro
                     // Get information about the link.
                     TMP_LinkInfo linkInfo = m_TextComponent.textInfo.linkInfo[linkIndex];
 
-                    // Send the event to any listeners. 
+                    // Send the event to any listeners.
                     SendOnLinkSelection(linkInfo.GetLinkID(), linkInfo.GetLinkText(), linkIndex);
                 }
                 #endregion

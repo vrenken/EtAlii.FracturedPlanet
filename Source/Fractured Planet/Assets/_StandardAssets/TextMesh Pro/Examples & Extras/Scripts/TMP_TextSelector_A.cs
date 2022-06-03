@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+// ReSharper disable All
 
 
 namespace TMPro.Examples

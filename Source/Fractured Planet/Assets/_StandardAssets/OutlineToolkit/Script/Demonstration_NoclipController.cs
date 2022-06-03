@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+// ReSharper disable All
 
 public class Demonstration_NoclipController : MonoBehaviour {
 
@@ -38,7 +39,7 @@ public class Demonstration_NoclipController : MonoBehaviour {
         transform.Translate(Vector3.right * Input.GetAxisRaw("Horizontal") * Time.deltaTime * movSpeed);
         transform.Translate(Vector3.forward * Input.GetAxisRaw("Vertical") * Time.deltaTime * movSpeed);
 
-        transform.Translate(Vector3.up * 
+        transform.Translate(Vector3.up *
             (
                 (Input.GetButton("Fire1") ? movSpeed : 0) -
                 (Input.GetButton("Fire2") ? movSpeed : 0)

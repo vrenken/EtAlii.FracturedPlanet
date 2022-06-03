@@ -1,9 +1,10 @@
 using UnityEngine;
+// ReSharper disable All
 
 
 namespace TMPro.Examples
 {
-    
+
     public class CameraController : MonoBehaviour
     {
         public enum CameraModes { Follow, Isometric, Free }
@@ -182,7 +183,7 @@ namespace TMPro.Examples
                     }
 
 
-                    // Handle left & right 
+                    // Handle left & right
                     if (deltaPosition.x > 0.01f || deltaPosition.x < -0.01f)
                     {
                         OrbitalAngle += deltaPosition.x * 0.1f;

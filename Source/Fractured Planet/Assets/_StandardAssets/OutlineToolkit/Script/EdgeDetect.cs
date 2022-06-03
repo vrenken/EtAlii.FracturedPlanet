@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+// ReSharper disable All
 
 public class EdgeDetect : MonoBehaviour {
 

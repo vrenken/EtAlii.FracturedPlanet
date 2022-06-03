@@ -1,9 +1,10 @@
 using UnityEngine;
+// ReSharper disable All
 
 
 namespace TMPro.Examples
 {
-    
+
     public class Benchmark02 : MonoBehaviour
     {
 
@@ -37,7 +38,7 @@ namespace TMPro.Examples
 
                     textMeshPro.color = new Color32(255, 255, 0, 255);
                     textMeshPro.text = "!";
-                       
+
                     // Spawn Floating Text
                     floatingText_Script = go.AddComponent<TextMeshProFloatingText>();
                     floatingText_Script.SpawnType = 0;
@@ -85,8 +86,8 @@ namespace TMPro.Examples
                     floatingText_Script.SpawnType = 0;
                 }
 
-                   
-           
+
+
             }
         }
     }

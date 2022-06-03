@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+// ReSharper disable All
 
 
 namespace TMPro.Examples
 {
-    
+
     public class ShaderPropAnimator : MonoBehaviour
     {
 
