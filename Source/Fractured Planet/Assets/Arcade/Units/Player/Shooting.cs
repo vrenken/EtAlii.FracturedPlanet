@@ -16,8 +16,8 @@ namespace Complete
         public AudioSource m_ShootingAudio;         // Reference to the audio source used to play the shooting audio. NB: different to the movement audio source.
         public AudioClip m_ChargingClip;            // Audio that plays when each shot is charging up.
         public AudioClip m_FireClip;                // Audio that plays when each shot is fired.
-        public float m_MinLaunchForce = 15f;        // The force given to the shell if the fire button is not held.
-        public float m_MaxLaunchForce = 30f;        // The force given to the shell if the fire button is held for the max charge time.
+        public float m_MinLaunchForce = 30f;        // The force given to the shell if the fire button is not held.
+        public float m_MaxLaunchForce = 50f;        // The force given to the shell if the fire button is held for the max charge time.
         public float m_MaxChargeTime = 0.75f;       // How long the shell can charge for before it is fired at max force.
 
 
@@ -29,10 +29,10 @@ namespace Complete
         private void Awake()
         {
             _controls = new Controls();
-            _controls.PlayerControl.Enable();
-            _controls.PlayerControl.Shoot.started += Fire;
-            _controls.PlayerControl.Shoot.performed += Fire;
-            _controls.PlayerControl.Shoot.canceled += Fire;
+            _controls.Gameplay.Enable();
+            _controls.Gameplay.Shoot.started += Fire;
+            _controls.Gameplay.Shoot.performed += Fire;
+            _controls.Gameplay.Shoot.canceled += Fire;
         }
 
         private void OnEnable()

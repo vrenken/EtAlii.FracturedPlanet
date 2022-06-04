@@ -2,7 +2,7 @@
     "name": "Controls",
     "maps": [
         {
-            "name": "Player Control",
+            "name": "Gameplay",
             "id": "9fb4fe39-6260-4e01-9f0d-83eb4252fa02",
             "actions": [
                 {
@@ -11,7 +11,8 @@
                     "id": "3b72b8c5-954d-4467-b5ce-600874e29cf7",
                     "expectedControlType": "Stick",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Shoot",
@@ -19,7 +20,8 @@
                     "id": "7006bac5-ee01-4259-82e7-3c9a2fb0e78a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -59,7 +61,7 @@
                 {
                     "name": "2D Vector",
                     "id": "50340659-45c1-4da4-be89-54abbe8295e9",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=2)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -110,6 +112,34 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Menus",
+            "id": "c182a24c-e50b-49f8-afc2-64ba7360adec",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "2f1b1820-c015-41f2-9e84-93ed158064a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "208dcac5-005b-4fa9-bb9f-6cc5835b8fd9",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

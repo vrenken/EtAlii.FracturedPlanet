@@ -24,7 +24,7 @@ namespace Complete
         {
             _rigidbody = GetComponent<Rigidbody>();
             _controls = new Controls();
-            _controls.PlayerControl.Enable();
+            _controls.Gameplay.Enable();
         }
 
 
@@ -70,7 +70,7 @@ namespace Complete
 
         private void EngineAudio ()
         {
-            var control = _controls.PlayerControl.Move.ReadValue<Vector2>();
+            var control = _controls.Gameplay.Move.ReadValue<Vector2>();
 
             // If there is no input (the tank is stationary)...
             if (Mathf.Abs (control.y) < 0.1f && Mathf.Abs (control.x) < 0.1f)
@@ -101,7 +101,7 @@ namespace Complete
         private void FixedUpdate ()
         {
             // Adjust the rigidbodies position and orientation in FixedUpdate.
-            var control = _controls.PlayerControl.Move.ReadValue<Vector2>();
+            var control = _controls.Gameplay.Move.ReadValue<Vector2>();
             Move (control);
             Turn (control);
         }
