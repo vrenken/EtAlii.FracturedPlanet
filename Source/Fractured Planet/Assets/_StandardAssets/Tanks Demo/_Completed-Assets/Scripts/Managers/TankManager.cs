@@ -20,21 +20,21 @@ namespace Complete
         [HideInInspector] public int m_Wins;                    // The number of wins this player has so far.
 
 
-        private TankMovement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
-        private TankShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
+        private Movement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
+        private Shooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
         private GameObject m_CanvasGameObject;                  // Used to disable the world space UI during the Starting and Ending phases of each round.
 
 
         public void Setup ()
         {
             // Get references to the components.
-            m_Movement = m_Instance.GetComponent<TankMovement> ();
-            m_Shooting = m_Instance.GetComponent<TankShooting> ();
+            m_Movement = m_Instance.GetComponent<Movement> ();
+            m_Shooting = m_Instance.GetComponent<Shooting> ();
             m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas> ().gameObject;
 
             // Set the player numbers to be consistent across the scripts.
-            m_Movement.m_PlayerNumber = m_PlayerNumber;
-            m_Shooting.m_PlayerNumber = m_PlayerNumber;
+            //m_Movement.m_PlayerNumber = m_PlayerNumber;
+            //m_Shooting.m_PlayerNumber = m_PlayerNumber;
 
             // Create a string using the correct color that says 'PLAYER 1' etc based on the tank's color and the player's number.
             m_ColoredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(m_PlayerColor) + ">PLAYER " + m_PlayerNumber + "</color>";
