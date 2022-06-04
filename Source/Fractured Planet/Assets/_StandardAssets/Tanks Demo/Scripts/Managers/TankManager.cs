@@ -1,4 +1,5 @@
 ﻿using System;
+using Complete;
 using UnityEngine;
 // ReSharper disable All
 
@@ -13,15 +14,15 @@ public class TankManager
     [HideInInspector] public int m_Wins;
 
 
-    private TankMovement m_Movement;
-    private TankShooting m_Shooting;
+    private Movement m_Movement;
+    private Shooting m_Shooting;
     private GameObject m_CanvasGameObject;
 
 
     public void Setup()
     {
-        m_Movement = m_Instance.GetComponent<TankMovement>();
-        m_Shooting = m_Instance.GetComponent<TankShooting>();
+        m_Movement = m_Instance.GetComponent<Movement>();
+        m_Shooting = m_Instance.GetComponent<Shooting>();
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
 
         m_Movement.m_PlayerNumber = m_PlayerNumber;
