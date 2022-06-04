@@ -11,4 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/World/World Overview.unity
     guid: 9a9ad46687740ea4da87362707ed651d
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: d2e5284da9dbb8447986ea3b03e624e6,
+      type: 2}

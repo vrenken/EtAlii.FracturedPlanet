@@ -1,9 +1,11 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-// ReSharper disable All
+﻿// ReSharper disable All
 
 namespace Complete
 {
+    using UnityEngine;
+    using UnityEngine.UI;
+    using UnityEngine.InputSystem;
+
     public class Shooting : MonoBehaviour
     {
         public int m_PlayerNumber = 1;              // Used to identify the different players.
@@ -41,6 +43,39 @@ namespace Complete
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
         }
 
+        public void Fire(InputAction.CallbackContext context)
+        {
+            switch (context.phase)
+            {
+                case InputActionPhase.Started:
+                    // Otherwise, if the fire button has just started being pressed...
+
+                    // ... reset the fired flag and reset the launch force.
+                    m_Fired = false;
+                    m_CurrentLaunchForce = m_MinLaunchForce;
+
+                    // Change the clip to the charging clip and start it playing.
+                    m_ShootingAudio.clip = m_ChargingClip;
+                    m_ShootingAudio.Play ();
+
+                    break;
+                case InputActionPhase.Performed:
+                    // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
+
+                    // Increment the launch force and update the slider.
+                    m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
+
+                    m_AimSlider.value = m_CurrentLaunchForce;
+                    break;
+                case InputActionPhase.Canceled:
+                    // Otherwise, if the fire button is released and the shell hasn't been launched yet...
+
+                    // ... launch the shell.
+                    Fire ();
+
+                    break;
+            }
+        }
 
         private void Update ()
         {
@@ -52,31 +87,6 @@ namespace Complete
             {
                 // ... use the max force and launch the shell.
                 m_CurrentLaunchForce = m_MaxLaunchForce;
-                Fire ();
-            }
-            // Otherwise, if the fire button has just started being pressed...
-            else if (Input.GetButtonDown (m_FireButton))
-            {
-                // ... reset the fired flag and reset the launch force.
-                m_Fired = false;
-                m_CurrentLaunchForce = m_MinLaunchForce;
-
-                // Change the clip to the charging clip and start it playing.
-                m_ShootingAudio.clip = m_ChargingClip;
-                m_ShootingAudio.Play ();
-            }
-            // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
-            else if (Input.GetButton (m_FireButton) && !m_Fired)
-            {
-                // Increment the launch force and update the slider.
-                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
-
-                m_AimSlider.value = m_CurrentLaunchForce;
-            }
-            // Otherwise, if the fire button is released and the shell hasn't been launched yet...
-            else if (Input.GetButtonUp (m_FireButton) && !m_Fired)
-            {
-                // ... launch the shell.
                 Fire ();
             }
         }

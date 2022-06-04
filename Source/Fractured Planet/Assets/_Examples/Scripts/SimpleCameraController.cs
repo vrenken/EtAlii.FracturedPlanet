@@ -1,4 +1,4 @@
-﻿// ReSharper disable all 
+﻿// ReSharper disable all
 
 namespace EtAlii.FracturedPlanet.Examples
 {
@@ -39,7 +39,7 @@ namespace EtAlii.FracturedPlanet.Examples
                 yaw = Mathf.Lerp(yaw, target.yaw, rotationLerpPct);
                 pitch = Mathf.Lerp(pitch, target.pitch, rotationLerpPct);
                 roll = Mathf.Lerp(roll, target.roll, rotationLerpPct);
-                
+
                 x = Mathf.Lerp(x, target.x, positionLerpPct);
                 y = Mathf.Lerp(y, target.y, positionLerpPct);
                 z = Mathf.Lerp(z, target.z, positionLerpPct);
@@ -51,7 +51,7 @@ namespace EtAlii.FracturedPlanet.Examples
                 t.position = new Vector3(x, y, z);
             }
         }
-        
+
         CameraState m_TargetCameraState = new CameraState();
         CameraState m_InterpolatingCameraState = new CameraState();
 
@@ -107,15 +107,15 @@ namespace EtAlii.FracturedPlanet.Examples
             }
             return direction;
         }
-        
+
         void Update()
         {
-            // Exit Sample  
+            // Exit Sample
             if (Input.GetKey(KeyCode.Escape))
             {
                 Application.Quit();
 				#if UNITY_EDITOR
-				UnityEditor.EditorApplication.isPlaying = false; 
+				UnityEditor.EditorApplication.isPlaying = false;
 				#endif
             }
 
@@ -136,13 +136,13 @@ namespace EtAlii.FracturedPlanet.Examples
             if (Input.GetMouseButton(1))
             {
                 var mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y") * (invertY ? 1 : -1));
-                
+
                 var mouseSensitivityFactor = mouseSensitivityCurve.Evaluate(mouseMovement.magnitude);
 
                 m_TargetCameraState.yaw += mouseMovement.x * mouseSensitivityFactor;
                 m_TargetCameraState.pitch += mouseMovement.y * mouseSensitivityFactor;
             }
-            
+
             // Translation
             var translation = GetInputTranslationDirection() * Time.deltaTime;
 
@@ -151,7 +151,7 @@ namespace EtAlii.FracturedPlanet.Examples
             {
                 translation *= 10.0f;
             }
-            
+
             // Modify movement by a boost factor (defined in Inspector and modified in play mode through the mouse scroll wheel)
             boost += Input.mouseScrollDelta.y * 0.2f;
             translation *= Mathf.Pow(2.0f, boost);

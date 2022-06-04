@@ -80,7 +80,6 @@ GameObject:
   - component: {fileID: 3629892581402821913}
   - component: {fileID: 3629892581402821892}
   - component: {fileID: 418516671342093247}
-  - component: {fileID: 7831540244972475159}
   - component: {fileID: 8830151257779427965}
   - component: {fileID: 8156909478739213866}
   - component: {fileID: 2686649520828137490}
@@ -208,25 +207,6 @@ MonoBehaviour:
   m_MinLaunchForce: 15
   m_MaxLaunchForce: 30
   m_MaxChargeTime: 0.75
---- !u!114 &7831540244972475159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3629892581402821915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d2a004de9d4e24817e312e8391f691, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlayerNumber: 1
-  m_Speed: 12
-  m_TurnSpeed: 180
-  m_MovementAudio: {fileID: 2686649520828137490}
-  m_EngineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
-  m_EngineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
-  m_PitchRange: 0.2
 --- !u!114 &8830151257779427965
 MonoBehaviour:
   m_ObjectHideFlags: 0
