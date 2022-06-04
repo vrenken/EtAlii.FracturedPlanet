@@ -16,14 +16,15 @@ namespace Complete
 		public float pitchRange = 0.2f;            // The amount by which the pitch of the engine noises can vary.
 
         private Rigidbody _rigidbody;              // Reference used to move the tank.
-        private float _movementInputValue;         // The current value of the movement input.
-        private float _turnInputValue;             // The current value of the turn input.
         private float _originalPitch;              // The pitch of the audio source at the start of the scene.
         private ParticleSystem[] _particleSystems; // References to all the particles systems used by the Tanks
+        private Controls _controls;
 
         private void Awake ()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _controls = new Controls();
+            _controls.PlayerControl.Enable();
         }
 
 
@@ -31,10 +32,6 @@ namespace Complete
         {
             // When the tank is turned on, make sure it's not kinematic.
             _rigidbody.isKinematic = false;
-
-            // Also reset the input values.
-            _movementInputValue = 0f;
-            _turnInputValue = 0f;
 
             // We grab all the Particle systems child of that Tank to be able to Stop/Play them on Deactivate/Activate
             // It is needed because we move the Tank when spawning it, and if the Particle System is playing while we do that
@@ -66,67 +63,6 @@ namespace Complete
             _originalPitch = movementAudio.pitch;
         }
 
-        public void OnRotate(InputAction.CallbackContext context)
-        {
-            _turnInputValue = context.ReadValue<float>();
-        }
-
-        public void OnRotateLeft(InputAction.CallbackContext context)
-        {
-            switch (context.phase)
-            {
-                case InputActionPhase.Started:
-                    _turnInputValue -= 1f;
-                    break;
-                case InputActionPhase.Canceled:
-                    _turnInputValue += 1f;
-                    break;
-            }
-        }
-        public void OnRotateRight(InputAction.CallbackContext context)
-        {
-            switch (context.phase)
-            {
-                case InputActionPhase.Started:
-                    _turnInputValue += 1f;
-                    break;
-                case InputActionPhase.Canceled:
-                    _turnInputValue -= 1f;
-                    break;
-            }
-        }
-
-        public void OnMove(InputAction.CallbackContext context)
-        {
-            _movementInputValue = context.ReadValue<float>();
-        }
-
-        public void OnMoveForward(InputAction.CallbackContext context)
-        {
-            switch (context.phase)
-            {
-                case InputActionPhase.Started:
-                    _movementInputValue += 1f;
-                    break;
-                case InputActionPhase.Canceled:
-                    _movementInputValue -= 1f;
-                    break;
-            }
-        }
-
-        public void OnMoveBackward(InputAction.CallbackContext context)
-        {
-            switch (context.phase)
-            {
-                case InputActionPhase.Started:
-                    _movementInputValue -= 1f;
-                    break;
-                case InputActionPhase.Canceled:
-                    _movementInputValue += 1f;
-                    break;
-            }
-        }
-
         private void Update ()
         {
             EngineAudio ();
@@ -134,8 +70,10 @@ namespace Complete
 
         private void EngineAudio ()
         {
+            var control = _controls.PlayerControl.Move.ReadValue<Vector2>();
+
             // If there is no input (the tank is stationary)...
-            if (Mathf.Abs (_movementInputValue) < 0.1f && Mathf.Abs (_turnInputValue) < 0.1f)
+            if (Mathf.Abs (control.y) < 0.1f && Mathf.Abs (control.x) < 0.1f)
             {
                 // ... and if the audio source is currently playing the driving clip...
                 if (movementAudio.clip == engineDriving)
@@ -163,25 +101,26 @@ namespace Complete
         private void FixedUpdate ()
         {
             // Adjust the rigidbodies position and orientation in FixedUpdate.
-            Move ();
-            Turn ();
+            var control = _controls.PlayerControl.Move.ReadValue<Vector2>();
+            Move (control);
+            Turn (control);
         }
 
 
-        private void Move ()
+        private void Move (Vector2 control)
         {
             // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-            Vector3 movement = transform.forward * _movementInputValue * speed * Time.deltaTime;
+            Vector3 movement = transform.forward * control.y * speed * Time.deltaTime;
 
             // Apply this movement to the rigidbody's position.
             _rigidbody.MovePosition(_rigidbody.position + movement);
         }
 
 
-        private void Turn ()
+        private void Turn (Vector2 control)
         {
             // Determine the number of degrees to be turned based on the input, speed and time between frames.
-            float turn = _turnInputValue * turnSpeed * Time.deltaTime;
+            float turn = control.x * turnSpeed * Time.deltaTime;
 
             // Make this into a rotation in the y axis.
             Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);

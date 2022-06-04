@@ -2,6 +2,7 @@
 
 namespace Complete
 {
+    using System;
     using UnityEngine;
     using UnityEngine.UI;
     using UnityEngine.InputSystem;
@@ -20,30 +21,35 @@ namespace Complete
         public float m_MaxChargeTime = 0.75f;       // How long the shell can charge for before it is fired at max force.
 
 
-        private string m_FireButton;                // The input axis that is used for launching shells.
-        private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
-        private float m_ChargeSpeed;                // How fast the launch force increases, based on the max charge time.
-        private bool m_Fired;                       // Whether or not the shell has been launched with this button press.
+        private float _currentLaunchForce;         // The force that will be given to the shell when the fire button is released.
+        private float _chargeSpeed;                // How fast the launch force increases, based on the max charge time.
+        private bool _fired;                       // Whether or not the shell has been launched with this button press.
+        private Controls _controls;
 
+        private void Awake()
+        {
+            _controls = new Controls();
+            _controls.PlayerControl.Enable();
+            _controls.PlayerControl.Shoot.started += Fire;
+            _controls.PlayerControl.Shoot.performed += Fire;
+            _controls.PlayerControl.Shoot.canceled += Fire;
+        }
 
         private void OnEnable()
         {
             // When the tank is turned on, reset the launch force and the UI
-            m_CurrentLaunchForce = m_MinLaunchForce;
+            _currentLaunchForce = m_MinLaunchForce;
             m_AimSlider.value = m_MinLaunchForce;
         }
 
 
         private void Start ()
         {
-            // The fire axis is based on the player number.
-            m_FireButton = "Fire" + m_PlayerNumber;
-
             // The rate that the launch force charges up is the range of possible forces by the max charge time.
-            m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+            _chargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
         }
 
-        public void Fire(InputAction.CallbackContext context)
+        private void Fire(InputAction.CallbackContext context)
         {
             switch (context.phase)
             {
@@ -51,8 +57,8 @@ namespace Complete
                     // Otherwise, if the fire button has just started being pressed...
 
                     // ... reset the fired flag and reset the launch force.
-                    m_Fired = false;
-                    m_CurrentLaunchForce = m_MinLaunchForce;
+                    _fired = false;
+                    _currentLaunchForce = m_MinLaunchForce;
 
                     // Change the clip to the charging clip and start it playing.
                     m_ShootingAudio.clip = m_ChargingClip;
@@ -63,9 +69,9 @@ namespace Complete
                     // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
 
                     // Increment the launch force and update the slider.
-                    m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
+                    _currentLaunchForce += _chargeSpeed * Time.deltaTime;
 
-                    m_AimSlider.value = m_CurrentLaunchForce;
+                    m_AimSlider.value = _currentLaunchForce;
                     break;
                 case InputActionPhase.Canceled:
                     // Otherwise, if the fire button is released and the shell hasn't been launched yet...
@@ -83,10 +89,10 @@ namespace Complete
             m_AimSlider.value = m_MinLaunchForce;
 
             // If the max force has been exceeded and the shell hasn't yet been launched...
-            if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
+            if (_currentLaunchForce >= m_MaxLaunchForce && !_fired)
             {
                 // ... use the max force and launch the shell.
-                m_CurrentLaunchForce = m_MaxLaunchForce;
+                _currentLaunchForce = m_MaxLaunchForce;
                 Fire ();
             }
         }
@@ -95,21 +101,21 @@ namespace Complete
         private void Fire ()
         {
             // Set the fired flag so only Fire is only called once.
-            m_Fired = true;
+            _fired = true;
 
             // Create an instance of the shell and store a reference to it's rigidbody.
             Rigidbody shellInstance =
                 Instantiate (m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
 
             // Set the shell's velocity to the launch force in the fire position's forward direction.
-            shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+            shellInstance.velocity = _currentLaunchForce * m_FireTransform.forward;
 
             // Change the clip to the firing clip and play it.
             m_ShootingAudio.clip = m_FireClip;
             m_ShootingAudio.Play ();
 
             // Reset the launch force.  This is a precaution in case of missing button events.
-            m_CurrentLaunchForce = m_MinLaunchForce;
+            _currentLaunchForce = m_MinLaunchForce;
         }
     }
 }
