@@ -1,3 +1,4 @@
+// ReSharper disable All
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace TheKiwiCoder {
     // The context is a shared object every node has access to.
     // Commonly used components and subsytems should be stored here
     // It will be somewhat specfic to your game exactly what to add here.
-    // Feel free to extend this class 
+    // Feel free to extend this class
     public class Context {
         public GameObject gameObject;
         public Transform transform;
@@ -33,7 +34,7 @@ namespace TheKiwiCoder {
             context.boxCollider = gameObject.GetComponent<BoxCollider>();
             context.capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
             context.characterController = gameObject.GetComponent<CharacterController>();
-            
+
             // Add whatever else you need here...
 
             return context;

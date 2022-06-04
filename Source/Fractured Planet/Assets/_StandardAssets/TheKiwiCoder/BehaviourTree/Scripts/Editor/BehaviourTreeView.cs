@@ -1,3 +1,4 @@
+// ReSharper disable All
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -22,7 +23,7 @@ namespace TheKiwiCoder {
         }
 
         public ScriptTemplate[] scriptFileAssets = {
-            
+
             new ScriptTemplate{ templateFile=BehaviourTreeSettings.GetOrCreateSettings().scriptTemplateActionNode, defaultFileName="NewActionNode.cs", subFolder="Actions" },
             new ScriptTemplate{ templateFile=BehaviourTreeSettings.GetOrCreateSettings().scriptTemplateCompositeNode, defaultFileName="NewCompositeNode.cs", subFolder="Composites" },
             new ScriptTemplate{ templateFile=BehaviourTreeSettings.GetOrCreateSettings().scriptTemplateDecoratorNode, defaultFileName="NewDecoratorNode.cs", subFolder="Decorators" },

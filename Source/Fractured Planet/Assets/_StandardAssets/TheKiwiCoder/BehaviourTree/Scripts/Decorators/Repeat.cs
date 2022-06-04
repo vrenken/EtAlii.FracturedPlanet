@@ -1,8 +1,10 @@
+// ReSharper disable All
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheKiwiCoder {
+namespace TheKiwiCoder
+{
     public class Repeat : DecoratorNode {
 
         public bool restartOnSuccess = true;
@@ -37,5 +39,5 @@ namespace TheKiwiCoder {
         }
     }
 
-    
+
 }

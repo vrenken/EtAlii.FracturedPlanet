@@ -1,8 +1,10 @@
+// ReSharper disable All
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheKiwiCoder {
+namespace TheKiwiCoder
+{
     public class InterruptSelector : Selector {
         protected override State OnUpdate() {
             int previous = current;

@@ -1,3 +1,4 @@
+// ReSharper disable All
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using UnityEditor.Callbacks;
 
-namespace TheKiwiCoder {
+namespace TheKiwiCoder
+{
 
     public class BehaviourTreeEditor : EditorWindow {
 
@@ -170,7 +172,7 @@ namespace TheKiwiCoder {
                 treeView.PopulateView(tree);
             }
 
-            
+
             treeObject = new SerializedObject(tree);
             blackboardProperty = treeObject.FindProperty("blackboard");
 
