@@ -20,3 +20,12 @@ MonoBehaviour:
     type: 2}
   fourPlayerCameraSetup: {fileID: 11400000, guid: 3c2bdc53d9e72d84fb22080b9f9af452,
     type: 2}
+  humanPlayerPrefab: {fileID: 304792816496033929, guid: 9245ac04f08bda644a5218fa983ecbff,
+    type: 3}
+  botPlayerPrefab: {fileID: 6754647602206738080, guid: bc8f942274202be4f9a64c826a30c197,
+    type: 3}
+  spawnPoints:
+  - {x: -50, y: -50}
+  - {x: 50, y: -50}
+  - {x: -50, y: 50}
+  - {x: 50, y: 50}

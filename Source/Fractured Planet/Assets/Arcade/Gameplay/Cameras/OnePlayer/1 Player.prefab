@@ -137,7 +137,7 @@ PrefabInstance:
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
       propertyPath: m_Name
-      value: Player 1 Tracking camera
+      value: Player 1 Tracking Camera
       objectReference: {fileID: 0}
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}

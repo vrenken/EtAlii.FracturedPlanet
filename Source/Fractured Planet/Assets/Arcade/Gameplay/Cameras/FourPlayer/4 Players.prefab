@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
       propertyPath: m_Name
-      value: Player 1 Tracking camera
+      value: Player 1 Tracking Camera
       objectReference: {fileID: 0}
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
@@ -303,17 +303,17 @@ PrefabInstance:
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.2669336
+      value: 0.26693356
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -3.4238033e-15
+      value: 0.000000028720944
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.836517e-15
+      value: -0.00000000795524
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
@@ -388,7 +388,7 @@ PrefabInstance:
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
       propertyPath: m_Name
-      value: Player 4 Tracking camera
+      value: Player 4 Tracking Camera
       objectReference: {fileID: 0}
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
@@ -543,12 +543,12 @@ PrefabInstance:
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000028720944
+      value: -0.000000028720944
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000000795524
+      value: 0.00000000795524
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
@@ -623,7 +623,7 @@ PrefabInstance:
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
       propertyPath: m_Name
-      value: Player 2 Tracking camera
+      value: Player 2 Tracking Camera
       objectReference: {fileID: 0}
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
@@ -763,7 +763,7 @@ PrefabInstance:
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
       propertyPath: m_Name
-      value: Player 3 Tracking camera
+      value: Player 3 Tracking Camera
       objectReference: {fileID: 0}
     - target: {fileID: 6092243199903397030, guid: 1c594657caf3cd8438228df0220deeae,
         type: 3}
@@ -913,17 +913,17 @@ PrefabInstance:
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.2669336
+      value: 0.26693356
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 3.4238033e-15
+      value: -0.000000028720944
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -1.836517e-15
+      value: 0.00000000795524
       objectReference: {fileID: 0}
     - target: {fileID: 5119104730607159498, guid: de865814cdc20af4289f15d9133f9803,
         type: 3}
