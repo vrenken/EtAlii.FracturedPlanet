@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿// ReSharper disable All
+using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
-// ReSharper disable All
+using System.Collections;
+using System.Collections.Generic;
 
 
 #pragma warning disable 0618 // Disabled warning due to SetVertices being deprecated until new release with SetMesh() is available.
@@ -256,7 +259,6 @@ namespace TMPro.Examples
                     // Debug.Log("Link ID: \"" + linkInfo.GetLinkID() + "\"   Link Text: \"" + linkInfo.GetLinkText() + "\""); // Example of how to retrieve the Link ID and Link Text.
 
                     Vector3 worldPointInRectangle;
-
                     RectTransformUtility.ScreenPointToWorldPointInRectangle(m_TextMeshPro.rectTransform, Input.mousePosition, m_Camera, out worldPointInRectangle);
 
                     switch (linkInfo.GetLinkID())

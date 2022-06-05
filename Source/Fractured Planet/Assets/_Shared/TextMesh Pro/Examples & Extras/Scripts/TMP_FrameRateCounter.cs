@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-// ReSharper disable All
+﻿// ReSharper disable All
+using UnityEngine;
+using System.Collections;
 
 
 namespace TMPro.Examples
@@ -30,7 +31,7 @@ namespace TMPro.Examples
                 return;
 
             m_camera = Camera.main;
-            Application.targetFrameRate = -1;
+            Application.targetFrameRate = 9999;
 
             GameObject frameCounter = new GameObject("Frame Counter");
 
@@ -47,7 +48,7 @@ namespace TMPro.Examples
             m_TextMeshPro.fontSize = 24;
             //m_TextMeshPro.FontColor = new Color32(255, 255, 255, 128);
             //m_TextMeshPro.edgeWidth = .15f;
-            m_TextMeshPro.isOverlay = true;
+            //m_TextMeshPro.isOverlay = true;
 
             //m_TextMeshPro.FaceColor = new Color32(255, 128, 0, 0);
             //m_TextMeshPro.EdgeColor = new Color32(0, 255, 0, 255);
@@ -92,6 +93,7 @@ namespace TMPro.Examples
 
                 //string format = System.String.Format(htmlColorTag + "{0:F2} </color>FPS \n{1:F2} <#8080ff>MS",fps, ms);
                 //m_TextMeshPro.text = format;
+
                 m_TextMeshPro.SetText(htmlColorTag + fpsLabel, fps, ms);
 
                 m_Frames = 0;

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿// ReSharper disable All
+using UnityEngine;
+using System.Collections;
 using System;
-// ReSharper disable All
 
 namespace TMPro
 {

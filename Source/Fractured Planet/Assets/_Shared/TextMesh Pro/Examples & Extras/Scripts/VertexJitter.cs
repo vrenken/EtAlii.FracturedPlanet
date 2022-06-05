@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿// ReSharper disable All
+using UnityEngine;
 using System.Collections;
-// ReSharper disable All
 
 
 namespace TMPro.Examples

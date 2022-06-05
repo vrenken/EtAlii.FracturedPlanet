@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿// ReSharper disable All
+using UnityEngine;
 using System.Collections;
 using TMPro;
-// ReSharper disable All
 
 public class EnvMapAnimator : MonoBehaviour {
 

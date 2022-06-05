@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿// ReSharper disable All
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System;
-// ReSharper disable All
 
 
 namespace TMPro
@@ -197,6 +197,14 @@ namespace TMPro
                     SendOnLinkSelection(linkInfo.GetLinkID(), linkInfo.GetLinkText(), linkIndex);
                 }
                 #endregion
+            }
+            else
+            {
+                // Reset all selections given we are hovering outside the text container bounds.
+                m_selectedLink = -1;
+                m_lastCharIndex = -1;
+                m_lastWordIndex = -1;
+                m_lastLineIndex = -1;
             }
         }
 
