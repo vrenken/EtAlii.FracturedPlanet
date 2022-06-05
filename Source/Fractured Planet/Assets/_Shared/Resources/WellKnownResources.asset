@@ -24,6 +24,13 @@ MonoBehaviour:
     type: 3}
   botPlayerPrefab: {fileID: 6754647602206738080, guid: bc8f942274202be4f9a64c826a30c197,
     type: 3}
+  mainMenuPrefab: {fileID: 6278477213572362953, guid: e8a2f933a04bb0a4e9edaa142e5c484c,
+    type: 3}
+  settingsMenuPrefab: {fileID: 0}
+  highScoresMenuPrefab: {fileID: 0}
+  scoresMenuPrefab: {fileID: 0}
+  mapMenuPrefab: {fileID: 0}
+  gameOverMenuPrefab: {fileID: 0}
   spawnPoints:
   - {x: -50, y: -50}
   - {x: 50, y: -50}

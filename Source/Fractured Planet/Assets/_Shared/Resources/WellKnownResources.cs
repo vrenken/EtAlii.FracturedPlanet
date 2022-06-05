@@ -15,6 +15,13 @@ public class WellKnownResources : ScriptableObject
     public GameObject humanPlayerPrefab;
     public GameObject botPlayerPrefab;
 
+    public GameObject mainMenuPrefab;
+    public GameObject settingsMenuPrefab;
+    public GameObject highScoresMenuPrefab;
+    public GameObject scoresMenuPrefab;
+    public GameObject mapMenuPrefab;
+    public GameObject gameOverMenuPrefab;
+
     public Vector2[] spawnPoints = new Vector2[4];
     public static WellKnownResources Current => _current.Value;
     private static readonly Lazy<WellKnownResources> _current = new Lazy<WellKnownResources>(() => Resources.Load<WellKnownResources>("WellKnownResources")) ;
