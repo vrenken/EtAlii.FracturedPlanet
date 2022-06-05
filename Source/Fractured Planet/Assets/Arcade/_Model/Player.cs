@@ -7,5 +7,7 @@ namespace EtAlii.FracturedPlanet.Arcade
     public class Player
     {
         public readonly Camera Camera;
+        public readonly bool ShowHud = true;
+        public readonly PlayerType Type = PlayerType.Bot;
     }
 }

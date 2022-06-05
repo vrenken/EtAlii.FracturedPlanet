@@ -2,16 +2,36 @@
 
 namespace EtAlii.FracturedPlanet.Arcade
 {
+    using System.Linq;
+
     public class GameStarter
     {
-        public Game Start(int playerCount)
-        {
-            var players = new Player[playerCount];
 
-            for (var i = 0; i < playerCount; i++)
+        public Game Start(Player[] visiblePlayers, Player[] invisiblePlayers)
+        {
+
+            switch (visiblePlayers.Length)
             {
-                players[i] = new Player();
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
             }
+
+            // var players = new Player[playerCount];
+            //
+            // for (var i = 0; i < playerCount; i++)
+            // {
+            //     players[i] = new Player();
+            // }
+
+            var players = visiblePlayers
+                .Concat(invisiblePlayers)
+                .ToArray();
 
             return new Game(players);
         }

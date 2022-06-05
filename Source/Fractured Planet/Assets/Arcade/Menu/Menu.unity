@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 2f3dadf89f8a0c049ad66f7aa93ee7f6, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: a4758947e1f0b9746a28df0ac6978799, type: 2}
 --- !u!1 &128249936
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1585345414
 MonoBehaviour:
   m_ObjectHideFlags: 0

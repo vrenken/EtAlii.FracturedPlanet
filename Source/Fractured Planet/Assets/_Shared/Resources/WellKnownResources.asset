@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cdcece8f7a44542b3c65320097292dd, type: 3}
+  m_Name: WellKnownResources
+  m_EditorClassIdentifier: 
+  onePlayerCameraSetup: {fileID: 11400000, guid: ac10321bf84335a4c89d8e77436c5b1d,
+    type: 2}
+  twoPlayerCameraSetup: {fileID: 11400000, guid: f3c2a90e66e5190448fbe9ec3980d7c1,
+    type: 2}
+  threePlayerCameraSetup: {fileID: 11400000, guid: 9c3aad57645713e49b5dc986a96a1adf,
+    type: 2}
+  fourPlayerCameraSetup: {fileID: 11400000, guid: 3c2bdc53d9e72d84fb22080b9f9af452,
+    type: 2}
