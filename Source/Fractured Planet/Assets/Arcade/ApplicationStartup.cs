@@ -25,8 +25,8 @@ public class ApplicationStartup : MonoBehaviour
             };
         starter.Start(players);
 
-        var mainMenuInstance = Instantiate(WellKnownResources.Current.mainMenuPrefab);
-        mainMenuInstance.name = "Main Menu";
+        var playerScreen = Instantiate(WellKnownResources.Current.playerScreenPrefab);
+        playerScreen.name = "Player Selection Screen";
 
         Destroy(this);
     }
