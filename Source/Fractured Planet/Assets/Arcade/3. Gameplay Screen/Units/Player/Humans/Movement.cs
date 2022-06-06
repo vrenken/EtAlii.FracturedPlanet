@@ -18,13 +18,13 @@ namespace Complete
         private Rigidbody _rigidbody;              // Reference used to move the tank.
         private float _originalPitch;              // The pitch of the audio source at the start of the scene.
         private ParticleSystem[] _particleSystems; // References to all the particles systems used by the Tanks
-        private Controls _controls;
+        private DefaultInputActions _inputActions;
 
         private void Awake ()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _controls = new Controls();
-            _controls.Gameplay.Enable();
+            _inputActions = new DefaultInputActions();
+            _inputActions.Player.Enable();
         }
 
 
@@ -70,7 +70,7 @@ namespace Complete
 
         private void EngineAudio ()
         {
-            var control = _controls.Gameplay.Move.ReadValue<Vector2>();
+            var control = _inputActions.Player.Move.ReadValue<Vector2>();
 
             // If there is no input (the tank is stationary)...
             if (Mathf.Abs (control.y) < 0.1f && Mathf.Abs (control.x) < 0.1f)
@@ -101,7 +101,7 @@ namespace Complete
         private void FixedUpdate ()
         {
             // Adjust the rigidbodies position and orientation in FixedUpdate.
-            var control = _controls.Gameplay.Move.ReadValue<Vector2>();
+            var control = _inputActions.Player.Move.ReadValue<Vector2>();
             Move (control);
             Turn (control);
         }

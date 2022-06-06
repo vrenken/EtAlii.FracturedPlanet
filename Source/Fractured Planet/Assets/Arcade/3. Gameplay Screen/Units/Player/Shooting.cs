@@ -24,15 +24,15 @@ namespace Complete
         private float _currentLaunchForce;         // The force that will be given to the shell when the fire button is released.
         private float _chargeSpeed;                // How fast the launch force increases, based on the max charge time.
         private bool _fired;                       // Whether or not the shell has been launched with this button press.
-        private Controls _controls;
+        private DefaultInputActions _inputActions;
 
         private void Awake()
         {
-            _controls = new Controls();
-            _controls.Gameplay.Enable();
-            _controls.Gameplay.Shoot.started += Fire;
-            _controls.Gameplay.Shoot.performed += Fire;
-            _controls.Gameplay.Shoot.canceled += Fire;
+            _inputActions = new DefaultInputActions();
+            _inputActions.Player.Enable();
+            _inputActions.Player.Fire.started += Fire;
+            _inputActions.Player.Fire.performed += Fire;
+            _inputActions.Player.Fire.canceled += Fire;
         }
 
         private void OnEnable()
