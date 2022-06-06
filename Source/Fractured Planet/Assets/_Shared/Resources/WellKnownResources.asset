@@ -31,6 +31,8 @@ MonoBehaviour:
     type: 3}
   gameplayScreenLayout: {fileID: 9197481963319205126, guid: 5762fcbb533681744817581bee162c6a,
     type: 3}
+  gameplayPanelSettings: {fileID: 11400000, guid: 4cefa86b293361d4787ad9073913689c,
+    type: 2}
   gameOverScreenPrefab: {fileID: 0}
   highScoresScreenPrefab: {fileID: 0}
   scoresScreenPrefab: {fileID: 0}

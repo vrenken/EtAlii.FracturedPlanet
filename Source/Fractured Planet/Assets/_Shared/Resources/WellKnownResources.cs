@@ -18,8 +18,11 @@ public class WellKnownResources : ScriptableObject
 
     public GameObject playerScreenPrefab;
     public GameObject settingsScreenPrefab;
+
     public GameObject gameplayScreenPrefab;
     public VisualTreeAsset gameplayScreenLayout;
+    public PanelSettings gameplayPanelSettings;
+
     public GameObject gameOverScreenPrefab;
     public GameObject highScoresScreenPrefab;
     public GameObject scoresScreenPrefab;

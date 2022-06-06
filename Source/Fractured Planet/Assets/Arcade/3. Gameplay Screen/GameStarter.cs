@@ -38,7 +38,9 @@ namespace EtAlii.FracturedPlanet.Arcade
                     var playerScreen = Object.Instantiate(WellKnownResources.Current.gameplayScreenPrefab);
                     playerScreen.name = $"Player {i} Overlay";
 
-                    var uiDocument = playerScreen.GetComponent<UIDocument>();
+                    var uiDocument = playerScreen.gameObject.AddComponent<UIDocument>();
+
+                    uiDocument.panelSettings = Object.Instantiate(WellKnownResources.Current.gameplayPanelSettings);
                     uiDocument.visualTreeAsset = Object.Instantiate(WellKnownResources.Current.gameplayScreenLayout);
                     uiDocument.visualTreeAsset.name = "Layout";
 

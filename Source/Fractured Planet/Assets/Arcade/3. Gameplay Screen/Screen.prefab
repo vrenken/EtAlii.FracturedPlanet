@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4536963643243460780}
-  - component: {fileID: -361666890195924449}
   - component: {fileID: 3182012229035702259}
   m_Layer: 0
   m_Name: Screen
@@ -33,23 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-361666890195924449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397189579271905034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 4cefa86b293361d4787ad9073913689c, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 5762fcbb533681744817581bee162c6a,
-    type: 3}
-  m_SortingOrder: 0
 --- !u!114 &3182012229035702259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0f5a86faec4837823cc101ef022bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layout: {fileID: -361666890195924449}
+  layout: {fileID: 0}
