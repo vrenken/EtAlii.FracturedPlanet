@@ -31,6 +31,9 @@ public class GameplayScreen : MonoBehaviour
     {
         var root = layout.rootVisualElement.parent.Q<VisualElement>("Root");
 
+        var quitButton = root.Q<Button>("QuitButton");
+        quitButton.clickable.clicked += OnQuit;
+
         root.style.left = (PlayerCount: _player.VisiblePlayerCount, _player.PlayerNumber) switch
         {
             (1, 1) => new StyleLength(new Length(00, LengthUnit.Percent)),
@@ -87,5 +90,10 @@ public class GameplayScreen : MonoBehaviour
             (4, 4) => new StyleLength(new Length(50, LengthUnit.Percent)),
             _ => throw new InvalidOperationException()
         };
+    }
+
+    private void OnQuit()
+    {
+        new GameStarter().StartPlayerSelection();
     }
 }

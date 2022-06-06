@@ -12,6 +12,24 @@ namespace EtAlii.FracturedPlanet.Arcade
     public class GameStarter
     {
 
+        public Game StartPlayerSelection()
+        {
+            var players = new[]
+            {
+                new VisiblePlayer(WellKnownResources.Current.spawnPoints[0], PlayerType.Bot, false),
+                new Player(WellKnownResources.Current.spawnPoints[1], PlayerType.Bot),
+                new Player(WellKnownResources.Current.spawnPoints[2], PlayerType.Bot),
+                new Player(WellKnownResources.Current.spawnPoints[3], PlayerType.Bot)
+            };
+            var game = Start(players);
+
+            var overlays = new GameObject("Overlays");
+            var playerScreen = Object.Instantiate(WellKnownResources.Current.playerScreenPrefab, overlays.transform);
+            playerScreen.name = "Player Selection Overlay";
+
+            return game;
+        }
+
         public Game Start(Player[] players)
         {
             AddPlayers(players);
@@ -27,6 +45,12 @@ namespace EtAlii.FracturedPlanet.Arcade
 
         private void AddOverlays(Player[] players)
         {
+            var overlays = GameObject.Find("Overlays");
+            for (var i = 0; i < overlays.transform.childCount; i++)
+            {
+                Object.Destroy(overlays.transform.GetChild(i).gameObject);
+            }
+
             var visiblePlayers = players
                 .OfType<VisiblePlayer>()
                 .ToArray();
@@ -35,16 +59,17 @@ namespace EtAlii.FracturedPlanet.Arcade
             {
                 if (visiblePlayers[i].ShowHud)
                 {
-                    var playerScreen = Object.Instantiate(WellKnownResources.Current.gameplayScreenPrefab);
-                    playerScreen.name = $"Player {i} Overlay";
+                    var playerOverlay = Object.Instantiate(WellKnownResources.Current.gameplayScreenPrefab, overlays.transform);
+                    playerOverlay.name = $"Player {i}";
 
-                    var uiDocument = playerScreen.gameObject.AddComponent<UIDocument>();
+                    var uiDocument = playerOverlay.gameObject.AddComponent<UIDocument>();
 
-                    uiDocument.panelSettings = Object.Instantiate(WellKnownResources.Current.gameplayPanelSettings);
+                    uiDocument.panelSettings = Object.Instantiate(WellKnownResources.Current.gameplayPanelSettings, playerOverlay.transform);
+                    uiDocument.panelSettings.name = "Panel Settings";
                     uiDocument.visualTreeAsset = Object.Instantiate(WellKnownResources.Current.gameplayScreenLayout);
                     uiDocument.visualTreeAsset.name = "Layout";
 
-                    var gameplayScreen = playerScreen.GetComponent<GameplayScreen>();
+                    var gameplayScreen = playerOverlay.GetComponent<GameplayScreen>();
                     gameplayScreen.layout = uiDocument;
                     gameplayScreen.Initialize(visiblePlayers[i]);
                 }
@@ -62,19 +87,13 @@ namespace EtAlii.FracturedPlanet.Arcade
                 var clearShot = players[i].TrackingCamera.GetComponent<CinemachineClearShot>();
                 clearShot.Follow = players[i].Instance.transform;
                 clearShot.LookAt = players[i].Instance.transform;
-
-                // players[i].TrackingCamera.layer = LayerMask.NameToLayer($"Player {i + 1}");
-                //
-                // var camera = players[i].Camera.GetComponent<Camera>();
-                //
-                // camera.cull
             }
         }
 
         private void ConfigureCameras(Player[] players)
         {
-            var cameraSetupRoot = GameObject.Find("Cameras");
-            Object.Destroy(cameraSetupRoot.gameObject);
+            var cameras = GameObject.Find("Cameras");
+            Object.Destroy(cameras.gameObject);
 
             var visiblePlayers = players
                 .OfType<VisiblePlayer>()

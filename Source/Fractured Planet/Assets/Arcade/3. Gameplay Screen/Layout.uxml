@@ -1,9 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Shared/Controls/Styles.uss?fileID=7433441132597879392&amp;guid=60d7563d5732fc345bb7d413e208ce0f&amp;type=3#Styles" />
-    <ui:VisualElement name="Root" style="left: 0; top: 0; right: 50%; bottom: 50%; position: absolute;">
-        <ui:VisualElement name="Resources" style="width: 30%; position: absolute;">
-            <ui:ProgressBar title="Metal" name="MetalProgressBar" />
-            <ui:ProgressBar title="Energy" name="EnergyProgressBar" />
+    <ui:VisualElement name="Root" style="left: 0; top: 0; right: 0; bottom: 0; position: absolute; justify-content: space-around;">
+        <ui:VisualElement name="Top" style="height: 20%;">
+            <ui:VisualElement name="Resources" style="width: 30%; position: absolute;">
+                <ui:ProgressBar title="Metal" name="MetalProgressBar" />
+                <ui:ProgressBar title="Energy" name="EnergyProgressBar" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Middle" style="height: 70%;" />
+        <ui:VisualElement name="Bottom" style="height: 10%; justify-content: flex-end;">
+            <ui:Button text="Quit" display-tooltip-when-elided="true" name="QuitButton" style="width: 20%; height: 80%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
