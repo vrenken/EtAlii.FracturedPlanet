@@ -6,6 +6,9 @@ namespace EtAlii.FracturedPlanet.Arcade
 
     public class Player
     {
+        public int PlayerNumber { get; private set; }
+        public int VisiblePlayerCount { get; private set; }
+
         public readonly PlayerType Type;
 
         public readonly Vector2 SpawnPoint;
@@ -20,9 +23,11 @@ namespace EtAlii.FracturedPlanet.Arcade
             Type = type;
         }
 
-        public static void ConfigureInstance(Player player, GameObject instance)
+        public static void ConfigureInstance(Player player, GameObject instance, int playerNumber, int playerCount)
         {
             player.Instance = instance;
+            player.PlayerNumber = playerNumber;
+            player.VisiblePlayerCount = playerCount;
         }
         public static void ConfigureCameras(Player player, GameObject camera, GameObject trackingCamera)
         {

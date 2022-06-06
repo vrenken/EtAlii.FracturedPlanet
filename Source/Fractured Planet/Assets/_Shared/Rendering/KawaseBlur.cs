@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable All
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -28,15 +29,15 @@ public class KawaseBlur : ScriptableRendererFeature
         public int passes;
         public int downsample;
         public bool copyToFramebuffer;
-        public string targetName;        
+        public string targetName;
         string profilerTag;
 
-        int tmpId1;
-        int tmpId2;
+        private int tmpId1;
+        private int tmpId2;
 
         RenderTargetIdentifier tmpRT1;
         RenderTargetIdentifier tmpRT2;
-        
+
         private RenderTargetIdentifier source { get; set; }
 
         public void Setup(RenderTargetIdentifier source) {
@@ -60,7 +61,7 @@ public class KawaseBlur : ScriptableRendererFeature
 
             tmpRT1 = new RenderTargetIdentifier(tmpId1);
             tmpRT2 = new RenderTargetIdentifier(tmpId2);
-            
+
             ConfigureTarget(tmpRT1);
             ConfigureTarget(tmpRT2);
         }

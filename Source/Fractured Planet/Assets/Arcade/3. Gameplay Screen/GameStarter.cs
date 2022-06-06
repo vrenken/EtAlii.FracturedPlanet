@@ -6,6 +6,7 @@ namespace EtAlii.FracturedPlanet.Arcade
     using System.Linq;
     using Cinemachine;
     using UnityEngine;
+    using UnityEngine.UIElements;
     using Object = UnityEngine.Object;
 
     public class GameStarter
@@ -19,7 +20,33 @@ namespace EtAlii.FracturedPlanet.Arcade
 
             WireCamerasToPlayers(players);
 
+            AddOverlays(players);
+
             return new Game(players);
+        }
+
+        private void AddOverlays(Player[] players)
+        {
+            var visiblePlayers = players
+                .OfType<VisiblePlayer>()
+                .ToArray();
+
+            for (var i = 0; i < visiblePlayers.Length; i++)
+            {
+                if (visiblePlayers[i].ShowHud)
+                {
+                    var playerScreen = Object.Instantiate(WellKnownResources.Current.gameplayScreenPrefab);
+                    playerScreen.name = $"Player {i} Overlay";
+
+                    var uiDocument = playerScreen.GetComponent<UIDocument>();
+                    uiDocument.visualTreeAsset = Object.Instantiate(WellKnownResources.Current.gameplayScreenLayout);
+                    uiDocument.visualTreeAsset.name = "Layout";
+
+                    var gameplayScreen = playerScreen.GetComponent<GameplayScreen>();
+                    gameplayScreen.layout = uiDocument;
+                    gameplayScreen.Initialize(visiblePlayers[i]);
+                }
+            }
         }
 
         private void WireCamerasToPlayers(Player[] players)
@@ -82,8 +109,10 @@ namespace EtAlii.FracturedPlanet.Arcade
 
             var human = 1;
             var bot = 1;
-            foreach (var player in players)
+
+            for(var i = 0; i < players.Length; i++)
             {
+                var player = players[i];
                 var startPosition = new Vector3(player.SpawnPoint.x, 1, player.SpawnPoint.y);
 
                 GameObject playerInstance;
@@ -101,7 +130,7 @@ namespace EtAlii.FracturedPlanet.Arcade
                         throw new InvalidOperationException();
                 }
 
-                Player.ConfigureInstance(player, playerInstance);
+                Player.ConfigureInstance(player, playerInstance, i + 1, players.OfType<VisiblePlayer>().Count());
             }
         }
     }

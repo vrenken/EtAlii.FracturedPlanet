@@ -37,7 +37,8 @@ public class PlayerSelectionScreen : MonoBehaviour
 
         Destroy(gameObject);
     }
-    public void StartTwoPlayerGame()
+
+    private void StartTwoPlayerGame()
     {
         var starter = new GameStarter();
 
@@ -52,7 +53,8 @@ public class PlayerSelectionScreen : MonoBehaviour
 
         Destroy(gameObject);
     }
-    public void StartThreePlayerGame()
+
+    private void StartThreePlayerGame()
     {
         var starter = new GameStarter();
 
@@ -67,11 +69,12 @@ public class PlayerSelectionScreen : MonoBehaviour
 
         Destroy(gameObject);
     }
-    public void StartFourPlayerGame()
+
+    private void StartFourPlayerGame()
     {
         var starter = new GameStarter();
 
-        var players = new[]
+        var players = new Player[]
         {
             new VisiblePlayer(WellKnownResources.Current.spawnPoints[0], PlayerType.Human, true),
             new VisiblePlayer(WellKnownResources.Current.spawnPoints[1], PlayerType.Human, true),

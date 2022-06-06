@@ -27,6 +27,10 @@ MonoBehaviour:
   playerScreenPrefab: {fileID: 6278477213572362953, guid: e8a2f933a04bb0a4e9edaa142e5c484c,
     type: 3}
   settingsScreenPrefab: {fileID: 0}
+  gameplayScreenPrefab: {fileID: 1397189579271905034, guid: c1df456db4d5b89419f4cf9f4cf3d272,
+    type: 3}
+  gameplayScreenLayout: {fileID: 9197481963319205126, guid: 5762fcbb533681744817581bee162c6a,
+    type: 3}
   gameOverScreenPrefab: {fileID: 0}
   highScoresScreenPrefab: {fileID: 0}
   scoresScreenPrefab: {fileID: 0}

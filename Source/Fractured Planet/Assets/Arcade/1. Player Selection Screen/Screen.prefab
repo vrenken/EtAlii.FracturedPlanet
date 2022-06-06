@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 6106035911709270296}
   - component: {fileID: 525937665997343342}
   m_Layer: 0
-  m_Name: PlayerSelectionScreen
+  m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

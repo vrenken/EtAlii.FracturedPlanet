@@ -3,6 +3,7 @@
 using System;
 using EtAlii.FracturedPlanet.Arcade;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(menuName = "Fracture/WellKnownResources")]
 public class WellKnownResources : ScriptableObject
@@ -17,6 +18,8 @@ public class WellKnownResources : ScriptableObject
 
     public GameObject playerScreenPrefab;
     public GameObject settingsScreenPrefab;
+    public GameObject gameplayScreenPrefab;
+    public VisualTreeAsset gameplayScreenLayout;
     public GameObject gameOverScreenPrefab;
     public GameObject highScoresScreenPrefab;
     public GameObject scoresScreenPrefab;
