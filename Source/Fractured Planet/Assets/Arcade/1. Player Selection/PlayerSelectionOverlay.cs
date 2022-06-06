@@ -3,7 +3,7 @@ using UnityEngine;
 using EtAlii.FracturedPlanet.Arcade;
 using UnityEngine.UIElements;
 
-public class PlayerSelectionScreen : MonoBehaviour
+public class PlayerSelectionOverlay : MonoBehaviour
 {
     public UIDocument layout;
 

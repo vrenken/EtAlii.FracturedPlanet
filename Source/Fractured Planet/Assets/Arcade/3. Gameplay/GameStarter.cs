@@ -24,8 +24,8 @@ namespace EtAlii.FracturedPlanet.Arcade
             var game = Start(players);
 
             var overlays = new GameObject("Overlays");
-            var playerScreen = Object.Instantiate(WellKnownResources.Current.playerScreenPrefab, overlays.transform);
-            playerScreen.name = "Player Selection Overlay";
+            var playerSelectionOverlay = Object.Instantiate(WellKnownResources.Current.playerSelectionOverlayPrefab, overlays.transform);
+            playerSelectionOverlay.name = "Player Selection Overlay";
 
             return game;
         }
@@ -59,19 +59,19 @@ namespace EtAlii.FracturedPlanet.Arcade
             {
                 if (visiblePlayers[i].ShowHud)
                 {
-                    var playerOverlay = Object.Instantiate(WellKnownResources.Current.gameplayScreenPrefab, overlays.transform);
+                    var playerOverlay = Object.Instantiate(WellKnownResources.Current.gameplayOverlayPrefab, overlays.transform);
                     playerOverlay.name = $"Player {i}";
 
                     var uiDocument = playerOverlay.gameObject.AddComponent<UIDocument>();
 
                     uiDocument.panelSettings = Object.Instantiate(WellKnownResources.Current.gameplayPanelSettings, playerOverlay.transform);
                     uiDocument.panelSettings.name = "Panel Settings";
-                    uiDocument.visualTreeAsset = Object.Instantiate(WellKnownResources.Current.gameplayScreenLayout);
+                    uiDocument.visualTreeAsset = Object.Instantiate(WellKnownResources.Current.gameplayOverlayLayout);
                     uiDocument.visualTreeAsset.name = "Layout";
 
-                    var gameplayScreen = playerOverlay.GetComponent<GameplayScreen>();
-                    gameplayScreen.layout = uiDocument;
-                    gameplayScreen.Initialize(visiblePlayers[i]);
+                    var gameplayOverlay = playerOverlay.GetComponent<GameplayOverlay>();
+                    gameplayOverlay.layout = uiDocument;
+                    gameplayOverlay.Initialize(visiblePlayers[i]);
                 }
             }
         }

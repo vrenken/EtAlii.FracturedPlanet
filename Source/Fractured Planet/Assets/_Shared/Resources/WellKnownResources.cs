@@ -16,17 +16,19 @@ public class WellKnownResources : ScriptableObject
     public GameObject humanPlayerPrefab;
     public GameObject botPlayerPrefab;
 
-    public GameObject playerScreenPrefab;
-    public GameObject settingsScreenPrefab;
+    public GameObject settingsOverlayPrefab;
+    public GameObject highScoresOverlayPrefab;
 
-    public GameObject gameplayScreenPrefab;
-    public VisualTreeAsset gameplayScreenLayout;
+    public GameObject playerSelectionOverlayPrefab;
+
+    public GameObject mapSelectionOverlayPrefab;
+
+    public GameObject gameplayOverlayPrefab;
+    public VisualTreeAsset gameplayOverlayLayout;
     public PanelSettings gameplayPanelSettings;
 
-    public GameObject gameOverScreenPrefab;
-    public GameObject highScoresScreenPrefab;
-    public GameObject scoresScreenPrefab;
-    public GameObject mapScreenPrefab;
+    public GameObject gameOverOverlayPrefab;
+    public GameObject scoresOverlayPrefab;
 
     public Vector2[] spawnPoints = new Vector2[4];
     public static WellKnownResources Current => _current.Value;

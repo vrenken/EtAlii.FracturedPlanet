@@ -5,7 +5,7 @@ using EtAlii.FracturedPlanet.Arcade;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class GameplayScreen : MonoBehaviour
+public class GameplayOverlay : MonoBehaviour
 {
     public UIDocument layout;
 
