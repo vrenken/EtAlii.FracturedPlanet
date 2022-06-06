@@ -1,0 +1,11 @@
+.unity-button {
+    background-color: rgb(39, 174, 96);
+    color: rgb(236, 240, 241);
+    -unity-font: url('project://database/Assets/_Shared/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Bangers.ttf?fileID=12800000&guid=5dd49b3eacc540408c98eee0de38e0f1&type=3#Bangers');
+    -unity-font-definition: none;
+    font-size: 200%;
+}
+
+.unity-button:hover {
+    background-color: rgb(46, 204, 113);
+}
