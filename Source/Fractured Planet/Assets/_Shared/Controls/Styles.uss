@@ -4,13 +4,14 @@
     -unity-font: url('project://database/Assets/_Shared/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Bangers.ttf?fileID=12800000&guid=5dd49b3eacc540408c98eee0de38e0f1&type=3#Bangers');
     -unity-font-definition: none;
     font-size: 200%;
-    transition-duration: 2s;
-    transition-delay: 0.5s;
-    transform-origin: left;
-    transition-property: translate;
+    transition-duration: 1s;
+    transition-timing-function: ease-out-back;
+    left: auto;
+    transition-property: all;
 }
 
 .unity-button:hover {
     background-color: rgb(46, 204, 113);
-    translate: 3% 0;
+    translate: 0 0;
+    left: 3%;
 }
