@@ -306,7 +306,7 @@ PlayerSettings:
   - m_BuildTarget: CloudRendering
     m_GraphicsJobs: 0
   - m_BuildTarget: WindowsStandaloneSupport
-    m_GraphicsJobs: 0
+    m_GraphicsJobs: 1
   - m_BuildTarget: PS4Player
     m_GraphicsJobs: 0
   - m_BuildTarget: MetroSupport
