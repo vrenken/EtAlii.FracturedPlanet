@@ -23,7 +23,7 @@ namespace EtAlii.FracturedPlanet.Arcade
             };
             var game = Start(players);
 
-            var overlays = new GameObject("Overlays");
+            var overlays = GameObject.Find("Overlays");
             var playerSelectionOverlay = Object.Instantiate(WellKnownResources.Current.playerSelectionOverlayPrefab, overlays.transform);
             playerSelectionOverlay.name = "Player Selection Overlay";
 

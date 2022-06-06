@@ -9,7 +9,7 @@ public class ApplicationStartup : MonoBehaviour
 
         starter.StartPlayerSelection();
 
-        Destroy(this);
+        DestroyImmediate(gameObject);
     }
 
 }
