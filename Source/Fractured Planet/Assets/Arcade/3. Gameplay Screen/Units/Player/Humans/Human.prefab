@@ -100,12 +100,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3919591147474847122}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &1381983726492075392 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 2686649520828137490, guid: 94c17b55a0278fd4caaa269afb18c4b6,
-    type: 3}
-  m_PrefabInstance: {fileID: 3919591147474847122}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5070472713105837507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,3 +119,9 @@ MonoBehaviour:
   engineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
   engineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
   pitchRange: 0.2
+--- !u!82 &1381983726492075392 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2686649520828137490, guid: 94c17b55a0278fd4caaa269afb18c4b6,
+    type: 3}
+  m_PrefabInstance: {fileID: 3919591147474847122}
+  m_PrefabAsset: {fileID: 0}
