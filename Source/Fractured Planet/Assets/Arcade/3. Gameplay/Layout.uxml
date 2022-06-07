@@ -5,6 +5,7 @@
             <ui:VisualElement name="Resources" style="width: 30%; position: absolute;">
                 <ui:ProgressBar title="Metal" name="MetalProgressBar" />
                 <ui:ProgressBar title="Energy" name="EnergyProgressBar" />
+                <ui:ProgressBar title="Crystals" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="Middle" style="height: 70%;" />
