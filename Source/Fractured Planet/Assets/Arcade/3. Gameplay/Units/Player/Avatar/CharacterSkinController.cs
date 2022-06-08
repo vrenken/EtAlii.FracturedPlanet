@@ -7,12 +7,15 @@ public class CharacterSkinController : MonoBehaviour
     private Renderer[] _characterMaterials;
 
     public Texture2D[] albedoList;
+
     [ColorUsage(true,true)]
     public Color[] eyeColors;
-    public enum EyePosition { Normal, Happy, Angry, Dead}
+
     public EyePosition eyeState;
 
     private DefaultInputActions _inputActions;
+    private static readonly int _emissionColor = Shader.PropertyToID("_EmissionColor");
+    private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
 
     public void Awake()
     {
@@ -65,14 +68,19 @@ public class CharacterSkinController : MonoBehaviour
         _animator.SetTrigger(trigger);
     }
 
-    private void ChangeMaterialSettings(int index)
+    public void ChangeMaterialSettings(int playerNumber)
     {
+        var index = playerNumber - 1;
         foreach (var characterMaterial in _characterMaterials)
         {
             if (characterMaterial.transform.CompareTag("PlayerEyes"))
-                characterMaterial.material.SetColor("_EmissionColor", eyeColors[index]);
+            {
+                characterMaterial.material.SetColor(_emissionColor, eyeColors[index]);
+            }
             else
-                characterMaterial.material.SetTexture("_MainTex",albedoList[index]);
+            {
+                characterMaterial.material.SetTexture(_mainTex,albedoList[index]);
+            }
         }
     }
 
@@ -98,10 +106,12 @@ public class CharacterSkinController : MonoBehaviour
                 break;
         }
 
-        for (var i = 0; i < _characterMaterials.Length; i++)
+        foreach (var characterMaterial in _characterMaterials)
         {
-            if (_characterMaterials[i].transform.CompareTag("PlayerEyes"))
-                _characterMaterials[i].material.SetTextureOffset("_MainTex", offset);
+            if (characterMaterial.transform.CompareTag("PlayerEyes"))
+            {
+                characterMaterial.material.SetTextureOffset(_mainTex, offset);
+            }
         }
 
         eyeState = pos;

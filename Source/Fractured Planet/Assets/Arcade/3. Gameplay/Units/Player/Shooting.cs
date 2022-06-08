@@ -28,8 +28,9 @@ namespace Complete
 
         private void Awake()
         {
+            //PlayerInput.Instantiate(spawnPlayer, controlScheme: "Gamepad", pairWithDevice: Gamepad.all[0]);
+
             _inputActions = new DefaultInputActions();
-            _inputActions.Player.Enable();
             _inputActions.Player.Fire.started += Fire;
             _inputActions.Player.Fire.performed += Fire;
             _inputActions.Player.Fire.canceled += Fire;
@@ -38,10 +39,15 @@ namespace Complete
         private void OnEnable()
         {
             // When the tank is turned on, reset the launch force and the UI
+            _inputActions.Player.Enable();
             _currentLaunchForce = m_MinLaunchForce;
             m_AimSlider.value = m_MinLaunchForce;
         }
 
+        private void OnDisable()
+        {
+            _inputActions.Player.Disable();
+        }
 
         private void Start ()
         {

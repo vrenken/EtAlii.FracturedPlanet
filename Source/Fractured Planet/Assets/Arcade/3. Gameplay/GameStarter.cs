@@ -5,6 +5,7 @@ namespace EtAlii.FracturedPlanet.Arcade
     using System;
     using System.Linq;
     using Cinemachine;
+    using Complete;
     using UnityEngine;
     using UnityEngine.UIElements;
     using Object = UnityEngine.Object;
@@ -152,7 +153,11 @@ namespace EtAlii.FracturedPlanet.Arcade
                         throw new InvalidOperationException();
                 }
 
-                Player.ConfigureInstance(player, playerInstance, i + 1, players.OfType<VisiblePlayer>().Count());
+                var playerNumber = i + 1;
+
+                Player.ConfigureInstance(player, playerInstance, playerNumber, players.OfType<VisiblePlayer>().Count());
+
+                playerInstance.GetComponent<PlayerController>().player = player;
             }
         }
     }
