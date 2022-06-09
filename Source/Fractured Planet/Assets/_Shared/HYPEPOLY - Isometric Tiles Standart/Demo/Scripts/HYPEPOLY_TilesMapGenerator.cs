@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿// ReSharper disable All
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,9 +63,10 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
     public bool TapToGenerate = false;
 
     //Private
-    GameObject lastMap;
-    bool[,] lastRoadsMap, lastLaddersMap;
-    void FixedUpdate()
+    private GameObject lastMap;
+    private bool[,] lastRoadsMap, lastLaddersMap;
+
+    private void FixedUpdate()
     {
         if (TapToGenerate)
         {
@@ -79,7 +81,8 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
     {
         StartCoroutine(NewMap());
     }
-    IEnumerator NewMap()
+
+    private IEnumerator NewMap()
     {
         if(HYPEPOLY_ScalerSystem.Instance != null)
         {
@@ -102,8 +105,8 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
         if (HYPEPOLY_ScalerSystem.Instance != null)
         {
-            MeshRenderer[] meshs = lastMap.GetComponentsInChildren<MeshRenderer>();
-            foreach (MeshRenderer mr in meshs) mr.enabled = false;
+            var meshs = lastMap.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mr in meshs) mr.enabled = false;
         }
 
         yield return new WaitForEndOfFrame();
@@ -114,13 +117,13 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         {
             HYPEPOLY_ScalerSystem.Instance.StartScaling(lastMap.transform);
 
-            MeshRenderer[] meshs = lastMap.GetComponentsInChildren<MeshRenderer>();
-            foreach (MeshRenderer mr in meshs) mr.enabled = true;
+            var meshs = lastMap.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mr in meshs) mr.enabled = true;
         }
 
-        for(int i = 0; i<lastMap.transform.childCount; i++)
+        for(var i = 0; i<lastMap.transform.childCount; i++)
         {
-            Vector3 thisPos = lastMap.transform.GetChild(i).localPosition;
+            var thisPos = lastMap.transform.GetChild(i).localPosition;
             thisPos.x -= ((mapSize * 2f) / 2f)-1f;
             thisPos.z -= ((mapSize * 2f) / 2f)-1f;
             lastMap.transform.GetChild(i).localPosition = thisPos;
@@ -131,43 +134,43 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
                             EnableDisable _POIs, int _POIsCount, EnableDisable _roads, int _roadsFilling, int _roadsFenceChance, int _roadsBetweenPOI, EnableDisable _ladders,
                             int _laddersChance)
     {
-        GameObject map = new GameObject();
+        var map = new GameObject();
         map.name = _mapName;
         map.transform.position = _mapPos;
 
-        int _xSize = _mapSize;
-        int _zSize = _mapSize;
+        var _xSize = _mapSize;
+        var _zSize = _mapSize;
 
-        bool[,] roadsMap = new bool[_xSize, _zSize];
-        int[,] heightMap = new int[_xSize, _zSize];
-        bool[,] holesMap = new bool[_xSize, _zSize];
-        bool[,] laddersMap = new bool[_xSize, _zSize];
+        var roadsMap = new bool[_xSize, _zSize];
+        var heightMap = new int[_xSize, _zSize];
+        var holesMap = new bool[_xSize, _zSize];
+        var laddersMap = new bool[_xSize, _zSize];
 
         //ROADS AND POI CREATING ----------------------------------------------
-        List<int[]> pointsOfInterest = new List<int[]>();
+        var pointsOfInterest = new List<int[]>();
 
-        Vector2 leftDownCorner = new Vector2(0, 0);
-        Vector2 rightTopCorner = new Vector2(_xSize, _zSize);
-        float maxMapDistance = Vector2.Distance(leftDownCorner, rightTopCorner);
+        var leftDownCorner = new Vector2(0, 0);
+        var rightTopCorner = new Vector2(_xSize, _zSize);
+        var maxMapDistance = Vector2.Distance(leftDownCorner, rightTopCorner);
         if (_POIs == EnableDisable.Enabled)
         {
-            for (int i = 0; i < _POIsCount; i++)
+            for (var i = 0; i < _POIsCount; i++)
             {
-                int trys = 0;
+                var trys = 0;
                 while (true)
                 {
                     trys++;
-                    int[] newPoi = new int[2] { Random.Range(0, _xSize), Random.Range(0, _zSize) };
+                    var newPoi = new int[2] { Random.Range(0, _xSize), Random.Range(0, _zSize) };
 
                     if (!pointsOfInterest.Contains(newPoi))
                     {
-                        float minDistance = -1f;
+                        var minDistance = -1f;
 
-                        for (int a = 0; a < pointsOfInterest.Count; a++)
+                        for (var a = 0; a < pointsOfInterest.Count; a++)
                         {
-                            Vector2 firstPoint = new Vector2(pointsOfInterest[a][0], pointsOfInterest[a][1]);
-                            Vector2 secondPoint = new Vector2(newPoi[0], newPoi[1]);
-                            float distance = Vector2.Distance(firstPoint, secondPoint);
+                            var firstPoint = new Vector2(pointsOfInterest[a][0], pointsOfInterest[a][1]);
+                            var secondPoint = new Vector2(newPoi[0], newPoi[1]);
+                            var distance = Vector2.Distance(firstPoint, secondPoint);
                             if (distance < minDistance || minDistance < 0f) minDistance = distance;
                         }
 
@@ -184,13 +187,13 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
             if (_roads == EnableDisable.Enabled)
             {
-                for (int i = 0; i < pointsOfInterest.Count; i++)
+                for (var i = 0; i < pointsOfInterest.Count; i++)
                 {
-                    for (int a = i; a < pointsOfInterest.Count; a++)
+                    for (var a = i; a < pointsOfInterest.Count; a++)
                     {
                         if (i != a)
                         {
-                            bool createThisConnection = true;
+                            var createThisConnection = true;
 
                             if(i == 0 && a == 1)
                             {
@@ -203,14 +206,14 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
                             if (createThisConnection)
                             {
-                                int minX = pointsOfInterest[i][0] < pointsOfInterest[a][0] ? pointsOfInterest[i][0] : pointsOfInterest[a][0];
-                                int maxX = pointsOfInterest[i][0] < pointsOfInterest[a][0] ? pointsOfInterest[a][0] : pointsOfInterest[i][0];
-                                int minZ = pointsOfInterest[i][1] < pointsOfInterest[a][1] ? pointsOfInterest[i][1] : pointsOfInterest[a][1];
-                                int maxZ = pointsOfInterest[i][1] < pointsOfInterest[a][1] ? pointsOfInterest[a][1] : pointsOfInterest[i][1];
+                                var minX = pointsOfInterest[i][0] < pointsOfInterest[a][0] ? pointsOfInterest[i][0] : pointsOfInterest[a][0];
+                                var maxX = pointsOfInterest[i][0] < pointsOfInterest[a][0] ? pointsOfInterest[a][0] : pointsOfInterest[i][0];
+                                var minZ = pointsOfInterest[i][1] < pointsOfInterest[a][1] ? pointsOfInterest[i][1] : pointsOfInterest[a][1];
+                                var maxZ = pointsOfInterest[i][1] < pointsOfInterest[a][1] ? pointsOfInterest[a][1] : pointsOfInterest[i][1];
 
-                                bool down = Random.Range(0, 100) < 50;
+                                var down = Random.Range(0, 100) < 50;
 
-                                bool left = true;
+                                var left = true;
                                 if (pointsOfInterest[i][1] > pointsOfInterest[a][1])
                                 {
                                     if (pointsOfInterest[i][0] < pointsOfInterest[a][0])
@@ -246,14 +249,14 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
                                     }
                                 }
 
-                                for (int p = minX; p <= maxX; p++)
+                                for (var p = minX; p <= maxX; p++)
                                 {
                                     if (down)
                                         roadsMap[p, minZ] = true;
                                     else
                                         roadsMap[p, maxZ] = true;
                                 }
-                                for (int p = minZ; p < maxZ; p++)
+                                for (var p = minZ; p < maxZ; p++)
                                 {
                                     if (left)
                                         roadsMap[minX, p] = true;
@@ -271,7 +274,7 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //HOLES CREATING -----------------------------------------------
         if (_holesCount != GeneratorParametr.None)
         {
-            float holesMultiplier = 0f;
+            var holesMultiplier = 0f;
 
             if (_holesCount == GeneratorParametr.Random) _holesCount = (GeneratorParametr)Random.Range(1, 6);
 
@@ -281,7 +284,7 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             else if (_holesCount == GeneratorParametr.High) holesMultiplier = 0.4f;
             else if (_holesCount == GeneratorParametr.VeryHigh) holesMultiplier = 0.5f;
 
-            float holesSizesMultiplier = 0f;
+            var holesSizesMultiplier = 0f;
 
             if (_holesSizes == GeneratorParametr.Random || _holesSizes == GeneratorParametr.None) _holesSizes = (GeneratorParametr)Random.Range(1, 6);
 
@@ -291,16 +294,16 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             else if (_holesSizes == GeneratorParametr.High) holesSizesMultiplier = 0.85f;
             else if (_holesSizes == GeneratorParametr.VeryHigh) holesSizesMultiplier = 1f;
 
-            int minSide = _zSize < _xSize ? _zSize : _xSize;
+            var minSide = _zSize < _xSize ? _zSize : _xSize;
 
-            int holesCountToCreate = Mathf.FloorToInt((float)minSide * holesMultiplier);
+            var holesCountToCreate = Mathf.FloorToInt(minSide * holesMultiplier);
 
-            int maxHoleSize = Mathf.FloorToInt(((float)minSide * 0.3f) * holesSizesMultiplier);
+            var maxHoleSize = Mathf.FloorToInt((minSide * 0.3f) * holesSizesMultiplier);
 
-            for (int i = 0; i < holesCountToCreate; i++)
+            for (var i = 0; i < holesCountToCreate; i++)
             {
-                int hX = Random.Range(0, _xSize);
-                int hZ = Random.Range(0, _zSize);
+                var hX = Random.Range(0, _xSize);
+                var hZ = Random.Range(0, _zSize);
                 holesMap = CreateHoles(holesMap, hX, hZ, maxHoleSize, 0);
             }
         }
@@ -309,7 +312,7 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //HEIGHTS CREATING --------------------------------------------
         if (_heightsCount != GeneratorParametr.None)
         {
-            float heightsMultiplier = 0f;
+            var heightsMultiplier = 0f;
 
             if (_heightsCount == GeneratorParametr.Random) _heightsCount = (GeneratorParametr)Random.Range(1, 6);
 
@@ -319,7 +322,7 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             else if (_heightsCount == GeneratorParametr.High) heightsMultiplier = 0.4f;
             else if (_heightsCount == GeneratorParametr.VeryHigh) heightsMultiplier = 0.5f;
 
-            float heightsSizesMultiplier = 0f;
+            var heightsSizesMultiplier = 0f;
 
             if (_heightsSizes == GeneratorParametr.Random || _heightsSizes == GeneratorParametr.None) _heightsSizes = (GeneratorParametr)Random.Range(1, 6);
 
@@ -329,13 +332,13 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             else if (_heightsSizes == GeneratorParametr.High) heightsSizesMultiplier = 0.85f;
             else if (_heightsSizes == GeneratorParametr.VeryHigh) heightsSizesMultiplier = 1f;
 
-            int minSide = _zSize < _xSize ? _zSize : _xSize;
+            var minSide = _zSize < _xSize ? _zSize : _xSize;
 
-            int heightsCountToCreate = Mathf.FloorToInt((float)minSide * heightsMultiplier);
+            var heightsCountToCreate = Mathf.FloorToInt(minSide * heightsMultiplier);
 
-            int maxHeightSize = Mathf.FloorToInt(((float)minSide * 0.4f) * heightsSizesMultiplier);
+            var maxHeightSize = Mathf.FloorToInt((minSide * 0.4f) * heightsSizesMultiplier);
 
-            int maxHeightInTiles = 0;
+            var maxHeightInTiles = 0;
 
             if (_maxHeight == GeneratorParametr.Random || _maxHeight == GeneratorParametr.None) _maxHeight = (GeneratorParametr)Random.Range(1, 6);
 
@@ -345,10 +348,10 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             else if (_maxHeight == GeneratorParametr.High) maxHeightInTiles = 4;
             else if (_maxHeight == GeneratorParametr.VeryHigh) maxHeightInTiles = 5;
 
-            for (int i = 0; i < heightsCountToCreate; i++)
+            for (var i = 0; i < heightsCountToCreate; i++)
             {
-                int hX = Random.Range(0, _xSize);
-                int hZ = Random.Range(0, _zSize);
+                var hX = Random.Range(0, _xSize);
+                var hZ = Random.Range(0, _zSize);
                 heightMap = RaiseHeight(heightMap, hX, hZ, maxHeightSize, maxHeightInTiles, holesMap, 0, _heightSmoothing);
             }
         }
@@ -358,9 +361,9 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //HEIGHT SMOOTING----------------------------------------------
         if (_heightSmoothing == EnableDisable.Enabled)
         {
-            for (int i = 0; i < _xSize; i++)
+            for (var i = 0; i < _xSize; i++)
             {
-                for (int a = 0; a < _zSize; a++)
+                for (var a = 0; a < _zSize; a++)
                 {
                     SmoothHeights(heightMap, i, a);
                 }
@@ -369,23 +372,23 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //-------------------------------------------------------------
 
         //ROADS--------------------------------------------------------
-        float roadsSumHeights = 0f;
-        for(int i = 0; i<_xSize; i++)
+        var roadsSumHeights = 0f;
+        for(var i = 0; i<_xSize; i++)
         {
-            for(int a = 0; a<_zSize; a++)
+            for(var a = 0; a<_zSize; a++)
             {
                 roadsSumHeights += heightMap[i, a];
             }
         }
 
-        int roadsHeight = Mathf.CeilToInt(roadsSumHeights / (_xSize * _zSize));
+        var roadsHeight = Mathf.CeilToInt(roadsSumHeights / (_xSize * _zSize));
 
         if (_POIs == EnableDisable.Enabled && roads == EnableDisable.Enabled)
         {
-            for (int i = 0; i < pointsOfInterest.Count; i++)
+            for (var i = 0; i < pointsOfInterest.Count; i++)
             {
-                int xPos = pointsOfInterest[i][1];
-                int zPos = pointsOfInterest[i][0];
+                var xPos = pointsOfInterest[i][1];
+                var zPos = pointsOfInterest[i][0];
 
                 holesMap[xPos, zPos] = false;
 
@@ -423,9 +426,9 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < _xSize; i++)
+            for (var i = 0; i < _xSize; i++)
             {
-                for (int a = 0; a < _zSize; a++)
+                for (var a = 0; a < _zSize; a++)
                 {
                     if (roadsMap[i, a])
                     {
@@ -440,18 +443,18 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //LADDERS------------------------------------------------------
         if (_ladders == EnableDisable.Enabled)
         {
-            for (int i = 0; i < _xSize; i++)
+            for (var i = 0; i < _xSize; i++)
             {
-                for (int a = 0; a < _zSize; a++)
+                for (var a = 0; a < _zSize; a++)
                 {
                     if (!holesMap[i, a])
                     {
-                        int myHeight = heightMap[a, i];
+                        var myHeight = heightMap[a, i];
 
-                        bool right = false;
-                        bool left = false;
-                        bool up = false;
-                        bool down = false;
+                        var right = false;
+                        var left = false;
+                        var up = false;
+                        var down = false;
 
                         if (i + 1 < _xSize)
                         {
@@ -483,7 +486,7 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
                         }
 
                         float y = 0;
-                        bool needSpawn = false;
+                        var needSpawn = false;
                         if (right && !left && !down && !up) //Ladder to right
                         {
                             if (i - 1 >= 0)
@@ -546,7 +549,7 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
                             if (Random.Range(0, 100) < _laddersChance)
                             {
                                 laddersMap[i, a] = true;
-                                GameObject ladder = Instantiate(laddersTiles[Random.Range(0, laddersTiles.Count)]);
+                                var ladder = Instantiate(laddersTiles[Random.Range(0, laddersTiles.Count)]);
                                 ladder.transform.position = new Vector3(i * 2f, _mapPos.y + (heightMap[a, i] * 2f), a * 2f);
                                 ladder.transform.parent = map.transform;
                                 ladder.transform.localEulerAngles = new Vector3(0f, y, 0f);
@@ -559,12 +562,12 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //-------------------------------------------------------------
 
         //SPAWNING MAP-------------------------------------------------
-        float x = 0f;
-        float z = 0f;
+        var x = 0f;
+        var z = 0f;
 
-        for (int i = 0; i < _xSize; i++)
+        for (var i = 0; i < _xSize; i++)
         {
-            for (int a = 0; a < _zSize; a++)
+            for (var a = 0; a < _zSize; a++)
             {
                 if (!holesMap[i, a])
                 {
@@ -581,10 +584,10 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //POIS SPAWNING------------------------------------------------
         if (_POIs == EnableDisable.Enabled)
         {
-            for (int i = 0; i < pointsOfInterest.Count; i++)
+            for (var i = 0; i < pointsOfInterest.Count; i++)
             {
-                int xPos = pointsOfInterest[i][1];
-                int zPos = pointsOfInterest[i][0];
+                var xPos = pointsOfInterest[i][1];
+                var zPos = pointsOfInterest[i][0];
                 GameObject poiObj = null;
                 if (i == 0) poiObj = Instantiate(startTile);
                 else if (i == 1) poiObj = Instantiate(endTile);
@@ -630,21 +633,21 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         //ROADS SPAWNING---------------------------------------------
         if (_POIs == EnableDisable.Enabled && _roads == EnableDisable.Enabled)
         {
-            int bridgeNumber = -1;
+            var bridgeNumber = -1;
             if (roadBridges.Count > 0) bridgeNumber = Random.Range(0, roadBridges.Count);
-            for (int i = 0; i < _xSize; i++)
+            for (var i = 0; i < _xSize; i++)
             {
-                for (int a = 0; a < _zSize; a++)
+                for (var a = 0; a < _zSize; a++)
                 {
                     if (roadsMap[i, a])
                     {
-                        int xPos = i;
-                        int zPos = a;
+                        var xPos = i;
+                        var zPos = a;
 
-                        bool right = false;
-                        bool left = false;
-                        bool up = false;
-                        bool down = false;
+                        var right = false;
+                        var left = false;
+                        var up = false;
+                        var down = false;
 
                         if (xPos + 1 < _xSize) //RightTile checking
                         {
@@ -689,23 +692,23 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < _xSize; i++)
+            for (var i = 0; i < _xSize; i++)
             {
-                for (int a = 0; a < _zSize; a++)
+                for (var a = 0; a < _zSize; a++)
                 {
                     if (roadsMap[i, a] && RoadIsNotPOI(i, a, pointsOfInterest))
                     {
-                        int xPos = i;
-                        int zPos = a;
-                        float yEulers = 0f;
-                        bool spawned = true;
+                        var xPos = i;
+                        var zPos = a;
+                        var yEulers = 0f;
+                        var spawned = true;
 
                         GameObject road = null;
 
-                        bool right = false;
-                        bool left = false;
-                        bool up = false;
-                        bool down = false;
+                        var right = false;
+                        var left = false;
+                        var up = false;
+                        var down = false;
 
                         if (xPos + 1 < _xSize) //RightTile checking
                         {
@@ -906,93 +909,94 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         lastLaddersMap = laddersMap;
         lastMap = map;
     }
-    void AdditionalFilling(GeneratorParametr _additionalFilling, int sizeOfMap)
+
+    private void AdditionalFilling(GeneratorParametr _additionalFilling, int sizeOfMap)
     {
 
         if (_additionalFilling == GeneratorParametr.Random) _additionalFilling = (GeneratorParametr)Random.Range(1, 6);
         if (_additionalFilling != GeneratorParametr.None)
         {
-            int countsCycle = (int)(((float)sizeOfMap/5f)) * (int)_additionalFilling;
+            var countsCycle = (int)((sizeOfMap/5f)) * (int)_additionalFilling;
 
-            float circlesRange = ((float)sizeOfMap/6f) + (((float)sizeOfMap / 30f) * (int)_additionalFilling);
+            var circlesRange = (sizeOfMap/6f) + ((sizeOfMap / 30f) * (int)_additionalFilling);
 
-            float objectsCounts = sizeOfMap/2.5f + ((sizeOfMap/6) * (int)_additionalFilling);
+            var objectsCounts = sizeOfMap/2.5f + ((sizeOfMap/6) * (int)_additionalFilling);
 
             Debug.Log(countsCycle + " " + circlesRange + " " + objectsCounts);
 
-            List<Vector3> treesPoints = new List<Vector3>();
-            List<Vector3> bushsPoints = new List<Vector3>();
-            List<Vector3> bigStonesPoints = new List<Vector3>();
-            List<Vector3> grassPoint = new List<Vector3>();
-            List<Vector3> branchsPoints = new List<Vector3>();
-            List<Vector3> logsPoints = new List<Vector3>();
+            var treesPoints = new List<Vector3>();
+            var bushsPoints = new List<Vector3>();
+            var bigStonesPoints = new List<Vector3>();
+            var grassPoint = new List<Vector3>();
+            var branchsPoints = new List<Vector3>();
+            var logsPoints = new List<Vector3>();
 
-            for (int a = 0; a < countsCycle; a++)
+            for (var a = 0; a < countsCycle; a++)
             {
-                Vector3 circleTreesPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
+                var circleTreesPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
 
-                for (int i = 0; i < objectsCounts; i++) //Trees
+                for (var i = 0; i < objectsCounts; i++) //Trees
                 {
                     RaycastHit hit;
-                    Vector3 rayPos = circleTreesPos;
+                    var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,treesPoints,1.5f) && isPosNotInPOI(hit.point,lastRoadsMap,lastLaddersMap))
                         {
-                            GameObject tree = Instantiate(treesPrefabs[Random.Range(0, treesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(treesPrefabs[Random.Range(0, treesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(0f, 360f), Random.Range(-7.5f, 7.5f));
                             treesPoints.Add(hit.point);
                         }
                     }
                 }
 
-                for (int i = 0; i < objectsCounts/3; i++) //Bushs
+                for (var i = 0; i < objectsCounts/3; i++) //Bushs
                 {
                     RaycastHit hit;
-                    Vector3 rayPos = circleTreesPos;
+                    var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bushsPoints, 2f) && isPosInRangeOf(hit.point,treesPoints,4f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
                         {
-                            GameObject tree = Instantiate(bushsPrefabs[Random.Range(0, bushsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(bushsPrefabs[Random.Range(0, bushsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                             bushsPoints.Add(hit.point);
                         }
                     }
                 }
 
-                for (int i = 0; i < objectsCounts * 4; i++) //Grass
+                for (var i = 0; i < objectsCounts * 4; i++) //Grass
                 {
                     RaycastHit hit;
-                    Vector3 rayPos = circleTreesPos;
+                    var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,grassPoint, 0.25f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
                         {
-                            GameObject tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                             grassPoint.Add(hit.point);
                         }
                     }
                 }
 
-                for (int i = 0; i < objectsCounts; i++) //Little stones
+                for (var i = 0; i < objectsCounts; i++) //Little stones
                 {
                     RaycastHit hit;
-                    Vector3 rayPos = circleTreesPos;
+                    var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
                         {
-                            GameObject tree = Instantiate(littleStonesPrefabs[Random.Range(0, littleStonesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(littleStonesPrefabs[Random.Range(0, littleStonesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
                         }
                     }
@@ -1000,60 +1004,60 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             }
 
 
-            for (int i = 0; i < ((objectsCounts * countsCycle)*(int)_additionalFilling); i++) //Grass
+            for (var i = 0; i < ((objectsCounts * countsCycle)*(int)_additionalFilling); i++) //Grass
             {
                 RaycastHit hit;
-                Vector3 rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
+                var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, grassPoint, 0.25f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
                     {
-                        GameObject tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                         grassPoint.Add(hit.point);
                     }
                 }
             }
 
-            for (int i = 0; i < objectsCounts / 2; i++) //big stones
+            for (var i = 0; i < objectsCounts / 2; i++) //big stones
             {
                 RaycastHit hit;
-                Vector3 rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
+                var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
                     {
-                        GameObject tree = Instantiate(bigStonesPrefabs[Random.Range(0, bigStonesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(bigStonesPrefabs[Random.Range(0, bigStonesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
                         bigStonesPoints.Add(hit.point);
                     }
                 }
             }
 
-            for (int i = 0; i < objectsCounts / 2; i++) //branchs
+            for (var i = 0; i < objectsCounts / 2; i++) //branchs
             {
                 RaycastHit hit;
-                Vector3 rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
+                var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
                     {
-                        GameObject tree = Instantiate(branchsPrefabs[Random.Range(0, branchsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(branchsPrefabs[Random.Range(0, branchsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                         branchsPoints.Add(hit.point);
                     }
                 }
             }
 
-            for (int i = 0; i < objectsCounts / 2; i++) //logs
+            for (var i = 0; i < objectsCounts / 2; i++) //logs
             {
                 RaycastHit hit;
-                Vector3 rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
+                var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
                     {
-                        GameObject tree = Instantiate(logsPrefabs[Random.Range(0, logsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(logsPrefabs[Random.Range(0, logsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f),0f);
                         logsPoints.Add(hit.point);
                     }
@@ -1061,10 +1065,11 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             }
         }
     }
-    bool isPosNotInPOI(Vector3 posToCheck, bool[,] roadsMap, bool[,] laddersMap)
+
+    private bool isPosNotInPOI(Vector3 posToCheck, bool[,] roadsMap, bool[,] laddersMap)
     {
-        int x = Mathf.CeilToInt(posToCheck.x / 2f);
-        int z = Mathf.CeilToInt(posToCheck.z / 2f);
+        var x = Mathf.CeilToInt(posToCheck.x / 2f);
+        var z = Mathf.CeilToInt(posToCheck.z / 2f);
 
         if (x < roadsMap.GetLength(0) && z < roadsMap.GetLength(1))
         {
@@ -1076,37 +1081,40 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         }
         else return false;
     }
-    bool IsPosAvailableByDistance(Vector3 posToCheck, List<Vector3> otherPoses, float minDistance)
-    {
-        float minDistanceWeHas = -1f;
 
-        for (int i = 0; i < otherPoses.Count; i++)
+    private bool IsPosAvailableByDistance(Vector3 posToCheck, List<Vector3> otherPoses, float minDistance)
+    {
+        var minDistanceWeHas = -1f;
+
+        for (var i = 0; i < otherPoses.Count; i++)
         {
-            float distance = Vector3.Distance(posToCheck, otherPoses[i]);
+            var distance = Vector3.Distance(posToCheck, otherPoses[i]);
             if (distance < minDistanceWeHas || minDistanceWeHas < 0f) minDistanceWeHas = distance;
         }
 
         if (minDistanceWeHas > minDistance || minDistanceWeHas < 0f) return true;
         else return false;
     }
-    bool isPosInRangeOf(Vector3 posToCheck, List<Vector3> otherPoses, float needDistance)
-    {
-        float minDistanceWeHas = -1f;
 
-        for (int i = 0; i < otherPoses.Count; i++)
+    private bool isPosInRangeOf(Vector3 posToCheck, List<Vector3> otherPoses, float needDistance)
+    {
+        var minDistanceWeHas = -1f;
+
+        for (var i = 0; i < otherPoses.Count; i++)
         {
-            float distance = Vector3.Distance(posToCheck, otherPoses[i]);
+            var distance = Vector3.Distance(posToCheck, otherPoses[i]);
             if (distance < minDistanceWeHas || minDistanceWeHas < 0f) minDistanceWeHas = distance;
         }
 
         if (minDistanceWeHas < needDistance) return true;
         else return false;
     }
-    bool RoadIsNotPOI(int x, int z, List<int[]> poi)
-    {
-        bool roadIsNotPoi = true;
 
-        for (int i = 0; i < poi.Count; i++)
+    private bool RoadIsNotPOI(int x, int z, List<int[]> poi)
+    {
+        var roadIsNotPoi = true;
+
+        for (var i = 0; i < poi.Count; i++)
         {
             if(poi[i][0] == x && poi[i][1] == z)
             {
@@ -1117,12 +1125,13 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
         return roadIsNotPoi;
     }
-    void SpawnTile(int _i, int _a, float _x, float _z, Vector3 _mapPos, Transform _parent, bool _isRoad, int _height)
-    {
-        GameObject newPart = Instantiate(tiles[Random.Range(0,tiles.Count)]);
-        float posY = _mapPos.y;
 
-        int heightForThisTile = _height;
+    private void SpawnTile(int _i, int _a, float _x, float _z, Vector3 _mapPos, Transform _parent, bool _isRoad, int _height)
+    {
+        var newPart = Instantiate(tiles[Random.Range(0,tiles.Count)]);
+        var posY = _mapPos.y;
+
+        var heightForThisTile = _height;
 
         if (heightForThisTile > 0)
         {
@@ -1136,7 +1145,7 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
             newPart.transform.GetChild(1).localPosition = new Vector3(0f, -0.7f * heightForThisTile, 0f);
         }
 
-        int rotRandom = Random.Range(0, 4);
+        var rotRandom = Random.Range(0, 4);
         if (rotRandom == 0)
         {
             newPart.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
@@ -1155,29 +1164,30 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         }
         newPart.transform.parent = _parent;
     }
-    int[,] SmoothHeights(int[,] curentMap, int _x, int _z)
+
+    private int[,] SmoothHeights(int[,] curentMap, int _x, int _z)
     {
-        int myHeight = curentMap[_x, _z];
-        int heightDifference = 0;
+        var myHeight = curentMap[_x, _z];
+        var heightDifference = 0;
 
         if (_z - 1 > 0)
         {
-            int difference = curentMap[_x, _z - 1] - myHeight;
+            var difference = curentMap[_x, _z - 1] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
         if (_z + 1 < curentMap.GetLength(1))
         {
-            int difference = curentMap[_x, _z + 1] - myHeight;
+            var difference = curentMap[_x, _z + 1] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
         if (_x - 1 > 0)
         {
-            int difference = curentMap[_x - 1, _z] - myHeight;
+            var difference = curentMap[_x - 1, _z] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
         if (_x + 1 < curentMap.GetLength(0))
         {
-            int difference = curentMap[_x + 1, _z] - myHeight;
+            var difference = curentMap[_x + 1, _z] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
 
@@ -1186,9 +1196,10 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
         return curentMap;
     }
-    int[,] SmoothHeightDown(int[,] curentMap, int _x, int _z)
+
+    private int[,] SmoothHeightDown(int[,] curentMap, int _x, int _z)
     {
-        int myHeight = curentMap[_x, _z];
+        var myHeight = curentMap[_x, _z];
 
         if (_z - 1 > 0)
         {
@@ -1225,20 +1236,21 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
         return curentMap;
     }
-    int[,] RaiseHeight(int[,] curentMap, int _x, int _z, int maxSize, int maxHeight, bool[,] holesMap, int iteration, EnableDisable hs)
+
+    private int[,] RaiseHeight(int[,] curentMap, int _x, int _z, int maxSize, int maxHeight, bool[,] holesMap, int iteration, EnableDisable hs)
     {
         if ((hs == EnableDisable.Enabled && !IsNeighboringHole(_x, _z, holesMap)) || hs == EnableDisable.Disabled)
         {
             if(curentMap[_x, _z] < maxHeight)
             curentMap[_x, _z] += 1;
 
-            float chanceForAdditionalHeight = 100f;
+            var chanceForAdditionalHeight = 100f;
 
-            int anywayHeights = Mathf.FloorToInt((float)maxSize / 1.35f);
+            var anywayHeights = Mathf.FloorToInt(maxSize / 1.35f);
 
             if (iteration > anywayHeights)
             {
-                chanceForAdditionalHeight = 100f - ((100f / (float)(maxSize - anywayHeights)) * ((float)(iteration - anywayHeights)));
+                chanceForAdditionalHeight = 100f - ((100f / (maxSize - anywayHeights)) * (iteration - anywayHeights));
             }
 
             iteration++;
@@ -1262,19 +1274,20 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         }
         return curentMap;
     }
-    bool[,] CreateHoles(bool[,] curentMap, int _x, int _z, int maxSize, int iteration)
+
+    private bool[,] CreateHoles(bool[,] curentMap, int _x, int _z, int maxSize, int iteration)
     {
         if (!curentMap[_x, _z])
         {
             curentMap[_x, _z] = true;
 
-            float chanceForAdditionalHole = 100f;
+            var chanceForAdditionalHole = 100f;
 
-            int anywayHoles = Mathf.FloorToInt((float)maxSize / 1.25f);
+            var anywayHoles = Mathf.FloorToInt(maxSize / 1.25f);
 
             if (iteration > anywayHoles)
             {
-                chanceForAdditionalHole = 100f - ((100f / (float)(maxSize - anywayHoles)) * ((float)(iteration - anywayHoles)));
+                chanceForAdditionalHole = 100f - ((100f / (maxSize - anywayHoles)) * (iteration - anywayHoles));
             }
 
             iteration++;
@@ -1302,10 +1315,11 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
         return curentMap;
     }
-    bool IsNeighboringHigher(int[,] curentMap, int _x, int _z)
+
+    private bool IsNeighboringHigher(int[,] curentMap, int _x, int _z)
     {
-        bool isHigher = false;
-        int myHeight = curentMap[_x, _z];
+        var isHigher = false;
+        var myHeight = curentMap[_x, _z];
         if (_z - 1 > 0)
         {
             if (curentMap[_x, _z - 1] > myHeight) isHigher = true;
@@ -1324,9 +1338,10 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
         }
         return isHigher;
     }
-    bool IsNeighboringHole(int _x, int _z, bool[,] curentHoles)
+
+    private bool IsNeighboringHole(int _x, int _z, bool[,] curentHoles)
     {
-        bool isHole = false;
+        var isHole = false;
 
         if (_z - 1 > 0)
         {
@@ -1347,7 +1362,8 @@ public class HYPEPOLY_TilesMapGenerator : MonoBehaviour
 
         return isHole;
     }
-    bool IsHole(int _x, int _z, bool[,] _holes)
+
+    private bool IsHole(int _x, int _z, bool[,] _holes)
     {
         if(_z >= 0 && _z < _holes.GetLength(0) && _x >= 0 && _x < _holes.GetLength(1))
         {

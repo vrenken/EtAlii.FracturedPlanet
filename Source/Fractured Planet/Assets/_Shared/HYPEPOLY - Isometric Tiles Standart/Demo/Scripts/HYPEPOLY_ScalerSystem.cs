@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿// ReSharper disable All
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -10,22 +10,25 @@ public class HYPEPOLY_ScalerSystem : MonoBehaviour
     public float scalingGroupsSize = 50f;
     [Range(0f, 5f)]
     public float scalingTime = 0.2f;
-    List<Transform> scalers;
-    List<Vector3> targetScales;
-    int objectsScaled = 0;
-    bool startScaling = false;
-    float a = 0f;
-    int detailsInPair = 15;
-    int detailsForNoTile = 0;
-    int detailsNow = 0;
-    int scalingTilesCount = 0;
+
+    private List<Transform> scalers;
+    private List<Vector3> targetScales;
+    private int objectsScaled = 0;
+    private bool startScaling = false;
+    private float a = 0f;
+    private int detailsInPair = 15;
+    private int detailsForNoTile = 0;
+    private int detailsNow = 0;
+    private int scalingTilesCount = 0;
 
     [HideInInspector]
     public bool reversed = true;
     [HideInInspector]
     public bool mapReady = true;
-    bool reverseScaling = false;
-    void Awake()
+
+    private bool reverseScaling = false;
+
+    private void Awake()
     {
         Instance = this;
     }
@@ -34,9 +37,9 @@ public class HYPEPOLY_ScalerSystem : MonoBehaviour
         objectsScaled = 0;
 
         scalers = new List<Transform>();
-        List<Transform> tilesTransforms = new List<Transform>();
-        List<Transform> otherTransforms = new List<Transform>();
-        for (int i = 0; i < _parent.childCount; i++)
+        var tilesTransforms = new List<Transform>();
+        var otherTransforms = new List<Transform>();
+        for (var i = 0; i < _parent.childCount; i++)
         {
             if (_parent.GetChild(i).name.Contains("Tile"))
             {
@@ -48,11 +51,11 @@ public class HYPEPOLY_ScalerSystem : MonoBehaviour
             }
         }
 
-        int animType = Random.Range(0, 2);
+        var animType = Random.Range(0, 2);
 
         if(animType == 0)
         {
-            int subAnimType = Random.Range(0, 4);
+            var subAnimType = Random.Range(0, 4);
             if(subAnimType == 0)
             {
                 tilesTransforms = tilesTransforms.OrderBy(obj => obj.transform.position.x + obj.transform.position.z + obj.transform.position.y).ToList();
@@ -97,7 +100,7 @@ public class HYPEPOLY_ScalerSystem : MonoBehaviour
         }
 
         targetScales = new List<Vector3>();
-        for (int i = 0; i < scalers.Count; i++)
+        for (var i = 0; i < scalers.Count; i++)
         {
             targetScales.Add(scalers[i].transform.localScale);
             scalers[i].transform.localScale = Vector3.zero;
@@ -119,7 +122,8 @@ public class HYPEPOLY_ScalerSystem : MonoBehaviour
         reversed = false;
         reverseScaling = true;
     }
-    void FixedUpdate()
+
+    private void FixedUpdate()
     {
         if (startScaling)
         {
@@ -127,7 +131,7 @@ public class HYPEPOLY_ScalerSystem : MonoBehaviour
             {
                 a += (1f / (scalingTime / Time.fixedDeltaTime));
 
-                for (int i = 0; i < detailsNow; i++)
+                for (var i = 0; i < detailsNow; i++)
                 {
                     if (objectsScaled + i < scalers.Count)
                         scalers[objectsScaled + i].transform.localScale = Vector3.Lerp(Vector3.zero, targetScales[objectsScaled + i], a);
@@ -161,7 +165,7 @@ public class HYPEPOLY_ScalerSystem : MonoBehaviour
             {
                 a += (1f / (scalingTime / Time.fixedDeltaTime))*2f;
 
-                for (int i = 0; i < detailsNow; i++)
+                for (var i = 0; i < detailsNow; i++)
                 {
                     if (objectsScaled + i < scalers.Count)
                         scalers[objectsScaled + i].transform.localScale = Vector3.Lerp(targetScales[objectsScaled + i], Vector3.zero, a);
