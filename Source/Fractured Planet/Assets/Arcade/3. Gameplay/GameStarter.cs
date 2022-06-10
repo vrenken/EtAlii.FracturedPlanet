@@ -157,6 +157,7 @@ namespace EtAlii.FracturedPlanet.Arcade
 
                 Player.ConfigureInstance(player, playerInstance, playerNumber, players.OfType<VisiblePlayer>().Count());
 
+                playerInstance.transform.Translate(0f, 15f, 0f); // Move it up a bit.
                 playerInstance.GetComponent<PlayerController>().player = player;
             }
         }

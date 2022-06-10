@@ -2240,7 +2240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 433201de17cc44d986d18be7e51993fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNumber: 2
   characterSkinController: {fileID: 5019632069971451005}
 --- !u!1 &3649526710083439473
 GameObject:
