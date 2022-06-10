@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2676704720757941235
+--- !u!1 &7411042474694903582
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2676704720757941237}
-  - component: {fileID: 2676704720757941236}
-  - component: {fileID: 2676704720757941238}
+  - component: {fileID: 7411042474694903576}
+  - component: {fileID: 7411042474694903577}
+  - component: {fileID: 7411042474694903579}
   m_Layer: 0
   m_Name: Terrain v2
   m_TagString: Untagged
@@ -18,13 +18,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2676704720757941237
+--- !u!4 &7411042474694903576
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2676704720757941235}
+  m_GameObject: {fileID: 7411042474694903582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,13 +33,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2676704720757941236
+--- !u!114 &7411042474694903577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2676704720757941235}
+  m_GameObject: {fileID: 7411042474694903582}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b539bd35a8a5414e9eebf979c4ec121, type: 3}
@@ -309,14 +309,14 @@ MonoBehaviour:
   - {fileID: 3585722098787000442, guid: eb2de1257f7541e4b93900cde54f2586, type: 3}
   - {fileID: 2516388841491927868, guid: b2de37c43e3209146a695d6c46af2243, type: 3}
   - {fileID: 6222909105693379286, guid: dbf161d18dcdd554884091be24d39327, type: 3}
-  TapToGenerate: 0
---- !u!114 &2676704720757941238
+  TapToGenerate: 1
+--- !u!114 &7411042474694903579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2676704720757941235}
+  m_GameObject: {fileID: 7411042474694903582}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07469864813c8f843b7dc8804efcca18, type: 3}
