@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class TilesMapGenerator : MonoBehaviour
 {
@@ -81,7 +83,7 @@ public class TilesMapGenerator : MonoBehaviour
         StartCoroutine(NewMap());
     }
 
-    private IEnumerator NewMap()
+    public IEnumerator NewMap()
     {
         if(ScalerSystem.Instance != null)
         {
@@ -134,6 +136,7 @@ public class TilesMapGenerator : MonoBehaviour
                             int _laddersChance)
     {
         var map = new GameObject();
+        map.transform.parent = transform;
         map.name = _mapName;
         map.transform.position = _mapPos;
 
@@ -1072,13 +1075,22 @@ public class TilesMapGenerator : MonoBehaviour
 
         if (x < roadsMap.GetLength(0) && z < roadsMap.GetLength(1))
         {
-            if (!roadsMap[z, x] && !laddersMap[x, z])
+            try
             {
-                return true;
+                if (!roadsMap[z, x] && !laddersMap[x, z])
+                {
+                    return true;
+                }
+                else return false;
             }
-            else return false;
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
         }
-        else return false;
+
+        return false;
     }
 
     private bool IsPosAvailableByDistance(Vector3 posToCheck, List<Vector3> otherPoses, float minDistance)

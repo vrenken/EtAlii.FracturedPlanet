@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7411042474694903577}
   - component: {fileID: 7411042474694903579}
   m_Layer: 0
-  m_Name: Terrain v2
+  m_Name: Sector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,11 +151,11 @@ MonoBehaviour:
   mapSize: 10
   holesCount: 6
   holesSizes: 6
-  heightsCount: 6
-  heightsSizes: 6
-  maxHeight: 6
-  heightSmoothing: 0
-  additionalFilling: 6
+  heightsCount: 0
+  heightsSizes: 0
+  maxHeight: 0
+  heightSmoothing: 1
+  additionalFilling: 1
   treesPrefabs:
   - {fileID: 1687494914108153508, guid: e210ebea04bce84469ad6f1288cd01dd, type: 3}
   - {fileID: 8847317597837719128, guid: b6aa43770f0b53144918294e619831a1, type: 3}
@@ -309,7 +309,7 @@ MonoBehaviour:
   - {fileID: 3585722098787000442, guid: eb2de1257f7541e4b93900cde54f2586, type: 3}
   - {fileID: 2516388841491927868, guid: b2de37c43e3209146a695d6c46af2243, type: 3}
   - {fileID: 6222909105693379286, guid: dbf161d18dcdd554884091be24d39327, type: 3}
-  TapToGenerate: 1
+  TapToGenerate: 0
 --- !u!114 &7411042474694903579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +323,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalingGroupsSize: 25
-  scalingTime: 0.3
+  scalingTime: 0.03
   reversed: 1
   mapReady: 1

@@ -2,6 +2,7 @@
 
 namespace EtAlii.FracturedPlanet.Terrain
 {
+    using System.Collections;
     using UnityEngine;
 
     public class TerrainBuilder : MonoBehaviour
@@ -12,7 +13,13 @@ namespace EtAlii.FracturedPlanet.Terrain
         public int height = 5;
         public int sectorSize = 20;
 
+        public Vector3 correctiveOffset = new Vector3(-10, 0, -10);
         private void Start()
+        {
+            StartCoroutine(Build());
+        }
+
+        private IEnumerator Build()
         {
             var offsetX = width * sectorSize / 2f;
             var offsetZ = height * sectorSize / 2f;
@@ -23,9 +30,15 @@ namespace EtAlii.FracturedPlanet.Terrain
                 {
                     var sector = Instantiate(sectorPrefab, transform);
 
-                    var position = new Vector3(x * sectorSize - offsetX, 0f, z * sectorSize - offsetZ);
-                    sector.transform.position = position;
+                    var position = new Vector3(-offsetX - sectorSize + x * sectorSize * 2, 0f, -offsetZ - sectorSize + z * sectorSize * 2);
+
+                    position += correctiveOffset;
+
                     sector.gameObject.name = $"Sector ({x:+00;-00} x {z:+00;-00})";
+                    var generator = sector.GetComponent<TilesMapGenerator>();
+                    generator.mapSize = sectorSize;
+                    yield return generator.NewMap();
+                    sector.transform.position = position;
                 }
             }
         }
