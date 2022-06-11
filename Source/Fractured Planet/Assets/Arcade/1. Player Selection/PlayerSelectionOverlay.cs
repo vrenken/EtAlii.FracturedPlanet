@@ -9,6 +9,9 @@ public class PlayerSelectionOverlay : MonoBehaviour
 
     private void OnEnable()
     {
+#if UNITY_EDITOR
+            UnityEditor.SceneVisibilityManager.instance.Hide(gameObject, true);
+#endif
         var onePlayerButton = layout.rootVisualElement.parent.Q<Button>("OnePlayerButton");
         onePlayerButton.clickable.clicked += StartOnePlayerGame;
 
