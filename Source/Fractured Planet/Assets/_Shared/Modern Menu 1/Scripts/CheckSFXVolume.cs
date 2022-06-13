@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 
-public class CheckSFXVolume : MonoBehaviour {
-	public void  Start (){
+// ReSharper disable once CheckNamespace
+public class CheckSFXVolume : MonoBehaviour
+{
+	public void  Start ()
+    {
 		// remember volume level from last time
 		GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("SFXVolume");
 		Debug.Log(PlayerPrefs.GetFloat("SFXVolume"));
 	}
 
-	public void UpdateVolume (){
+	public void UpdateVolume ()
+    {
 		GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("SFXVolume");
 	}
 }

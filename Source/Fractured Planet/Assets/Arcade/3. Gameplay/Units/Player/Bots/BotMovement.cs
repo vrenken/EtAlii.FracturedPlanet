@@ -3,6 +3,8 @@ using UnityEngine.AI;
 
 //This script requires you to have setup your animator with 3 parameters, "InputMagnitude", "InputX", "InputZ"
 //With a blend tree to control the inputmagnitude and allow blending between animations.
+
+// ReSharper disable once CheckNamespace
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class BotMovement : MonoBehaviour
@@ -30,6 +32,8 @@ public class BotMovement : MonoBehaviour
     public float StartAnimTime = 0.3f;
     [Range(0, 1f)]
     public float StopAnimTime = 0.15f;
+
+    private static readonly int _blend = Animator.StringToHash("Blend");
 
     // public float verticalVel;
     // private Vector3 moveVector;
@@ -105,12 +109,12 @@ public class BotMovement : MonoBehaviour
 
 		if (Speed > allowPlayerRotation)
         {
-			anim.SetFloat ("Blend", Speed, StartAnimTime, Time.deltaTime);
+			anim.SetFloat (_blend, Speed, StartAnimTime, Time.deltaTime);
 			// PlayerMoveAndRotation();
 		}
         else if (Speed < allowPlayerRotation)
         {
-			anim.SetFloat ("Blend", Speed, StopAnimTime, Time.deltaTime);
+			anim.SetFloat (_blend, Speed, StopAnimTime, Time.deltaTime);
 		}
 	}
 }

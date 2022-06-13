@@ -3,6 +3,7 @@ using UnityEngine;
 using EtAlii.FracturedPlanet.Arcade;
 using UnityEngine.UIElements;
 
+// ReSharper disable once CheckNamespace
 public class PlayerSelectionOverlay : MonoBehaviour
 {
     public UIDocument layout;

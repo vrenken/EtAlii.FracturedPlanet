@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+// ReSharper disable once CheckNamespace
 public class TilesMapGenerator : MonoBehaviour
 {
     [Header("[Tiles prefabs]")]
@@ -64,8 +65,8 @@ public class TilesMapGenerator : MonoBehaviour
     public bool TapToGenerate = false;
 
     //Private
-    private GameObject lastMap;
-    private bool[,] lastRoadsMap, lastLaddersMap;
+    private GameObject _lastMap;
+    private bool[,] _lastRoadsMap, _lastLaddersMap;
 
     private void FixedUpdate()
     {
@@ -94,9 +95,9 @@ public class TilesMapGenerator : MonoBehaviour
             }
         }
 
-        if (lastMap != null)
+        if (_lastMap != null)
         {
-            Destroy(lastMap);
+            Destroy(_lastMap);
         }
 
         yield return new WaitForEndOfFrame();
@@ -106,7 +107,7 @@ public class TilesMapGenerator : MonoBehaviour
 
         if (ScalerSystem.Instance != null)
         {
-            var meshs = lastMap.GetComponentsInChildren<MeshRenderer>();
+            var meshs = _lastMap.GetComponentsInChildren<MeshRenderer>();
             foreach (var mr in meshs) mr.enabled = false;
         }
 
@@ -116,18 +117,18 @@ public class TilesMapGenerator : MonoBehaviour
 
         if(ScalerSystem.Instance != null)
         {
-            ScalerSystem.Instance.StartScaling(lastMap.transform);
+            ScalerSystem.Instance.StartScaling(_lastMap.transform);
 
-            var meshs = lastMap.GetComponentsInChildren<MeshRenderer>();
+            var meshs = _lastMap.GetComponentsInChildren<MeshRenderer>();
             foreach (var mr in meshs) mr.enabled = true;
         }
 
-        for(var i = 0; i<lastMap.transform.childCount; i++)
+        for(var i = 0; i<_lastMap.transform.childCount; i++)
         {
-            var thisPos = lastMap.transform.GetChild(i).localPosition;
+            var thisPos = _lastMap.transform.GetChild(i).localPosition;
             thisPos.x -= ((mapSize * 2f) / 2f)-1f;
             thisPos.z -= ((mapSize * 2f) / 2f)-1f;
-            lastMap.transform.GetChild(i).localPosition = thisPos;
+            _lastMap.transform.GetChild(i).localPosition = thisPos;
         }
     }
     public void GenerateMap(string _mapName, Vector3 _mapPos, int _mapSize, GeneratorParametr _holesCount,
@@ -162,7 +163,7 @@ public class TilesMapGenerator : MonoBehaviour
                 while (true)
                 {
                     trys++;
-                    var newPoi = new int[2] { Random.Range(0, _xSize), Random.Range(0, _zSize) };
+                    var newPoi = new[] { Random.Range(0, _xSize), Random.Range(0, _zSize) };
 
                     if (!pointsOfInterest.Contains(newPoi))
                     {
@@ -551,9 +552,8 @@ public class TilesMapGenerator : MonoBehaviour
                             if (Random.Range(0, 100) < _laddersChance)
                             {
                                 laddersMap[i, a] = true;
-                                var ladder = Instantiate(laddersTiles[Random.Range(0, laddersTiles.Count)]);
+                                var ladder = Instantiate(laddersTiles[Random.Range(0, laddersTiles.Count)], map.transform, true);
                                 ladder.transform.position = new Vector3(i * 2f, _mapPos.y + (heightMap[a, i] * 2f), a * 2f);
-                                ladder.transform.parent = map.transform;
                                 ladder.transform.localEulerAngles = new Vector3(0f, y, 0f);
                             }
                         }
@@ -907,9 +907,9 @@ public class TilesMapGenerator : MonoBehaviour
         }
         //-------------------------------------------------------------
 
-        lastRoadsMap = roadsMap;
-        lastLaddersMap = laddersMap;
-        lastMap = map;
+        _lastRoadsMap = roadsMap;
+        _lastLaddersMap = laddersMap;
+        _lastMap = map;
     }
 
     private void AdditionalFilling(GeneratorParametr _additionalFilling, int sizeOfMap)
@@ -945,9 +945,9 @@ public class TilesMapGenerator : MonoBehaviour
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
-                        if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,treesPoints,1.5f) && isPosNotInPOI(hit.point,lastRoadsMap,lastLaddersMap))
+                        if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,treesPoints,1.5f) && isPosNotInPOI(hit.point,_lastRoadsMap,_lastLaddersMap))
                         {
-                            var tree = Instantiate(treesPrefabs[Random.Range(0, treesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(treesPrefabs[Random.Range(0, treesPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(0f, 360f), Random.Range(-7.5f, 7.5f));
                             treesPoints.Add(hit.point);
                         }
@@ -962,9 +962,9 @@ public class TilesMapGenerator : MonoBehaviour
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
-                        if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bushsPoints, 2f) && isPosInRangeOf(hit.point,treesPoints,4f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
+                        if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bushsPoints, 2f) && isPosInRangeOf(hit.point,treesPoints,4f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                         {
-                            var tree = Instantiate(bushsPrefabs[Random.Range(0, bushsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(bushsPrefabs[Random.Range(0, bushsPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                             bushsPoints.Add(hit.point);
                         }
@@ -979,9 +979,9 @@ public class TilesMapGenerator : MonoBehaviour
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
-                        if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,grassPoint, 0.25f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
+                        if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,grassPoint, 0.25f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                         {
-                            var tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                             grassPoint.Add(hit.point);
                         }
@@ -996,9 +996,9 @@ public class TilesMapGenerator : MonoBehaviour
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
                     if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                     {
-                        if (hit.transform.name.Contains("Tile") && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
+                        if (hit.transform.name.Contains("Tile") && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                         {
-                            var tree = Instantiate(littleStonesPrefabs[Random.Range(0, littleStonesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                            var tree = Instantiate(littleStonesPrefabs[Random.Range(0, littleStonesPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                             tree.transform.eulerAngles = new Vector3(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
                         }
                     }
@@ -1012,9 +1012,9 @@ public class TilesMapGenerator : MonoBehaviour
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
-                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, grassPoint, 0.25f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
+                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, grassPoint, 0.25f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
-                        var tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(grassPrefabs[Random.Range(0, grassPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                         grassPoint.Add(hit.point);
                     }
@@ -1027,9 +1027,9 @@ public class TilesMapGenerator : MonoBehaviour
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
-                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
+                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
-                        var tree = Instantiate(bigStonesPrefabs[Random.Range(0, bigStonesPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(bigStonesPrefabs[Random.Range(0, bigStonesPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
                         bigStonesPoints.Add(hit.point);
                     }
@@ -1042,9 +1042,9 @@ public class TilesMapGenerator : MonoBehaviour
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
-                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
+                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
-                        var tree = Instantiate(branchsPrefabs[Random.Range(0, branchsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(branchsPrefabs[Random.Range(0, branchsPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
                         branchsPoints.Add(hit.point);
                     }
@@ -1057,9 +1057,9 @@ public class TilesMapGenerator : MonoBehaviour
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
                 if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
                 {
-                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, lastRoadsMap, lastLaddersMap))
+                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
-                        var tree = Instantiate(logsPrefabs[Random.Range(0, logsPrefabs.Count)], hit.point, Quaternion.identity, lastMap.transform);
+                        var tree = Instantiate(logsPrefabs[Random.Range(0, logsPrefabs.Count)], hit.point, Quaternion.identity, _lastMap.transform);
                         tree.transform.eulerAngles = new Vector3(0f, Random.Range(0f, 360f),0f);
                         logsPoints.Add(hit.point);
                     }
@@ -1139,7 +1139,7 @@ public class TilesMapGenerator : MonoBehaviour
 
     private void SpawnTile(int _i, int _a, float _x, float _z, Vector3 _mapPos, Transform _parent, bool _isRoad, int _height)
     {
-        var newPart = Instantiate(tiles[Random.Range(0,tiles.Count)]);
+        var newPart = Instantiate(tiles[Random.Range(0,tiles.Count)], _parent, true);
         var posY = _mapPos.y;
 
         var heightForThisTile = _height;
@@ -1173,7 +1173,6 @@ public class TilesMapGenerator : MonoBehaviour
         {
             newPart.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
         }
-        newPart.transform.parent = _parent;
     }
 
     private int[,] SmoothHeights(int[,] curentMap, int _x, int _z)
@@ -1248,12 +1247,14 @@ public class TilesMapGenerator : MonoBehaviour
         return curentMap;
     }
 
-    private int[,] RaiseHeight(int[,] curentMap, int _x, int _z, int maxSize, int maxHeight, bool[,] holesMap, int iteration, EnableDisable hs)
+    private int[,] RaiseHeight(int[,] currentMap, int x, int z, int maxSize, int maxHeight, bool[,] holesMap, int iteration, EnableDisable hs)
     {
-        if ((hs == EnableDisable.Enabled && !IsNeighboringHole(_x, _z, holesMap)) || hs == EnableDisable.Disabled)
+        if ((hs == EnableDisable.Enabled && !IsNeighboringHole(x, z, holesMap)) || hs == EnableDisable.Disabled)
         {
-            if(curentMap[_x, _z] < maxHeight)
-            curentMap[_x, _z] += 1;
+            if (currentMap[x, z] < maxHeight)
+            {
+                currentMap[x, z] += 1;
+            }
 
             var chanceForAdditionalHeight = 100f;
 
@@ -1266,24 +1267,24 @@ public class TilesMapGenerator : MonoBehaviour
 
             iteration++;
 
-            if (_z - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f,1f)))
+            if (z - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f,1f)))
             {
-                curentMap = RaiseHeight(curentMap, _x, _z - 1, maxSize, maxHeight, holesMap, iteration, hs);
+                currentMap = RaiseHeight(currentMap, x, z - 1, maxSize, maxHeight, holesMap, iteration, hs);
             }
-            if (_z + 1 < curentMap.GetLength(1) && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f, 1f)))
+            if (z + 1 < currentMap.GetLength(1) && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f, 1f)))
             {
-                curentMap = RaiseHeight(curentMap, _x, _z + 1, maxSize, maxHeight, holesMap, iteration, hs);
+                currentMap = RaiseHeight(currentMap, x, z + 1, maxSize, maxHeight, holesMap, iteration, hs);
             }
-            if (_x - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f, 1f)))
+            if (x - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f, 1f)))
             {
-                curentMap = RaiseHeight(curentMap, _x - 1, _z, maxSize, maxHeight, holesMap, iteration, hs);
+                currentMap = RaiseHeight(currentMap, x - 1, z, maxSize, maxHeight, holesMap, iteration, hs);
             }
-            if (_x + 1 < curentMap.GetLength(0) && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f, 1f)))
+            if (x + 1 < currentMap.GetLength(0) && Random.Range(0, 100) < (chanceForAdditionalHeight * Random.Range(0.75f, 1f)))
             {
-                curentMap = RaiseHeight(curentMap, _x + 1, _z, maxSize, maxHeight, holesMap, iteration, hs);
+                currentMap = RaiseHeight(currentMap, x + 1, z, maxSize, maxHeight, holesMap, iteration, hs);
             }
         }
-        return curentMap;
+        return currentMap;
     }
 
     private bool[,] CreateHoles(bool[,] curentMap, int _x, int _z, int maxSize, int iteration)

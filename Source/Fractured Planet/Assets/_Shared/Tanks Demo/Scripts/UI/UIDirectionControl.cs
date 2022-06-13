@@ -1,22 +1,23 @@
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 public class UIDirectionControl : MonoBehaviour
 {
-    public bool m_UseRelativeRotation = true;  
+    public bool m_UseRelativeRotation = true;
 
 
-    private Quaternion m_RelativeRotation;     
+    private Quaternion _relativeRotation;
 
 
     private void Start()
     {
-        m_RelativeRotation = transform.parent.localRotation;
+        _relativeRotation = transform.parent.localRotation;
     }
 
 
     private void Update()
     {
         if (m_UseRelativeRotation)
-            transform.rotation = m_RelativeRotation;
+            transform.rotation = _relativeRotation;
     }
 }

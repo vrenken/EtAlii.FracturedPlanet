@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+// ReSharper disable once CheckNamespace
 public class CharacterSkinController : MonoBehaviour
 {
     private Animator _animator;
@@ -101,8 +102,6 @@ public class CharacterSkinController : MonoBehaviour
                 break;
             case EyePosition.Dead:
                 offset = new Vector2(.33f, .66f);
-                break;
-            default:
                 break;
         }
 

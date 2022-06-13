@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 //This script requires you to have setup your animator with 3 parameters, "InputMagnitude", "InputX", "InputZ"
 //With a blend tree to control the input magnitude and allow blending between animations.
+
+// ReSharper disable once CheckNamespace
 [RequireComponent(typeof(CharacterController))]
 public class MovementInput : MonoBehaviour
 {
@@ -35,6 +37,7 @@ public class MovementInput : MonoBehaviour
     // private Vector3 moveVector;
 
     private DefaultInputActions _inputActions;
+    private static readonly int _blend = Animator.StringToHash("Blend");
 
     public void Awake()
     {
@@ -143,11 +146,11 @@ public class MovementInput : MonoBehaviour
 
 		if (Speed > allowPlayerRotation)
         {
-			anim.SetFloat ("Blend", Speed, StartAnimTime, Time.deltaTime);
+			anim.SetFloat (_blend, Speed, StartAnimTime, Time.deltaTime);
 			// PlayerMoveAndRotation();
 		} else if (Speed < allowPlayerRotation)
         {
-			anim.SetFloat ("Blend", Speed, StopAnimTime, Time.deltaTime);
+			anim.SetFloat (_blend, Speed, StopAnimTime, Time.deltaTime);
 		}
 	}
 }

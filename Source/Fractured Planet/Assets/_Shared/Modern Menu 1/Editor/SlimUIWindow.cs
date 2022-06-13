@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+// ReSharper disable once CheckNamespace
 public class SlimUIWindow : EditorWindow {
 
 	//string myString = "Hello";

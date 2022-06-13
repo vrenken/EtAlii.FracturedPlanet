@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+// ReSharper disable once CheckNamespace
 public class ScalerSystem : MonoBehaviour
 {
     public static ScalerSystem Instance;
@@ -11,43 +11,42 @@ public class ScalerSystem : MonoBehaviour
     [Range(0f, 5f)]
     public float scalingTime = 0.2f;
 
-    private List<Transform> scalers;
-    private List<Vector3> targetScales;
-    private int objectsScaled = 0;
-    private bool startScaling = false;
-    private float a = 0f;
-    private int detailsInPair = 15;
-    private int detailsForNoTile = 0;
-    private int detailsNow = 0;
-    private int scalingTilesCount = 0;
+    private List<Transform> _scalers;
+    private List<Vector3> _targetScales;
+    private int _objectsScaled = 0;
+    private bool _startScaling = false;
+    private float _a = 0f;
+    private int _detailsInPair = 15;
+    private int _detailsForNoTile = 0;
+    private int _detailsNow = 0;
+    private int _scalingTilesCount = 0;
+    private bool _reverseScaling = false;
 
     [HideInInspector]
     public bool reversed = true;
     [HideInInspector]
     public bool mapReady = true;
 
-    private bool reverseScaling = false;
-
     private void Awake()
     {
         Instance = this;
     }
-    public void StartScaling(Transform _parent)
+    public void StartScaling(Transform parent)
     {
-        objectsScaled = 0;
+        _objectsScaled = 0;
 
-        scalers = new List<Transform>();
+        _scalers = new List<Transform>();
         var tilesTransforms = new List<Transform>();
         var otherTransforms = new List<Transform>();
-        for (var i = 0; i < _parent.childCount; i++)
+        for (var i = 0; i < parent.childCount; i++)
         {
-            if (_parent.GetChild(i).name.Contains("Tile"))
+            if (parent.GetChild(i).name.Contains("Tile"))
             {
-                tilesTransforms.Add(_parent.GetChild(i));
+                tilesTransforms.Add(parent.GetChild(i));
             }
             else
             {
-                otherTransforms.Add(_parent.GetChild(i));
+                otherTransforms.Add(parent.GetChild(i));
             }
         }
 
@@ -58,13 +57,13 @@ public class ScalerSystem : MonoBehaviour
             var subAnimType = Random.Range(0, 4);
             if(subAnimType == 0)
             {
-                tilesTransforms = tilesTransforms.OrderBy(obj => obj.transform.position.x + obj.transform.position.z + obj.transform.position.y).ToList();
-                otherTransforms = otherTransforms.OrderBy(obj => obj.transform.position.x + obj.transform.position.z + obj.transform.position.y).ToList();
+                tilesTransforms = tilesTransforms.OrderBy(obj => { var objPosition = obj.transform.position; return objPosition.x + objPosition.z + objPosition.y; }).ToList();
+                otherTransforms = otherTransforms.OrderBy(obj => { var objPosition = obj.transform.position; return objPosition.x + objPosition.z + objPosition.y; }).ToList();
             }
             else if (subAnimType == 1)
             {
-                tilesTransforms = tilesTransforms.OrderBy(obj => 0-obj.transform.position.x - obj.transform.position.z - obj.transform.position.y).ToList();
-                otherTransforms = otherTransforms.OrderBy(obj => 0-obj.transform.position.x - obj.transform.position.z - obj.transform.position.y).ToList();
+                tilesTransforms = tilesTransforms.OrderBy(obj => { var objPosition = obj.transform.position; return 0 - objPosition.x - objPosition.z - objPosition.y; }).ToList();
+                otherTransforms = otherTransforms.OrderBy(obj => { var objPosition = obj.transform.position; return 0 - objPosition.x - objPosition.z - objPosition.y; }).ToList();
             }
             else if (subAnimType == 2)
             {
@@ -76,120 +75,124 @@ public class ScalerSystem : MonoBehaviour
                 tilesTransforms = tilesTransforms.OrderBy(obj => obj.transform.position.y).ToList();
                 otherTransforms = otherTransforms.OrderBy(obj => obj.transform.position.y).ToList();
             }
-            detailsInPair = (int)(tilesTransforms.Count * (scalingGroupsSize / 100f));
-            detailsForNoTile = (int)(otherTransforms.Count * (scalingGroupsSize / 100f));
-            if (detailsForNoTile <= 0) detailsForNoTile = 1;
-            detailsNow = detailsInPair;
-            scalingTilesCount = tilesTransforms.Count;
+            _detailsInPair = (int)(tilesTransforms.Count * (scalingGroupsSize / 100f));
+            _detailsForNoTile = (int)(otherTransforms.Count * (scalingGroupsSize / 100f));
+            if (_detailsForNoTile <= 0) _detailsForNoTile = 1;
+            _detailsNow = _detailsInPair;
+            _scalingTilesCount = tilesTransforms.Count;
 
-            scalers.AddRange(tilesTransforms);
-            scalers.AddRange(otherTransforms);
+            _scalers.AddRange(tilesTransforms);
+            _scalers.AddRange(otherTransforms);
         }
         else if (animType == 1)
         {
-            tilesTransforms = tilesTransforms.OrderBy(obj => Random.value).ToList();
-            otherTransforms = otherTransforms.OrderBy(obj => Random.value).ToList();
-            detailsInPair = (int)(tilesTransforms.Count * (scalingGroupsSize / 100f));
-            detailsForNoTile = (int)(otherTransforms.Count * (scalingGroupsSize / 100f));
-            if (detailsForNoTile <= 0) detailsForNoTile = 1;
-            detailsNow = detailsInPair;
-            scalingTilesCount = tilesTransforms.Count;
+            tilesTransforms = tilesTransforms.OrderBy(_ => Random.value).ToList();
+            otherTransforms = otherTransforms.OrderBy(_ => Random.value).ToList();
+            _detailsInPair = (int)(tilesTransforms.Count * (scalingGroupsSize / 100f));
+            _detailsForNoTile = (int)(otherTransforms.Count * (scalingGroupsSize / 100f));
+            if (_detailsForNoTile <= 0) _detailsForNoTile = 1;
+            _detailsNow = _detailsInPair;
+            _scalingTilesCount = tilesTransforms.Count;
 
-            scalers.AddRange(tilesTransforms);
-            scalers.AddRange(otherTransforms);
+            _scalers.AddRange(tilesTransforms);
+            _scalers.AddRange(otherTransforms);
         }
 
-        targetScales = new List<Vector3>();
-        for (var i = 0; i < scalers.Count; i++)
+        _targetScales = new List<Vector3>();
+        for (var i = 0; i < _scalers.Count; i++)
         {
-            targetScales.Add(scalers[i].transform.localScale);
-            scalers[i].transform.localScale = Vector3.zero;
+            _targetScales.Add(_scalers[i].transform.localScale);
+            _scalers[i].transform.localScale = Vector3.zero;
         }
 
-        a = 0f;
-        startScaling = true;
+        _a = 0f;
+        _startScaling = true;
         mapReady = false;
     }
     public void ReverseScaling()
     {
-        objectsScaled = 0;
+        _objectsScaled = 0;
 
-        detailsNow = detailsForNoTile*2;
+        _detailsNow = _detailsForNoTile*2;
 
-        if (scalers != null)
-            scalers.Reverse();
+        if (_scalers != null)
+            _scalers.Reverse();
 
         reversed = false;
-        reverseScaling = true;
+        _reverseScaling = true;
     }
 
     private void FixedUpdate()
     {
-        if (startScaling)
+        if (_startScaling)
         {
-            if (scalers[0] != null)
+            if (_scalers[0] != null)
             {
-                a += (1f / (scalingTime / Time.fixedDeltaTime));
+                _a += (1f / (scalingTime / Time.fixedDeltaTime));
 
-                for (var i = 0; i < detailsNow; i++)
+                for (var i = 0; i < _detailsNow; i++)
                 {
-                    if (objectsScaled + i < scalers.Count)
-                        scalers[objectsScaled + i].transform.localScale = Vector3.Lerp(Vector3.zero, targetScales[objectsScaled + i], a);
+                    if (_objectsScaled + i < _scalers.Count)
+                    {
+                        _scalers[_objectsScaled + i].transform.localScale = Vector3.Lerp(Vector3.zero, _targetScales[_objectsScaled + i], _a);
+                    }
                 }
 
-                if (a >= 1f)
+                if (_a >= 1f)
                 {
-                    objectsScaled += detailsNow;
-                    a = 0f;
+                    _objectsScaled += _detailsNow;
+                    _a = 0f;
 
-                    if (objectsScaled >= scalers.Count)
+                    if (_objectsScaled >= _scalers.Count)
                     {
                         mapReady = true;
-                        startScaling = false;
+                        _startScaling = false;
                     }
-                    if(objectsScaled > scalingTilesCount)
+                    if(_objectsScaled > _scalingTilesCount)
                     {
-                        detailsNow = detailsForNoTile;
+                        _detailsNow = _detailsForNoTile;
                     }
                 }
             }
             else
             {
                 mapReady = true;
-                startScaling = false;
+                _startScaling = false;
             }
         }
-        else if(reverseScaling)
+        else if(_reverseScaling)
         {
-            if (scalers != null && scalers[0] != null)
+            if (_scalers != null && _scalers[0] != null)
             {
-                a += (1f / (scalingTime / Time.fixedDeltaTime))*2f;
+                _a += (1f / (scalingTime / Time.fixedDeltaTime))*2f;
 
-                for (var i = 0; i < detailsNow; i++)
+                for (var i = 0; i < _detailsNow; i++)
                 {
-                    if (objectsScaled + i < scalers.Count)
-                        scalers[objectsScaled + i].transform.localScale = Vector3.Lerp(targetScales[objectsScaled + i], Vector3.zero, a);
+                    if (_objectsScaled + i < _scalers.Count)
+                    {
+                        _scalers[_objectsScaled + i].transform.localScale = Vector3.Lerp(_targetScales[_objectsScaled + i], Vector3.zero, _a);
+                    }
                 }
 
-                if (a >= 1f)
+                if (_a >= 1f)
                 {
-                    objectsScaled += detailsNow;
-                    a = 0f;
+                    _objectsScaled += _detailsNow;
+                    _a = 0f;
 
-                    if (objectsScaled >= scalers.Count)
+                    if (_objectsScaled >= _scalers.Count)
                     {
-                        reverseScaling = false;
+                        _reverseScaling = false;
                         reversed = true;
                     }
-                    if (objectsScaled > scalers.Count - scalingTilesCount)
+                    if (_objectsScaled > _scalers.Count - _scalingTilesCount)
                     {
-                        detailsNow = detailsInPair*2;
+                        _detailsNow = _detailsInPair*2;
                     }
                 }
             }
             else
             {
-                reverseScaling = false;
+                _reverseScaling = false;
                 reversed = true;
             }
         }

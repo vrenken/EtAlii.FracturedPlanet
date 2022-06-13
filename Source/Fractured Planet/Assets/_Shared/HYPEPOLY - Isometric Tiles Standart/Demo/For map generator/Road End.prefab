@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4434041958588925132}
   m_Father: {fileID: 0}
@@ -42,6 +43,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GroundTileModular.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395765271879570410, guid: 71f546889f5c58644853f6b6601b7d50,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,
         type: 3}
@@ -60,6 +71,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -71,16 +87,6 @@ PrefabInstance:
     - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8021629285139461341, guid: 71f546889f5c58644853f6b6601b7d50,

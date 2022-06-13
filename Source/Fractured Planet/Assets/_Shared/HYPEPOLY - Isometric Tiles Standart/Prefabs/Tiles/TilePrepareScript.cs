@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace EtAlii.FracturedPlanet
 {
     using UnityEditor;

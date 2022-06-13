@@ -5,6 +5,7 @@ using EtAlii.FracturedPlanet.Arcade;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+// ReSharper disable once CheckNamespace
 [CreateAssetMenu(menuName = "Fracture/WellKnownResources")]
 public class WellKnownResources : ScriptableObject
 {

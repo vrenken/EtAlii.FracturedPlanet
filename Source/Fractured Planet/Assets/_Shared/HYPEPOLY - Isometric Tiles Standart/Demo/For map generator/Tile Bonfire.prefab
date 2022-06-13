@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 4384942757730392459}
   - component: {fileID: 1536154209557862161}
   - component: {fileID: 7596419093942920406}
+  - component: {fileID: 6811443070288287228}
   m_Layer: 0
   m_Name: Bonfire
   m_TagString: Untagged
@@ -132,6 +133,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 961b3f4f5ae29194bba27bf297f3492a, type: 3}
+--- !u!208 &6811443070288287228
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4907573663009632206}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.91200006, y: 0.374, z: 0.97800004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.07300001, z: -0.010000001}
+  m_TimeToStationary: 0.5
 --- !u!1 &6526261324833830498
 GameObject:
   m_ObjectHideFlags: 0
