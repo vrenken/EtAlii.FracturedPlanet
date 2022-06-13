@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -62,7 +63,7 @@ public class TilesMapGenerator : MonoBehaviour
     public List<GameObject> laddersTiles;
 
     [Header("Tap this checkbox to generate in play mode")]
-    public bool TapToGenerate = false;
+    public bool TapToGenerate;
 
     //Private
     private GameObject _lastMap;
@@ -79,7 +80,8 @@ public class TilesMapGenerator : MonoBehaviour
             }
         }
     }
-    public void StartGenerator()
+
+    private void StartGenerator()
     {
         StartCoroutine(NewMap());
     }
@@ -102,25 +104,24 @@ public class TilesMapGenerator : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        GenerateMap(mapName, mapPosition, mapSize, holesCount, holesSizes, heightsCount, heightsSizes, maxHeight,
-                    heightSmoothing, contentOnMap, poiCount, roads, roadsFilling, roadsFenceChance, roadsBetweenPOI, ladders, laddersChance);
+        GenerateMap(mapPosition);
 
         if (ScalerSystem.Instance != null)
         {
-            var meshs = _lastMap.GetComponentsInChildren<MeshRenderer>();
-            foreach (var mr in meshs) mr.enabled = false;
+            var meshes = _lastMap.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mr in meshes) mr.enabled = false;
         }
 
         yield return new WaitForEndOfFrame();
 
-        AdditionalFilling(additionalFilling, mapSize);
+        AdditionalFilling(mapSize);
 
         if(ScalerSystem.Instance != null)
         {
             ScalerSystem.Instance.StartScaling(_lastMap.transform);
 
-            var meshs = _lastMap.GetComponentsInChildren<MeshRenderer>();
-            foreach (var mr in meshs) mr.enabled = true;
+            var meshes = _lastMap.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mr in meshes) mr.enabled = true;
         }
 
         for(var i = 0; i<_lastMap.transform.childCount; i++)
@@ -131,39 +132,41 @@ public class TilesMapGenerator : MonoBehaviour
             _lastMap.transform.GetChild(i).localPosition = thisPos;
         }
     }
-    public void GenerateMap(string _mapName, Vector3 _mapPos, int _mapSize, GeneratorParametr _holesCount,
-                            GeneratorParametr _holesSizes, GeneratorParametr _heightsCount, GeneratorParametr _heightsSizes, GeneratorParametr _maxHeight, EnableDisable _heightSmoothing,
-                            EnableDisable _POIs, int _POIsCount, EnableDisable _roads, int _roadsFilling, int _roadsFenceChance, int _roadsBetweenPOI, EnableDisable _ladders,
-                            int _laddersChance)
+    public void GenerateMap(Vector3 mapPos)
     {
-        var map = new GameObject();
-        map.transform.parent = transform;
-        map.name = _mapName;
-        map.transform.position = _mapPos;
+        var map = new GameObject
+        {
+            name = mapName,
+            transform =
+            {
+                parent = transform,
+                position = mapPos
+            }
+        };
 
-        var _xSize = _mapSize;
-        var _zSize = _mapSize;
+        var xSize = mapSize;
+        var zSize = mapSize;
 
-        var roadsMap = new bool[_xSize, _zSize];
-        var heightMap = new int[_xSize, _zSize];
-        var holesMap = new bool[_xSize, _zSize];
-        var laddersMap = new bool[_xSize, _zSize];
+        var roadsMap = new bool[xSize, zSize];
+        var heightMap = new int[xSize, zSize];
+        var holesMap = new bool[xSize, zSize];
+        var laddersMap = new bool[xSize, zSize];
 
         //ROADS AND POI CREATING ----------------------------------------------
         var pointsOfInterest = new List<int[]>();
 
         var leftDownCorner = new Vector2(0, 0);
-        var rightTopCorner = new Vector2(_xSize, _zSize);
+        var rightTopCorner = new Vector2(xSize, zSize);
         var maxMapDistance = Vector2.Distance(leftDownCorner, rightTopCorner);
-        if (_POIs == EnableDisable.Enabled)
+        if (contentOnMap == EnableDisable.Enabled)
         {
-            for (var i = 0; i < _POIsCount; i++)
+            for (var i = 0; i < poiCount; i++)
             {
                 var trys = 0;
                 while (true)
                 {
                     trys++;
-                    var newPoi = new[] { Random.Range(0, _xSize), Random.Range(0, _zSize) };
+                    var newPoi = new[] { Random.Range(0, xSize), Random.Range(0, zSize) };
 
                     if (!pointsOfInterest.Contains(newPoi))
                     {
@@ -177,7 +180,7 @@ public class TilesMapGenerator : MonoBehaviour
                             if (distance < minDistance || minDistance < 0f) minDistance = distance;
                         }
 
-                        if (minDistance > (maxMapDistance / 4f) || minDistance < 0f || trys > _xSize*_zSize)
+                        if (minDistance > (maxMapDistance / 4f) || minDistance < 0f || trys > xSize*zSize)
                         {
                             pointsOfInterest.Add(newPoi);
                             roadsMap[newPoi[0], newPoi[1]] = true;
@@ -188,7 +191,7 @@ public class TilesMapGenerator : MonoBehaviour
                 }
             }
 
-            if (_roads == EnableDisable.Enabled)
+            if (roads == EnableDisable.Enabled)
             {
                 for (var i = 0; i < pointsOfInterest.Count; i++)
                 {
@@ -204,7 +207,7 @@ public class TilesMapGenerator : MonoBehaviour
                             }
                             else
                             {
-                                createThisConnection = Random.Range(0, 100) < _roadsBetweenPOI;
+                                createThisConnection = Random.Range(0, 100) < roadsBetweenPOI;
                             }
 
                             if (createThisConnection)
@@ -221,34 +224,22 @@ public class TilesMapGenerator : MonoBehaviour
                                 {
                                     if (pointsOfInterest[i][0] < pointsOfInterest[a][0])
                                     {
-                                        if (down)
-                                            left = true;
-                                        else
-                                            left = false;
+                                        left = down;
                                     }
                                     else
                                     {
-                                        if (down)
-                                            left = false;
-                                        else
-                                            left = true;
+                                        left = !down;
                                     }
                                 }
                                 else
                                 {
                                     if (pointsOfInterest[a][0] < pointsOfInterest[i][0])
                                     {
-                                        if (down)
-                                            left = true;
-                                        else
-                                            left = false;
+                                        left = down;
                                     }
                                     else
                                     {
-                                        if (down)
-                                            left = false;
-                                        else
-                                            left = true;
+                                        left = !down;
                                     }
                                 }
 
@@ -275,29 +266,29 @@ public class TilesMapGenerator : MonoBehaviour
         //-------------------------------------------------------------
 
         //HOLES CREATING -----------------------------------------------
-        if (_holesCount != GeneratorParametr.None)
+        if (holesCount != GeneratorParametr.None)
         {
             var holesMultiplier = 0f;
 
-            if (_holesCount == GeneratorParametr.Random) _holesCount = (GeneratorParametr)Random.Range(1, 6);
+            if (holesCount == GeneratorParametr.Random) holesCount = (GeneratorParametr)Random.Range(1, 6);
 
-            if (_holesCount == GeneratorParametr.VeryLow) holesMultiplier = 0.1f;
-            else if (_holesCount == GeneratorParametr.Low) holesMultiplier = 0.2f;
-            else if (_holesCount == GeneratorParametr.Medium) holesMultiplier = 0.3f;
-            else if (_holesCount == GeneratorParametr.High) holesMultiplier = 0.4f;
-            else if (_holesCount == GeneratorParametr.VeryHigh) holesMultiplier = 0.5f;
+            if (holesCount == GeneratorParametr.VeryLow) holesMultiplier = 0.1f;
+            else if (holesCount == GeneratorParametr.Low) holesMultiplier = 0.2f;
+            else if (holesCount == GeneratorParametr.Medium) holesMultiplier = 0.3f;
+            else if (holesCount == GeneratorParametr.High) holesMultiplier = 0.4f;
+            else if (holesCount == GeneratorParametr.VeryHigh) holesMultiplier = 0.5f;
 
             var holesSizesMultiplier = 0f;
 
-            if (_holesSizes == GeneratorParametr.Random || _holesSizes == GeneratorParametr.None) _holesSizes = (GeneratorParametr)Random.Range(1, 6);
+            if (holesSizes == GeneratorParametr.Random || holesSizes == GeneratorParametr.None) holesSizes = (GeneratorParametr)Random.Range(1, 6);
 
-            if (_holesSizes == GeneratorParametr.VeryLow) holesSizesMultiplier = 0.1f;
-            else if (_holesSizes == GeneratorParametr.Low) holesSizesMultiplier = 0.25f;
-            else if (_holesSizes == GeneratorParametr.Medium) holesSizesMultiplier = 0.5f;
-            else if (_holesSizes == GeneratorParametr.High) holesSizesMultiplier = 0.85f;
-            else if (_holesSizes == GeneratorParametr.VeryHigh) holesSizesMultiplier = 1f;
+            if (holesSizes == GeneratorParametr.VeryLow) holesSizesMultiplier = 0.1f;
+            else if (holesSizes == GeneratorParametr.Low) holesSizesMultiplier = 0.25f;
+            else if (holesSizes == GeneratorParametr.Medium) holesSizesMultiplier = 0.5f;
+            else if (holesSizes == GeneratorParametr.High) holesSizesMultiplier = 0.85f;
+            else if (holesSizes == GeneratorParametr.VeryHigh) holesSizesMultiplier = 1f;
 
-            var minSide = _zSize < _xSize ? _zSize : _xSize;
+            var minSide = zSize < xSize ? zSize : xSize;
 
             var holesCountToCreate = Mathf.FloorToInt(minSide * holesMultiplier);
 
@@ -305,37 +296,37 @@ public class TilesMapGenerator : MonoBehaviour
 
             for (var i = 0; i < holesCountToCreate; i++)
             {
-                var hX = Random.Range(0, _xSize);
-                var hZ = Random.Range(0, _zSize);
+                var hX = Random.Range(0, xSize);
+                var hZ = Random.Range(0, zSize);
                 holesMap = CreateHoles(holesMap, hX, hZ, maxHoleSize, 0);
             }
         }
         //-------------------------------------------------------------
 
         //HEIGHTS CREATING --------------------------------------------
-        if (_heightsCount != GeneratorParametr.None)
+        if (heightsCount != GeneratorParametr.None)
         {
             var heightsMultiplier = 0f;
 
-            if (_heightsCount == GeneratorParametr.Random) _heightsCount = (GeneratorParametr)Random.Range(1, 6);
+            if (heightsCount == GeneratorParametr.Random) heightsCount = (GeneratorParametr)Random.Range(1, 6);
 
-            if (_heightsCount == GeneratorParametr.VeryLow) heightsMultiplier = 0.1f;
-            else if (_heightsCount == GeneratorParametr.Low) heightsMultiplier = 0.2f;
-            else if (_heightsCount == GeneratorParametr.Medium) heightsMultiplier = 0.3f;
-            else if (_heightsCount == GeneratorParametr.High) heightsMultiplier = 0.4f;
-            else if (_heightsCount == GeneratorParametr.VeryHigh) heightsMultiplier = 0.5f;
+            if (heightsCount == GeneratorParametr.VeryLow) heightsMultiplier = 0.1f;
+            else if (heightsCount == GeneratorParametr.Low) heightsMultiplier = 0.2f;
+            else if (heightsCount == GeneratorParametr.Medium) heightsMultiplier = 0.3f;
+            else if (heightsCount == GeneratorParametr.High) heightsMultiplier = 0.4f;
+            else if (heightsCount == GeneratorParametr.VeryHigh) heightsMultiplier = 0.5f;
 
             var heightsSizesMultiplier = 0f;
 
-            if (_heightsSizes == GeneratorParametr.Random || _heightsSizes == GeneratorParametr.None) _heightsSizes = (GeneratorParametr)Random.Range(1, 6);
+            if (heightsSizes == GeneratorParametr.Random || heightsSizes == GeneratorParametr.None) heightsSizes = (GeneratorParametr)Random.Range(1, 6);
 
-            if (_heightsSizes == GeneratorParametr.VeryLow) heightsSizesMultiplier = 0.1f;
-            else if (_heightsSizes == GeneratorParametr.Low) heightsSizesMultiplier = 0.25f;
-            else if (_heightsSizes == GeneratorParametr.Medium) heightsSizesMultiplier = 0.5f;
-            else if (_heightsSizes == GeneratorParametr.High) heightsSizesMultiplier = 0.85f;
-            else if (_heightsSizes == GeneratorParametr.VeryHigh) heightsSizesMultiplier = 1f;
+            if (heightsSizes == GeneratorParametr.VeryLow) heightsSizesMultiplier = 0.1f;
+            else if (heightsSizes == GeneratorParametr.Low) heightsSizesMultiplier = 0.25f;
+            else if (heightsSizes == GeneratorParametr.Medium) heightsSizesMultiplier = 0.5f;
+            else if (heightsSizes == GeneratorParametr.High) heightsSizesMultiplier = 0.85f;
+            else if (heightsSizes == GeneratorParametr.VeryHigh) heightsSizesMultiplier = 1f;
 
-            var minSide = _zSize < _xSize ? _zSize : _xSize;
+            var minSide = zSize < xSize ? zSize : xSize;
 
             var heightsCountToCreate = Mathf.FloorToInt(minSide * heightsMultiplier);
 
@@ -343,30 +334,30 @@ public class TilesMapGenerator : MonoBehaviour
 
             var maxHeightInTiles = 0;
 
-            if (_maxHeight == GeneratorParametr.Random || _maxHeight == GeneratorParametr.None) _maxHeight = (GeneratorParametr)Random.Range(1, 6);
+            if (maxHeight == GeneratorParametr.Random || maxHeight == GeneratorParametr.None) maxHeight = (GeneratorParametr)Random.Range(1, 6);
 
-            if (_maxHeight == GeneratorParametr.VeryLow) maxHeightInTiles = 1;
-            else if (_maxHeight == GeneratorParametr.Low) maxHeightInTiles = 2;
-            else if (_maxHeight == GeneratorParametr.Medium) maxHeightInTiles = 3;
-            else if (_maxHeight == GeneratorParametr.High) maxHeightInTiles = 4;
-            else if (_maxHeight == GeneratorParametr.VeryHigh) maxHeightInTiles = 5;
+            if (maxHeight == GeneratorParametr.VeryLow) maxHeightInTiles = 1;
+            else if (maxHeight == GeneratorParametr.Low) maxHeightInTiles = 2;
+            else if (maxHeight == GeneratorParametr.Medium) maxHeightInTiles = 3;
+            else if (maxHeight == GeneratorParametr.High) maxHeightInTiles = 4;
+            else if (maxHeight == GeneratorParametr.VeryHigh) maxHeightInTiles = 5;
 
             for (var i = 0; i < heightsCountToCreate; i++)
             {
-                var hX = Random.Range(0, _xSize);
-                var hZ = Random.Range(0, _zSize);
-                heightMap = RaiseHeight(heightMap, hX, hZ, maxHeightSize, maxHeightInTiles, holesMap, 0, _heightSmoothing);
+                var hX = Random.Range(0, xSize);
+                var hZ = Random.Range(0, zSize);
+                heightMap = RaiseHeight(heightMap, hX, hZ, maxHeightSize, maxHeightInTiles, holesMap, 0, heightSmoothing);
             }
         }
 
         //-------------------------------------------------------------
 
-        //HEIGHT SMOOTING----------------------------------------------
-        if (_heightSmoothing == EnableDisable.Enabled)
+        //HEIGHT SMOOTHING----------------------------------------------
+        if (heightSmoothing == EnableDisable.Enabled)
         {
-            for (var i = 0; i < _xSize; i++)
+            for (var i = 0; i < xSize; i++)
             {
-                for (var a = 0; a < _zSize; a++)
+                for (var a = 0; a < zSize; a++)
                 {
                     SmoothHeights(heightMap, i, a);
                 }
@@ -376,17 +367,17 @@ public class TilesMapGenerator : MonoBehaviour
 
         //ROADS--------------------------------------------------------
         var roadsSumHeights = 0f;
-        for(var i = 0; i<_xSize; i++)
+        for(var i = 0; i<xSize; i++)
         {
-            for(var a = 0; a<_zSize; a++)
+            for(var a = 0; a<zSize; a++)
             {
                 roadsSumHeights += heightMap[i, a];
             }
         }
 
-        var roadsHeight = Mathf.CeilToInt(roadsSumHeights / (_xSize * _zSize));
+        var roadsHeight = Mathf.CeilToInt(roadsSumHeights / (xSize * zSize));
 
-        if (_POIs == EnableDisable.Enabled && roads == EnableDisable.Enabled)
+        if (contentOnMap == EnableDisable.Enabled && roads == EnableDisable.Enabled)
         {
             for (var i = 0; i < pointsOfInterest.Count; i++)
             {
@@ -395,10 +386,10 @@ public class TilesMapGenerator : MonoBehaviour
 
                 holesMap[xPos, zPos] = false;
 
-                if (xPos + 1 < _xSize)
+                if (xPos + 1 < xSize)
                 {
                     heightMap[xPos + 1, zPos] = roadsHeight;
-                    if (zPos + 1 < _zSize)
+                    if (zPos + 1 < zSize)
                     {
                         heightMap[xPos + 1, zPos + 1] = roadsHeight;
                     }
@@ -407,14 +398,14 @@ public class TilesMapGenerator : MonoBehaviour
                         heightMap[xPos + 1, zPos - 1] = roadsHeight;
                     }
                 }
-                if (zPos + 1 < _zSize)
+                if (zPos + 1 < zSize)
                 {
                     heightMap[xPos, zPos + 1] = roadsHeight;
                 }
                 if (xPos - 1 > 0)
                 {
                     heightMap[xPos - 1, zPos] = roadsHeight;
-                    if (zPos + 1 < _zSize)
+                    if (zPos + 1 < zSize)
                     {
                         heightMap[xPos - 1, zPos + 1] = roadsHeight;
                     }
@@ -429,9 +420,9 @@ public class TilesMapGenerator : MonoBehaviour
                 }
             }
 
-            for (var i = 0; i < _xSize; i++)
+            for (var i = 0; i < xSize; i++)
             {
-                for (var a = 0; a < _zSize; a++)
+                for (var a = 0; a < zSize; a++)
                 {
                     if (roadsMap[i, a])
                     {
@@ -444,11 +435,11 @@ public class TilesMapGenerator : MonoBehaviour
         //-------------------------------------------------------------
 
         //LADDERS------------------------------------------------------
-        if (_ladders == EnableDisable.Enabled)
+        if (ladders == EnableDisable.Enabled)
         {
-            for (var i = 0; i < _xSize; i++)
+            for (var i = 0; i < xSize; i++)
             {
-                for (var a = 0; a < _zSize; a++)
+                for (var a = 0; a < zSize; a++)
                 {
                     if (!holesMap[i, a])
                     {
@@ -459,7 +450,7 @@ public class TilesMapGenerator : MonoBehaviour
                         var up = false;
                         var down = false;
 
-                        if (i + 1 < _xSize)
+                        if (i + 1 < xSize)
                         {
                             if (!holesMap[i + 1, a] && !laddersMap[i + 1, a])
                             {
@@ -473,7 +464,7 @@ public class TilesMapGenerator : MonoBehaviour
                                 if (heightMap[a, i - 1] == (myHeight + 1)) left = true;
                             }
                         }
-                        if (a + 1 < _zSize)
+                        if (a + 1 < zSize)
                         {
                             if (!holesMap[i, a + 1] && !laddersMap[i, a + 1])
                             {
@@ -506,7 +497,7 @@ public class TilesMapGenerator : MonoBehaviour
                         }
                         if (!right && left && !down && !up) //Ladder to left
                         {
-                            if (i + 1 < _xSize)
+                            if (i + 1 < xSize)
                             {
                                 if (heightMap[a, i + 1] == myHeight)
                                 {
@@ -520,7 +511,7 @@ public class TilesMapGenerator : MonoBehaviour
                         }
                         if (!right && !left && down && !up) //Ladder to down
                         {
-                            if (a + 1 < _zSize)
+                            if (a + 1 < zSize)
                             {
                                 if (heightMap[a + 1, i] == myHeight)
                                 {
@@ -549,11 +540,11 @@ public class TilesMapGenerator : MonoBehaviour
 
                         if (needSpawn)
                         {
-                            if (Random.Range(0, 100) < _laddersChance)
+                            if (Random.Range(0, 100) < laddersChance)
                             {
                                 laddersMap[i, a] = true;
                                 var ladder = Instantiate(laddersTiles[Random.Range(0, laddersTiles.Count)], map.transform, true);
-                                ladder.transform.position = new Vector3(i * 2f, _mapPos.y + (heightMap[a, i] * 2f), a * 2f);
+                                ladder.transform.position = new Vector3(i * 2f, mapPos.y + (heightMap[a, i] * 2f), a * 2f);
                                 ladder.transform.localEulerAngles = new Vector3(0f, y, 0f);
                             }
                         }
@@ -567,9 +558,9 @@ public class TilesMapGenerator : MonoBehaviour
         var x = 0f;
         var z = 0f;
 
-        for (var i = 0; i < _xSize; i++)
+        for (var i = 0; i < xSize; i++)
         {
-            for (var a = 0; a < _zSize; a++)
+            for (var a = 0; a < zSize; a++)
             {
                 if (!holesMap[i, a])
                 {
@@ -584,30 +575,30 @@ public class TilesMapGenerator : MonoBehaviour
         //-------------------------------------------------------------
 
         //POIS SPAWNING------------------------------------------------
-        if (_POIs == EnableDisable.Enabled)
+        if (contentOnMap == EnableDisable.Enabled)
         {
             for (var i = 0; i < pointsOfInterest.Count; i++)
             {
                 var xPos = pointsOfInterest[i][1];
                 var zPos = pointsOfInterest[i][0];
-                GameObject poiObj = null;
+                GameObject poiObj;
                 if (i == 0) poiObj = Instantiate(startTile);
                 else if (i == 1) poiObj = Instantiate(endTile);
                 else poiObj = Instantiate(interestPointTiles[Random.Range(0, interestPointTiles.Count)]);
-                poiObj.transform.position = new Vector3(zPos * 2f, _mapPos.y + (heightMap[xPos, zPos] * 2f), xPos * 2f);
+                poiObj.transform.position = new Vector3(zPos * 2f, mapPos.y + (heightMap[xPos, zPos] * 2f), xPos * 2f);
                 poiObj.transform.parent = map.transform;
 
                 xPos = pointsOfInterest[i][0];
                 zPos = pointsOfInterest[i][1];
 
-                if (xPos + 1 < _xSize)
+                if (xPos + 1 < xSize)
                 {
                     if (roadsMap[xPos + 1, zPos])
                     {
                         poiObj.transform.localEulerAngles = new Vector3(0f, -90f, 0f);
                     }
                 }
-                if (zPos + 1 < _zSize)
+                if (zPos + 1 < zSize)
                 {
                     if (roadsMap[xPos, zPos + 1])
                     {
@@ -633,13 +624,13 @@ public class TilesMapGenerator : MonoBehaviour
         //-------------------------------------------------------------
 
         //ROADS SPAWNING---------------------------------------------
-        if (_POIs == EnableDisable.Enabled && _roads == EnableDisable.Enabled)
+        if (contentOnMap == EnableDisable.Enabled && roads == EnableDisable.Enabled)
         {
             var bridgeNumber = -1;
             if (roadBridges.Count > 0) bridgeNumber = Random.Range(0, roadBridges.Count);
-            for (var i = 0; i < _xSize; i++)
+            for (var i = 0; i < xSize; i++)
             {
-                for (var a = 0; a < _zSize; a++)
+                for (var a = 0; a < zSize; a++)
                 {
                     if (roadsMap[i, a])
                     {
@@ -651,7 +642,7 @@ public class TilesMapGenerator : MonoBehaviour
                         var up = false;
                         var down = false;
 
-                        if (xPos + 1 < _xSize) //RightTile checking
+                        if (xPos + 1 < xSize) //RightTile checking
                         {
                             if (roadsMap[xPos + 1, zPos] && !holesMap[a, i + 1]) //RightTile road +
                             {
@@ -665,7 +656,7 @@ public class TilesMapGenerator : MonoBehaviour
                                 left = true;
                             }
                         }
-                        if (zPos + 1 < _zSize)
+                        if (zPos + 1 < zSize)
                         {
                             if (roadsMap[xPos, zPos + 1] && !holesMap[a + 1, i])
                             {
@@ -682,21 +673,21 @@ public class TilesMapGenerator : MonoBehaviour
 
                         if (up && down && !IsHole(i, a, holesMap))
                         {
-                            if (Random.Range(0, 100) < (100 - _roadsFilling))
+                            if (Random.Range(0, 100) < (100 - roadsFilling))
                                 roadsMap[i, a] = false;
                         }
                         else if (left && right && !IsHole(i,a,holesMap))
                         {
-                            if (Random.Range(0, 100) < (100 - _roadsFilling))
+                            if (Random.Range(0, 100) < (100 - roadsFilling))
                                 roadsMap[i, a] = false;
                         }
                     }
                 }
             }
 
-            for (var i = 0; i < _xSize; i++)
+            for (var i = 0; i < xSize; i++)
             {
-                for (var a = 0; a < _zSize; a++)
+                for (var a = 0; a < zSize; a++)
                 {
                     if (roadsMap[i, a] && RoadIsNotPOI(i, a, pointsOfInterest))
                     {
@@ -712,7 +703,7 @@ public class TilesMapGenerator : MonoBehaviour
                         var up = false;
                         var down = false;
 
-                        if (xPos + 1 < _xSize) //RightTile checking
+                        if (xPos + 1 < xSize) //RightTile checking
                         {
                             if (roadsMap[xPos + 1, zPos]) //RightTile road +
                             {
@@ -726,7 +717,7 @@ public class TilesMapGenerator : MonoBehaviour
                                 left = true;
                             }
                         }
-                        if (zPos + 1 < _zSize)
+                        if (zPos + 1 < zSize)
                         {
                             if (roadsMap[xPos, zPos + 1])
                             {
@@ -778,9 +769,9 @@ public class TilesMapGenerator : MonoBehaviour
                                 if (RoadIsNotPOI(i + 1, a, pointsOfInterest) && RoadIsNotPOI(i - 1, a, pointsOfInterest))
                                 {
                                     road = Instantiate(roadStraight);
-                                    if (Random.Range(0, 100) < _roadsFenceChance)
+                                    if (Random.Range(0, 100) < roadsFenceChance)
                                         road.transform.GetChild(1).gameObject.SetActive(true);
-                                    if (Random.Range(0, 100) < _roadsFenceChance)
+                                    if (Random.Range(0, 100) < roadsFenceChance)
                                         road.transform.GetChild(2).gameObject.SetActive(true);
 
                                     yEulers = 90f;
@@ -809,9 +800,9 @@ public class TilesMapGenerator : MonoBehaviour
                                 if (RoadIsNotPOI(i + 1, a, pointsOfInterest) && RoadIsNotPOI(i - 1, a, pointsOfInterest))
                                 {
                                     road = Instantiate(roadStraight);
-                                    if (Random.Range(0, 100) < _roadsFenceChance)
+                                    if (Random.Range(0, 100) < roadsFenceChance)
                                         road.transform.GetChild(1).gameObject.SetActive(true);
-                                    if (Random.Range(0, 100) < _roadsFenceChance)
+                                    if (Random.Range(0, 100) < roadsFenceChance)
                                         road.transform.GetChild(2).gameObject.SetActive(true);
 
                                     yEulers = 0f;
@@ -897,7 +888,7 @@ public class TilesMapGenerator : MonoBehaviour
 
                         if (spawned)
                         {
-                            road.transform.position = new Vector3(i * 2f, _mapPos.y + (heightMap[a, i] * 2f), a * 2f);
+                            road.transform.position = new Vector3(i * 2f, mapPos.y + (heightMap[a, i] * 2f), a * 2f);
                             road.transform.parent = map.transform;
                             road.transform.localEulerAngles = new Vector3(0f, yEulers, 0f);
                         }
@@ -912,17 +903,17 @@ public class TilesMapGenerator : MonoBehaviour
         _lastMap = map;
     }
 
-    private void AdditionalFilling(GeneratorParametr _additionalFilling, int sizeOfMap)
+    private void AdditionalFilling(int sizeOfMap)
     {
 
-        if (_additionalFilling == GeneratorParametr.Random) _additionalFilling = (GeneratorParametr)Random.Range(1, 6);
-        if (_additionalFilling != GeneratorParametr.None)
+        if (additionalFilling == GeneratorParametr.Random) additionalFilling = (GeneratorParametr)Random.Range(1, 6);
+        if (additionalFilling != GeneratorParametr.None)
         {
-            var countsCycle = (int)((sizeOfMap/5f)) * (int)_additionalFilling;
+            var countsCycle = (int)(sizeOfMap/5f) * (int)additionalFilling;
 
-            var circlesRange = (sizeOfMap/6f) + ((sizeOfMap / 30f) * (int)_additionalFilling);
+            var circlesRange = sizeOfMap/6f + sizeOfMap / 30f * (int)additionalFilling;
 
-            var objectsCounts = sizeOfMap/2.5f + ((sizeOfMap/6) * (int)_additionalFilling);
+            var objectsCounts = sizeOfMap/2.5f + sizeOfMap/6 * (int)additionalFilling;
 
             Debug.Log(countsCycle + " " + circlesRange + " " + objectsCounts);
 
@@ -1006,7 +997,7 @@ public class TilesMapGenerator : MonoBehaviour
             }
 
 
-            for (var i = 0; i < ((objectsCounts * countsCycle)*(int)_additionalFilling); i++) //Grass
+            for (var i = 0; i < ((objectsCounts * countsCycle)*(int)additionalFilling); i++) //Grass
             {
                 RaycastHit hit;
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
@@ -1077,11 +1068,7 @@ public class TilesMapGenerator : MonoBehaviour
         {
             try
             {
-                if (!roadsMap[z, x] && !laddersMap[x, z])
-                {
-                    return true;
-                }
-                else return false;
+                return !roadsMap[z, x] && !laddersMap[x, z];
             }
             catch (Exception e)
             {
@@ -1097,28 +1084,26 @@ public class TilesMapGenerator : MonoBehaviour
     {
         var minDistanceWeHas = -1f;
 
-        for (var i = 0; i < otherPoses.Count; i++)
+        foreach (var otherPose in otherPoses)
         {
-            var distance = Vector3.Distance(posToCheck, otherPoses[i]);
+            var distance = Vector3.Distance(posToCheck, otherPose);
             if (distance < minDistanceWeHas || minDistanceWeHas < 0f) minDistanceWeHas = distance;
         }
 
-        if (minDistanceWeHas > minDistance || minDistanceWeHas < 0f) return true;
-        else return false;
+        return minDistanceWeHas > minDistance || minDistanceWeHas < 0f;
     }
 
     private bool isPosInRangeOf(Vector3 posToCheck, List<Vector3> otherPoses, float needDistance)
     {
         var minDistanceWeHas = -1f;
 
-        for (var i = 0; i < otherPoses.Count; i++)
+        foreach (var otherPose in otherPoses)
         {
-            var distance = Vector3.Distance(posToCheck, otherPoses[i]);
+            var distance = Vector3.Distance(posToCheck, otherPose);
             if (distance < minDistanceWeHas || minDistanceWeHas < 0f) minDistanceWeHas = distance;
         }
 
-        if (minDistanceWeHas < needDistance) return true;
-        else return false;
+        return minDistanceWeHas < needDistance;
     }
 
     private bool RoadIsNotPOI(int x, int z, List<int[]> poi)
@@ -1137,18 +1122,19 @@ public class TilesMapGenerator : MonoBehaviour
         return roadIsNotPoi;
     }
 
-    private void SpawnTile(int _i, int _a, float _x, float _z, Vector3 _mapPos, Transform _parent, bool _isRoad, int _height)
+    private void SpawnTile(int i, int a, float x, float z, Vector3 mapPos, Transform parent, bool isRoad, int height)
     {
-        var newPart = Instantiate(tiles[Random.Range(0,tiles.Count)], _parent, true);
-        var posY = _mapPos.y;
+        var newPart = Instantiate(tiles[Random.Range(0,tiles.Count)], parent, true);
+        newPart.name = string.Concat(newPart.name.TakeWhile(c => c != '(')) + $" ({i:+00;-00} x {a:+00;-00})";
+        var posY = mapPos.y;
 
-        var heightForThisTile = _height;
+        var heightForThisTile = height;
 
         if (heightForThisTile > 0)
         {
             posY += (heightForThisTile * 2f);
         }
-        newPart.transform.position = new Vector3(_mapPos.x + _x, posY, _mapPos.z + _z);
+        newPart.transform.position = new Vector3(mapPos.x + x, posY, mapPos.z + z);
 
         if (heightForThisTile > 0)
         {
@@ -1175,76 +1161,78 @@ public class TilesMapGenerator : MonoBehaviour
         }
     }
 
-    private int[,] SmoothHeights(int[,] curentMap, int _x, int _z)
+    private int[,] SmoothHeights(int[,] currentMap, int x, int z)
     {
-        var myHeight = curentMap[_x, _z];
+        var myHeight = currentMap[x, z];
         var heightDifference = 0;
 
-        if (_z - 1 > 0)
+        if (z - 1 > 0)
         {
-            var difference = curentMap[_x, _z - 1] - myHeight;
+            var difference = currentMap[x, z - 1] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
-        if (_z + 1 < curentMap.GetLength(1))
+        if (z + 1 < currentMap.GetLength(1))
         {
-            var difference = curentMap[_x, _z + 1] - myHeight;
+            var difference = currentMap[x, z + 1] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
-        if (_x - 1 > 0)
+        if (x - 1 > 0)
         {
-            var difference = curentMap[_x - 1, _z] - myHeight;
+            var difference = currentMap[x - 1, z] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
-        if (_x + 1 < curentMap.GetLength(0))
+        if (x + 1 < currentMap.GetLength(0))
         {
-            var difference = curentMap[_x + 1, _z] - myHeight;
+            var difference = currentMap[x + 1, z] - myHeight;
             if (difference > heightDifference) heightDifference = difference;
         }
 
         if (heightDifference > 1)
-            curentMap[_x, _z] = myHeight + 1;
+        {
+            currentMap[x, z] = myHeight + 1;
+        }
 
-        return curentMap;
+        return currentMap;
     }
 
-    private int[,] SmoothHeightDown(int[,] curentMap, int _x, int _z)
+    private int[,] SmoothHeightDown(int[,] currentMap, int x, int z)
     {
-        var myHeight = curentMap[_x, _z];
+        var myHeight = currentMap[x, z];
 
-        if (_z - 1 > 0)
+        if (z - 1 > 0)
         {
-            if (curentMap[_x, _z - 1] > myHeight)
+            if (currentMap[x, z - 1] > myHeight)
             {
-                curentMap[_x, _z - 1] = Random.Range(myHeight, myHeight + 2);
-                curentMap = SmoothHeightDown(curentMap, _x, _z - 1);
+                currentMap[x, z - 1] = Random.Range(myHeight, myHeight + 2);
+                currentMap = SmoothHeightDown(currentMap, x, z - 1);
             }
         }
-        if (_z + 1 < curentMap.GetLength(1))
+        if (z + 1 < currentMap.GetLength(1))
         {
-            if (curentMap[_x, _z + 1] > myHeight)
+            if (currentMap[x, z + 1] > myHeight)
             {
-                curentMap[_x, _z + 1] = Random.Range(myHeight, myHeight + 2);
-                curentMap = SmoothHeightDown(curentMap, _x, _z + 1);
+                currentMap[x, z + 1] = Random.Range(myHeight, myHeight + 2);
+                currentMap = SmoothHeightDown(currentMap, x, z + 1);
             }
         }
-        if (_x - 1 > 0)
+        if (x - 1 > 0)
         {
-            if (curentMap[_x-1, _z] > myHeight)
+            if (currentMap[x-1, z] > myHeight)
             {
-                curentMap[_x-1, _z] = Random.Range(myHeight, myHeight + 2);
-                curentMap = SmoothHeightDown(curentMap, _x - 1, _z);
+                currentMap[x-1, z] = Random.Range(myHeight, myHeight + 2);
+                currentMap = SmoothHeightDown(currentMap, x - 1, z);
             }
         }
-        if (_x + 1 < curentMap.GetLength(0))
+        if (x + 1 < currentMap.GetLength(0))
         {
-            if (curentMap[_x + 1, _z] > myHeight)
+            if (currentMap[x + 1, z] > myHeight)
             {
-                curentMap[_x + 1, _z] = Random.Range(myHeight, myHeight + 2);
-                curentMap = SmoothHeightDown(curentMap, _x + 1, _z);
+                currentMap[x + 1, z] = Random.Range(myHeight, myHeight + 2);
+                currentMap = SmoothHeightDown(currentMap, x + 1, z);
             }
         }
 
-        return curentMap;
+        return currentMap;
     }
 
     private int[,] RaiseHeight(int[,] currentMap, int x, int z, int maxSize, int maxHeight, bool[,] holesMap, int iteration, EnableDisable hs)
@@ -1287,11 +1275,11 @@ public class TilesMapGenerator : MonoBehaviour
         return currentMap;
     }
 
-    private bool[,] CreateHoles(bool[,] curentMap, int _x, int _z, int maxSize, int iteration)
+    private bool[,] CreateHoles(bool[,] currentMap, int x, int z, int maxSize, int iteration)
     {
-        if (!curentMap[_x, _z])
+        if (!currentMap[x, z])
         {
-            curentMap[_x, _z] = true;
+            currentMap[x, z] = true;
 
             var chanceForAdditionalHole = 100f;
 
@@ -1306,96 +1294,81 @@ public class TilesMapGenerator : MonoBehaviour
 
             if (iteration < maxSize)
             {
-                if (_z - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
+                if (z - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
                 {
-                    curentMap = CreateHoles(curentMap, _x, _z - 1, maxSize, iteration);
+                    currentMap = CreateHoles(currentMap, x, z - 1, maxSize, iteration);
                 }
-                if (_z + 1 < curentMap.GetLength(1) && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
+                if (z + 1 < currentMap.GetLength(1) && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
                 {
-                    curentMap = CreateHoles(curentMap, _x, _z + 1, maxSize, iteration);
+                    currentMap = CreateHoles(currentMap, x, z + 1, maxSize, iteration);
                 }
-                if (_x - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
+                if (x - 1 > 0 && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
                 {
-                    curentMap = CreateHoles(curentMap, _x - 1, _z, maxSize, iteration);
+                    currentMap = CreateHoles(currentMap, x - 1, z, maxSize, iteration);
                 }
-                if (_x + 1 < curentMap.GetLength(0) && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
+                if (x + 1 < currentMap.GetLength(0) && Random.Range(0, 100) < (chanceForAdditionalHole * Random.Range(0.75f, 1f)))
                 {
-                    curentMap = CreateHoles(curentMap, _x + 1, _z, maxSize, iteration);
+                    currentMap = CreateHoles(currentMap, x + 1, z, maxSize, iteration);
                 }
             }
         }
 
-        return curentMap;
+        return currentMap;
     }
 
-    private bool IsNeighboringHigher(int[,] curentMap, int _x, int _z)
+    private bool IsNeighboringHigher(int[,] currentMap, int x, int z)
     {
         var isHigher = false;
-        var myHeight = curentMap[_x, _z];
-        if (_z - 1 > 0)
+        var myHeight = currentMap[x, z];
+        if (z - 1 > 0)
         {
-            if (curentMap[_x, _z - 1] > myHeight) isHigher = true;
+            if (currentMap[x, z - 1] > myHeight) isHigher = true;
         }
-        if (_z + 1 < curentMap.GetLength(1))
+        if (z + 1 < currentMap.GetLength(1))
         {
-            if (curentMap[_x, _z + 1] > myHeight) isHigher = true;
+            if (currentMap[x, z + 1] > myHeight) isHigher = true;
         }
-        if (_x - 1 > 0)
+        if (x - 1 > 0)
         {
-            if (curentMap[_x - 1, _z] > myHeight) isHigher = true;
+            if (currentMap[x - 1, z] > myHeight) isHigher = true;
         }
-        if (_x + 1 < curentMap.GetLength(0))
+        if (x + 1 < currentMap.GetLength(0))
         {
-            if (curentMap[_x + 1, _z] > myHeight) isHigher = true;
+            if (currentMap[x + 1, z] > myHeight) isHigher = true;
         }
         return isHigher;
     }
 
-    private bool IsNeighboringHole(int _x, int _z, bool[,] curentHoles)
+    private bool IsNeighboringHole(int x, int z, bool[,] currentHoles)
     {
         var isHole = false;
 
-        if (_z - 1 > 0)
+        if (z - 1 > 0)
         {
-            if (curentHoles[_x,_z-1]) isHole = true;
+            if (currentHoles[x,z-1]) isHole = true;
         }
-        if (_z + 1 < curentHoles.GetLength(1))
+        if (z + 1 < currentHoles.GetLength(1))
         {
-            if (curentHoles[_x, _z + 1]) isHole = true;
+            if (currentHoles[x, z + 1]) isHole = true;
         }
-        if (_x - 1 > 0)
+        if (x - 1 > 0)
         {
-            if (curentHoles[_x - 1, _z]) isHole = true;
+            if (currentHoles[x - 1, z]) isHole = true;
         }
-        if (_x + 1 < curentHoles.GetLength(0))
+        if (x + 1 < currentHoles.GetLength(0))
         {
-            if (curentHoles[_x + 1, _z]) isHole = true;
+            if (currentHoles[x + 1, z]) isHole = true;
         }
 
         return isHole;
     }
 
-    private bool IsHole(int _x, int _z, bool[,] _holes)
+    private bool IsHole(int x, int z, bool[,] holes)
     {
-        if(_z >= 0 && _z < _holes.GetLength(0) && _x >= 0 && _x < _holes.GetLength(1))
+        if(z >= 0 && z < holes.GetLength(0) && x >= 0 && x < holes.GetLength(1))
         {
-            return _holes[_z, _x];
+            return holes[z, x];
         }
         return false;
-    }
-    public enum GeneratorParametr
-    {
-        None,
-        VeryLow,
-        Low,
-        Medium,
-        High,
-        VeryHigh,
-        Random
-    }
-    public enum EnableDisable
-    {
-        Enabled,
-        Disabled
     }
 }
