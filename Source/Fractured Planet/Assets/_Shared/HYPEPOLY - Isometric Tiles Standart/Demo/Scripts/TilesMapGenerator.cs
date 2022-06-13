@@ -184,7 +184,6 @@ public class TilesMapGenerator : MonoBehaviour
                         {
                             pointsOfInterest.Add(newPoi);
                             roadsMap[newPoi[0], newPoi[1]] = true;
-                            trys = 0;
                             break;
                         }
                     }
@@ -219,7 +218,7 @@ public class TilesMapGenerator : MonoBehaviour
 
                                 var down = Random.Range(0, 100) < 50;
 
-                                var left = true;
+                                bool left;
                                 if (pointsOfInterest[i][1] > pointsOfInterest[a][1])
                                 {
                                     if (pointsOfInterest[i][0] < pointsOfInterest[a][0])
