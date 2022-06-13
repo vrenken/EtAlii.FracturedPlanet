@@ -929,11 +929,10 @@ public class TilesMapGenerator : MonoBehaviour
 
                 for (var i = 0; i < objectsCounts; i++) //Trees
                 {
-                    RaycastHit hit;
                     var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
-                    if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                    if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,treesPoints,1.5f) && isPosNotInPOI(hit.point,_lastRoadsMap,_lastLaddersMap))
                         {
@@ -946,11 +945,10 @@ public class TilesMapGenerator : MonoBehaviour
 
                 for (var i = 0; i < objectsCounts/3; i++) //Bushs
                 {
-                    RaycastHit hit;
                     var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
-                    if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                    if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bushsPoints, 2f) && isPosInRangeOf(hit.point,treesPoints,4f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                         {
@@ -963,11 +961,10 @@ public class TilesMapGenerator : MonoBehaviour
 
                 for (var i = 0; i < objectsCounts * 4; i++) //Grass
                 {
-                    RaycastHit hit;
                     var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
-                    if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                    if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,grassPoint, 0.25f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                         {
@@ -980,11 +977,10 @@ public class TilesMapGenerator : MonoBehaviour
 
                 for (var i = 0; i < objectsCounts; i++) //Little stones
                 {
-                    RaycastHit hit;
                     var rayPos = circleTreesPos;
                     rayPos.x += Random.Range(-circlesRange, circlesRange);
                     rayPos.z += Random.Range(-circlesRange, circlesRange);
-                    if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                    if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                     {
                         if (hit.transform.name.Contains("Tile") && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                         {
@@ -998,9 +994,8 @@ public class TilesMapGenerator : MonoBehaviour
 
             for (var i = 0; i < ((objectsCounts * countsCycle)*(int)additionalFilling); i++) //Grass
             {
-                RaycastHit hit;
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
-                if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, grassPoint, 0.25f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
@@ -1013,9 +1008,8 @@ public class TilesMapGenerator : MonoBehaviour
 
             for (var i = 0; i < objectsCounts / 2; i++) //big stones
             {
-                RaycastHit hit;
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
-                if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
@@ -1028,9 +1022,8 @@ public class TilesMapGenerator : MonoBehaviour
 
             for (var i = 0; i < objectsCounts / 2; i++) //branchs
             {
-                RaycastHit hit;
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
-                if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
@@ -1043,9 +1036,8 @@ public class TilesMapGenerator : MonoBehaviour
 
             for (var i = 0; i < objectsCounts / 2; i++) //logs
             {
-                RaycastHit hit;
                 var rayPos = new Vector3(Random.Range(0f, sizeOfMap * 2f), 15f, Random.Range(0f, sizeOfMap * 2f));
-                if (Physics.Raycast(rayPos, Vector3.down, out hit, Mathf.Infinity))
+                if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                 {
                     if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point, bigStonesPoints, 10f) && isPosInRangeOf(hit.point, treesPoints, 8f) && isPosNotInPOI(hit.point, _lastRoadsMap, _lastLaddersMap))
                     {
