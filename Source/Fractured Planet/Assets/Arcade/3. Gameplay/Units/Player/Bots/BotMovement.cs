@@ -61,7 +61,7 @@ public class BotMovement : MonoBehaviour
         // }
         //moveVector = new Vector3(0, verticalVel * .2f * Time.deltaTime, 0);
         //controller.Move(moveVector);
-        controller.SimpleMove(navMeshAgent.velocity.normalized * Speed * 10f);
+        controller.SimpleMove(navMeshAgent.velocity.normalized * (Speed * 10f));
     }
 
  //    private void PlayerMoveAndRotation()

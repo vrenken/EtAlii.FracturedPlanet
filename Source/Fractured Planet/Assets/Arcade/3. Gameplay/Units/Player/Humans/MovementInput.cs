@@ -80,7 +80,7 @@ public class MovementInput : MonoBehaviour
         // }
 
 
-        controller.SimpleMove(movement.normalized * Speed * 10f);
+        controller.SimpleMove(movement.normalized * (Speed * 10f));
 
         // moveVector = new Vector3(0, verticalVel * .2f * Time.deltaTime, 0);
         // controller.Move(moveVector);
