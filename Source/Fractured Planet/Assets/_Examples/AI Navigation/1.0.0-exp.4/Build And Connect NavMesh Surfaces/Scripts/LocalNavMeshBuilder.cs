@@ -35,6 +35,7 @@ namespace Unity.AI.Navigation.Samples
                 UpdateNavMesh(true);
                 yield return _operation;
             }
+            // ReSharper disable once IteratorNeverReturns
         }
 
         private void OnEnable()

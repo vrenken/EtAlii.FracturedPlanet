@@ -31,16 +31,23 @@ namespace Unity.AI.Navigation.Samples
                 if (agent.isOnOffMeshLink)
                 {
                     if (m_Method == OffMeshLinkMoveMethod.NormalSpeed)
+                    {
                         yield return StartCoroutine(NormalSpeed(agent));
+                    }
                     else if (m_Method == OffMeshLinkMoveMethod.Parabola)
+                    {
                         yield return StartCoroutine(Parabola(agent, 2.0f, 0.5f));
+                    }
                     else if (m_Method == OffMeshLinkMoveMethod.Curve)
+                    {
                         yield return StartCoroutine(Curve(agent, 0.5f));
+                    }
                     agent.CompleteOffMeshLink();
                 }
 
                 yield return null;
             }
+            // ReSharper disable once IteratorNeverReturns
         }
 
         private IEnumerator NormalSpeed(NavMeshAgent agent)

@@ -20,7 +20,7 @@ namespace Unity.AI.Navigation.Samples
         public float m_Power = 2.0f;
         public ExtrudeMethod m_Method = ExtrudeMethod.Vertical;
 
-        private RaycastHit m_HitInfo = new();
+        private RaycastHit m_HitInfo;
 
         private void Start()
         {
@@ -30,7 +30,7 @@ namespace Unity.AI.Navigation.Samples
 
         private void Update()
         {
-            var mainCameraTransform = Camera.main.transform;
+            var mainCameraTransform = Camera.main!.transform;
             var ray = new Ray(mainCameraTransform.position, mainCameraTransform.forward);
             if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
             {
