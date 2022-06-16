@@ -22,18 +22,18 @@ public class UIVirtualButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     {
         OutputButtonStateValue(false);
     }
-    
+
     public void OnPointerClick(PointerEventData eventData)
     {
         OutputButtonClickEvent();
     }
 
-    void OutputButtonStateValue(bool buttonState)
+    private void OutputButtonStateValue(bool buttonState)
     {
         buttonStateOutputEvent.Invoke(buttonState);
     }
 
-    void OutputButtonClickEvent()
+    private void OutputButtonClickEvent()
     {
         buttonClickOutputEvent.Invoke();
     }
