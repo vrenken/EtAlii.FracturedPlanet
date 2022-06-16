@@ -87,7 +87,7 @@ namespace StarterAssets
             {
                 var pathString = new StringBuilder();
                 var currentDirectory = new FileInfo(prefabPath).Directory;
-                while (currentDirectory.Name != "Assets")
+                while (currentDirectory!.Name != "Assets")
                 {
                     pathString.Insert(0, $"/{currentDirectory.Name}");
                     currentDirectory = currentDirectory.Parent;
