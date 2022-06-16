@@ -178,8 +178,9 @@ namespace StarterAssets
         private void GroundedCheck()
         {
             // set sphere position, with offset
-            var spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-                transform.position.z);
+            var position = transform.position;
+            var spherePosition = new Vector3(position.x, position.y - GroundedOffset,
+                position.z);
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
 
@@ -223,7 +224,8 @@ namespace StarterAssets
             if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
             // a reference to the players current horizontal velocity
-            var currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+            var velocity = _controller.velocity;
+            var currentHorizontalSpeed = new Vector3(velocity.x, 0.0f, velocity.z).magnitude;
 
             var speedOffset = 0.1f;
             var inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
@@ -364,8 +366,9 @@ namespace StarterAssets
             else Gizmos.color = transparentRed;
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
+            var position = transform.position;
             Gizmos.DrawSphere(
-                new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
+                new Vector3(position.x, position.y - GroundedOffset, position.z),
                 GroundedRadius);
         }
 
