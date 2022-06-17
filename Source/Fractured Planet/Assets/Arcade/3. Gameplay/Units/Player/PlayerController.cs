@@ -13,12 +13,7 @@ namespace Complete
     {
         public Player player;
 
+        public GameObject CameraRoot;
         public CharacterSkinController characterSkinController;
-
-        private void Start()
-        {
-            characterSkinController = GetComponent<CharacterSkinController>();
-            characterSkinController.ChangeMaterialSettings(player.PlayerNumber);
-        }
     }
 }

@@ -151,9 +151,9 @@ MonoBehaviour:
   mapSize: 10
   holesCount: 6
   holesSizes: 6
-  heightsCount: 0
-  heightsSizes: 0
-  maxHeight: 0
+  heightsCount: 6
+  heightsSizes: 6
+  maxHeight: 6
   heightSmoothing: 1
   additionalFilling: 1
   treesPrefabs:

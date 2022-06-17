@@ -7,7 +7,9 @@ namespace EtAlii.FracturedPlanet.Arcade
     using System.Linq;
     using Cinemachine;
     using Complete;
+    using StarterAssets;
     using UnityEngine;
+    using UnityEngine.InputSystem;
     using UnityEngine.UIElements;
     using Object = UnityEngine.Object;
 
@@ -87,9 +89,25 @@ namespace EtAlii.FracturedPlanet.Arcade
 
             for (var i = 0; i < visiblePlayers.Length; i++)
             {
-                var clearShot = players[i].TrackingCamera.GetComponent<CinemachineClearShot>();
-                clearShot.Follow = players[i].Instance.transform;
-                clearShot.LookAt = players[i].Instance.transform;
+                if (visiblePlayers[i].Type == PlayerType.Human)
+                {
+                    var thirdPersonController = visiblePlayers[i].Instance.GetComponentInChildren<ThirdPersonController>();
+                    thirdPersonController.MainCamera = visiblePlayers[i].Camera;
+                    var playerInput = visiblePlayers[i].Instance.GetComponentInChildren<PlayerInput>();
+                    playerInput.camera = visiblePlayers[i].Camera.GetComponent<Camera>();
+
+                    var clearShot = visiblePlayers[i].TrackingCamera.GetComponent<CinemachineClearShot>();
+                    clearShot.Follow = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
+                    clearShot.LookAt = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
+
+                }
+                else
+                {
+                    var clearShot = visiblePlayers[i].TrackingCamera.GetComponent<CinemachineClearShot>();
+                    clearShot.Follow = visiblePlayers[i].Instance.transform;
+                    clearShot.LookAt = visiblePlayers[i].Instance.transform;
+                }
+
             }
         }
 
