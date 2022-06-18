@@ -6,15 +6,17 @@ In Input System 1.0.2, if the PlayerInput component has Auto Switch enabled, it 
 This is fixed in Input System 1.1.
 For the time-being; this script will disable a PlayerInput's auto switch control schemes; when project is built to mobile.
 */
-
-using UnityEngine;
+namespace Unity.StarterAssets.ThirdPersonController
+{
+    using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
-using UnityEngine.InputSystem;
+    // ReSharper disable once RedundantUsingDirective
+    using UnityEngine.InputSystem;
 #endif
 
-public class MobileDisableAutoSwitchControls : MonoBehaviour
-{
-    
+    public class MobileDisableAutoSwitchControls : MonoBehaviour
+    {
+
 #if ENABLE_INPUT_SYSTEM && (UNITY_IOS || UNITY_ANDROID) && STARTER_ASSETS_PACKAGES_CHECKED
 
     [Header("Target")]
@@ -31,5 +33,6 @@ public class MobileDisableAutoSwitchControls : MonoBehaviour
     }
 
 #endif
-    
+
+    }
 }

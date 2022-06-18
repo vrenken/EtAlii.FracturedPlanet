@@ -1,7 +1,8 @@
-using UnityEngine;
-
-namespace StarterAssets
+namespace Unity.StarterAssets.ThirdPersonController
 {
+    using Unity.StarterAssets.ThirdPersonController.InputSystem;
+    using UnityEngine;
+
     public class UICanvasControllerInput : MonoBehaviour
     {
 

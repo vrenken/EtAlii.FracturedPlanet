@@ -1,13 +1,17 @@
-﻿using UnityEngine;
-#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
-using UnityEngine.InputSystem;
-#endif
+﻿
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
 
-namespace StarterAssets
+namespace Unity.StarterAssets.ThirdPersonController
 {
+    using JetBrains.Annotations;
+    using Unity.StarterAssets.ThirdPersonController.InputSystem;
+    using UnityEngine;
+#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
+    using UnityEngine.InputSystem;
+#endif
+
     [RequireComponent(typeof(CharacterController))]
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
     [RequireComponent(typeof(PlayerInput))]
@@ -362,6 +366,7 @@ namespace StarterAssets
                 GroundedRadius);
         }
 
+        [UsedImplicitly]
         private void OnFootstep(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
@@ -374,6 +379,7 @@ namespace StarterAssets
             }
         }
 
+        [UsedImplicitly]
         private void OnLand(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)

@@ -7,7 +7,7 @@ namespace EtAlii.FracturedPlanet.Arcade
     using System.Linq;
     using Cinemachine;
     using Complete;
-    using StarterAssets;
+    using Unity.StarterAssets.ThirdPersonController;
     using UnityEngine;
     using UnityEngine.InputSystem;
     using UnityEngine.UIElements;
