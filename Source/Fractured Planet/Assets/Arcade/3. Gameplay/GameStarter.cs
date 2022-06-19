@@ -7,7 +7,6 @@ namespace EtAlii.FracturedPlanet.Arcade
     using System.Linq;
     using Cinemachine;
     using Complete;
-    using Unity.StarterAssets.ThirdPersonController;
     using UnityEngine;
     using UnityEngine.InputSystem;
     using UnityEngine.UIElements;
@@ -96,18 +95,15 @@ namespace EtAlii.FracturedPlanet.Arcade
                     var playerInput = visiblePlayers[i].Instance.GetComponentInChildren<PlayerInput>();
                     playerInput.camera = visiblePlayers[i].Camera.GetComponent<Camera>();
 
-                    var clearShot = visiblePlayers[i].TrackingCamera.GetComponent<CinemachineClearShot>();
-                    clearShot.Follow = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
-                    clearShot.LookAt = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
-
                 }
                 else
                 {
-                    var clearShot = visiblePlayers[i].TrackingCamera.GetComponent<CinemachineClearShot>();
-                    clearShot.Follow = visiblePlayers[i].Instance.transform;
-                    clearShot.LookAt = visiblePlayers[i].Instance.transform;
+                    var thirdPersonController = visiblePlayers[i].Instance.GetComponentInChildren<ThirdPersonBotController>();
+                    thirdPersonController.MainCamera = visiblePlayers[i].Camera;
                 }
-
+                var clearShot = visiblePlayers[i].TrackingCamera.GetComponent<CinemachineClearShot>();
+                clearShot.Follow = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
+                clearShot.LookAt = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
             }
         }
 
@@ -176,7 +172,7 @@ namespace EtAlii.FracturedPlanet.Arcade
 
                 Player.ConfigureInstance(player, playerInstance, playerNumber, players.OfType<VisiblePlayer>().Count());
 
-                playerInstance.transform.Translate(0f, 15f, 0f); // Move it up a bit.
+                playerInstance.transform.Translate(0f, 30f, 0f); // Move it up a bit.
                 playerInstance.GetComponent<PlayerController>().player = player;
             }
         }
