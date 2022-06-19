@@ -94,7 +94,6 @@ namespace EtAlii.FracturedPlanet.Arcade
                     thirdPersonController.MainCamera = visiblePlayers[i].Camera;
                     var playerInput = visiblePlayers[i].Instance.GetComponentInChildren<PlayerInput>();
                     playerInput.camera = visiblePlayers[i].Camera.GetComponent<Camera>();
-
                 }
                 else
                 {
