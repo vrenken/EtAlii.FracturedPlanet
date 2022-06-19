@@ -134,7 +134,10 @@ namespace EtAlii.FracturedPlanet
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            _inputMove = new Vector2(navMeshAgent.nextPosition.x, navMeshAgent.nextPosition.z).normalized;
+            var nextPosition = navMeshAgent.nextPosition;
+            _inputMove = new Vector2(nextPosition.x, nextPosition.z).normalized;
+            _inputMoveMagnitude = navMeshAgent.speed;
+            //_inputLook = new Vector2(navMeshAgent.pathEndPosition.)
             JumpAndGravity();
             GroundedCheck();
             Move();
