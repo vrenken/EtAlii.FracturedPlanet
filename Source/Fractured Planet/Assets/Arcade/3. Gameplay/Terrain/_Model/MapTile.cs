@@ -5,6 +5,5 @@ public class MapTile
 {
     public bool HasRoad;
     public bool HasHole;
-    public bool HasLadder;
     public int Height;
 }

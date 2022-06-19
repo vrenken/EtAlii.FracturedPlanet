@@ -55,12 +55,6 @@ public class TilesMapGenerator : MonoBehaviour
     public GameObject roadEnd;
     public List<GameObject> roadBridges;
 
-    [Header("[Ladders on map]")]
-    public EnableDisable ladders;
-    [Range(0, 100)]
-    public int laddersChance;
-    public List<GameObject> laddersTiles;
-
     [Header("Tap this checkbox to generate in play mode")]
     public bool TapToGenerate;
 
@@ -357,26 +351,15 @@ public class TilesMapGenerator : MonoBehaviour
                 heightsCount = (GeneratorParametr)Random.Range(1, 6);
             }
 
-            if (heightsCount == GeneratorParametr.VeryLow)
+            heightsMultiplier = heightsCount switch
             {
-                heightsMultiplier = 0.1f;
-            }
-            else if (heightsCount == GeneratorParametr.Low)
-            {
-                heightsMultiplier = 0.2f;
-            }
-            else if (heightsCount == GeneratorParametr.Medium)
-            {
-                heightsMultiplier = 0.3f;
-            }
-            else if (heightsCount == GeneratorParametr.High)
-            {
-                heightsMultiplier = 0.4f;
-            }
-            else if (heightsCount == GeneratorParametr.VeryHigh)
-            {
-                heightsMultiplier = 0.5f;
-            }
+                GeneratorParametr.VeryLow => 0.1f,
+                GeneratorParametr.Low => 0.2f,
+                GeneratorParametr.Medium => 0.3f,
+                GeneratorParametr.High => 0.4f,
+                GeneratorParametr.VeryHigh => 0.5f,
+                _ => heightsMultiplier
+            };
 
             var heightsSizesMultiplier = 0f;
 
@@ -385,26 +368,15 @@ public class TilesMapGenerator : MonoBehaviour
                 heightsSizes = (GeneratorParametr)Random.Range(1, 6);
             }
 
-            if (heightsSizes == GeneratorParametr.VeryLow)
+            heightsSizesMultiplier = heightsSizes switch
             {
-                heightsSizesMultiplier = 0.1f;
-            }
-            else if (heightsSizes == GeneratorParametr.Low)
-            {
-                heightsSizesMultiplier = 0.25f;
-            }
-            else if (heightsSizes == GeneratorParametr.Medium)
-            {
-                heightsSizesMultiplier = 0.5f;
-            }
-            else if (heightsSizes == GeneratorParametr.High)
-            {
-                heightsSizesMultiplier = 0.85f;
-            }
-            else if (heightsSizes == GeneratorParametr.VeryHigh)
-            {
-                heightsSizesMultiplier = 1f;
-            }
+                GeneratorParametr.VeryLow => 0.1f,
+                GeneratorParametr.Low => 0.25f,
+                GeneratorParametr.Medium => 0.5f,
+                GeneratorParametr.High => 0.85f,
+                GeneratorParametr.VeryHigh => 1f,
+                _ => heightsSizesMultiplier
+            };
 
             var heightsCountToCreate = Mathf.FloorToInt(mapSize * heightsMultiplier);
 
@@ -462,10 +434,10 @@ public class TilesMapGenerator : MonoBehaviour
 
         if (contentOnMap == EnableDisable.Enabled && roads == EnableDisable.Enabled)
         {
-            for (var i = 0; i < pointsOfInterest.Count; i++)
+            foreach (var pointOfInterest in pointsOfInterest)
             {
-                var xPos = pointsOfInterest[i][1];
-                var zPos = pointsOfInterest[i][0];
+                var xPos = pointOfInterest[1];
+                var zPos = pointOfInterest[0];
 
                 _tiles[xPos, zPos].HasHole = false;
 
@@ -511,138 +483,6 @@ public class TilesMapGenerator : MonoBehaviour
                     {
                         _tiles[xPos, zPos].Height = roadsHeight;
                         SmoothHeightDown(xPos, zPos);
-                    }
-                }
-            }
-        }
-        //-------------------------------------------------------------
-
-        //LADDERS------------------------------------------------------
-        if (ladders == EnableDisable.Enabled)
-        {
-            for (var xPos = 0; xPos < mapSize; xPos++)
-            {
-                for (var zPos = 0; zPos < mapSize; zPos++)
-                {
-                    if (!_tiles[xPos, zPos].HasHole)
-                    {
-                        var myHeight = _tiles[xPos, zPos].Height;
-
-                        var right = false;
-                        var left = false;
-                        var up = false;
-                        var down = false;
-
-                        if (xPos + 1 < mapSize)
-                        {
-                            if (!_tiles[xPos + 1, zPos].HasHole && !_tiles[xPos + 1, zPos].HasLadder)
-                            {
-                                if (_tiles[xPos + 1, zPos].Height == myHeight + 1)
-                                {
-                                    right = true;
-                                }
-                            }
-                        }
-                        if (xPos - 1 >= 0)
-                        {
-                            if (!_tiles[xPos - 1, zPos].HasHole && !_tiles[xPos - 1, zPos].HasLadder)
-                            {
-                                if (_tiles[xPos - 1, zPos].Height == myHeight + 1)
-                                {
-                                    left = true;
-                                }
-                            }
-                        }
-                        if (zPos + 1 < mapSize)
-                        {
-                            if (!_tiles[xPos, zPos + 1].HasHole && !_tiles[xPos, zPos + 1].HasLadder)
-                            {
-                                if (_tiles[xPos, zPos + 1].Height == myHeight + 1)
-                                {
-                                    up = true;
-                                }
-                            }
-                        }
-                        if (zPos - 1 >= 0)
-                        {
-                            if (!_tiles[xPos, zPos - 1].HasHole && !_tiles[xPos, zPos - 1].HasLadder)
-                            {
-                                if (_tiles[xPos, zPos - 1].Height == myHeight + 1)
-                                {
-                                    down = true;
-                                }
-                            }
-                        }
-
-                        float y = 0;
-                        var needSpawn = false;
-                        if (right && !left && !down && !up) //Ladder to right
-                        {
-                            if (xPos - 1 >= 0)
-                            {
-                                if (_tiles[xPos - 1, zPos].Height == myHeight)
-                                {
-                                    if (!IsHole(xPos - 1, zPos) && !IsHole(xPos + 1, zPos) && !IsHole(xPos, zPos))
-                                    {
-                                        y = 0;
-                                        needSpawn = true;
-                                    }
-                                }
-                            }
-                        }
-                        if (!right && left && !down && !up) //Ladder to left
-                        {
-                            if (xPos + 1 < mapSize)
-                            {
-                                if (_tiles[xPos + 1, zPos].Height == myHeight)
-                                {
-                                    if (!IsHole(xPos - 1, zPos) && !IsHole(xPos + 1, zPos) && !IsHole(xPos, zPos))
-                                    {
-                                        y = 180f;
-                                        needSpawn = true;
-                                    }
-                                }
-                            }
-                        }
-                        if (!right && !left && down && !up) //Ladder to down
-                        {
-                            if (zPos + 1 < mapSize)
-                            {
-                                if (_tiles[xPos, zPos + 1].Height == myHeight)
-                                {
-                                    if (!IsHole(xPos, zPos - 1) && !IsHole(xPos, zPos + 1) && !IsHole(xPos, zPos))
-                                    {
-                                        y = 90f;
-                                        needSpawn = true;
-                                    }
-                                }
-                            }
-                        }
-                        if (!right && !left && !down && up) //Ladder to up
-                        {
-                            if (zPos - 1 >= 0)
-                            {
-                                if (_tiles[xPos, zPos - 1].Height == myHeight)
-                                {
-                                    if (!IsHole(xPos, zPos - 1) && !IsHole(xPos, zPos + 1) && !IsHole(xPos, zPos))
-                                    {
-                                        y = -90f;
-                                        needSpawn = true;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (needSpawn)
-                        {
-                            if (Random.Range(0, 100) < laddersChance)
-                            {
-                                _tiles[xPos, zPos].HasLadder = true;
-                                var ladder = Instantiate(laddersTiles[Random.Range(0, laddersTiles.Count)], mapObject.transform, true);
-                                ladder.transform.position = new Vector3(xPos * 2f, mapPos.y + _tiles[xPos, zPos].Height * 2f, zPos * 2f);
-                                ladder.transform.localEulerAngles = new Vector3(0f, y, 0f);
-                            }
-                        }
                     }
                 }
             }
@@ -1031,7 +871,7 @@ public class TilesMapGenerator : MonoBehaviour
                 rayPos.z += Random.Range(-circlesRange, circlesRange);
                 if (Physics.Raycast(rayPos, Vector3.down, out var hit, Mathf.Infinity))
                 {
-                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,treesPoints,1.5f) && IsPosNotInPOI(hit.point))//,_lastRoadsMap,_lastLaddersMap))
+                    if (hit.transform.name.Contains("Tile") && IsPosAvailableByDistance(hit.point,treesPoints,1.5f) && IsPosNotInPOI(hit.point))
                     {
                         var tree = Instantiate(treesPrefabs[Random.Range(0, treesPrefabs.Count)], hit.point, Quaternion.identity, _mapObject.transform);
                         tree.transform.eulerAngles = new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(0f, 360f), Random.Range(-7.5f, 7.5f));
@@ -1170,7 +1010,7 @@ public class TilesMapGenerator : MonoBehaviour
 
         if (x >= 0 && z >= 0 && x < mapSize && z < mapSize)
         {
-            return !_tiles[x, z].HasRoad && !_tiles[x, z].HasLadder;
+            return !_tiles[x, z].HasRoad;
         }
 
         return false;
