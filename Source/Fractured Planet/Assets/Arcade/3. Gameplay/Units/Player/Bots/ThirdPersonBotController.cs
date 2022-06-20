@@ -98,11 +98,8 @@ namespace EtAlii.FracturedPlanet
 
         private Animator _animator;
         private CharacterController _controller;
-        public GameObject MainCamera;
 
         private const float Threshold = 0.01f;
-
-        private bool _hasAnimator;
 
         [SerializeField] private NavMeshAgent navMeshAgent;
 
@@ -118,10 +115,12 @@ namespace EtAlii.FracturedPlanet
         {
             _cinemachineTargetYaw = cinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
-            _hasAnimator = TryGetComponent(out _animator);
+            _animator = GetComponent<Animator>();
             _controller = GetComponent<CharacterController>();
             //navMeshAgent = GetComponent<NavMeshAgent>();
-            navMeshAgent.updatePosition = false;
+            // navMeshAgent.updatePosition = false;
+            // navMeshAgent.updateRotation = false;
+            // navMeshAgent.updateUpAxis = false;
 
             AssignAnimationIDs();
 
@@ -132,15 +131,30 @@ namespace EtAlii.FracturedPlanet
 
         private void Update()
         {
-            _hasAnimator = TryGetComponent(out _animator);
+            //_hasAnimator = TryGetComponent(out _animator);
 
-            var nextPosition = navMeshAgent.nextPosition;
-            _inputMove = new Vector2(nextPosition.x, nextPosition.z).normalized;
-            _inputMoveMagnitude = navMeshAgent.speed;
-            //_inputLook = new Vector2(navMeshAgent.pathEndPosition.)
+            if (navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete && !navMeshAgent.pathPending)
+            {
+                //var nextPosition = navMeshAgent.nextPosition;
+                var move = navMeshAgent.nextPosition - transform.position;
+                //var move = navMeshAgent.steeringTarget - transform.position;
+                _inputMove = new Vector2(move.x, move.z).normalized;
+                _inputMoveMagnitude = navMeshAgent.speed;
+                //_inputLook = new Vector2(navMeshAgent.pathEndPosition.)
+            }
+            else
+            {
+                _inputMoveMagnitude = 0f;
+            }
+
             JumpAndGravity();
             GroundedCheck();
             Move();
+
+            // if (_controller.velocity != Vector3.zero)
+            // {
+            //     navMeshAgent.velocity = _controller.velocity;
+            // }
         }
 
         private void LateUpdate()
@@ -165,10 +179,7 @@ namespace EtAlii.FracturedPlanet
             grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
 
             // update animator if using character
-            if (_hasAnimator)
-            {
-                _animator.SetBool(_animIDGrounded, grounded);
-            }
+            _animator.SetBool(_animIDGrounded, grounded);
         }
 
         private void CameraRotation()
@@ -233,32 +244,31 @@ namespace EtAlii.FracturedPlanet
             // normalise input direction
             var inputDirection = new Vector3(_inputMove.x, 0.0f, _inputMove.y).normalized;
 
+            //var navMeshAgentDirection = (navMeshAgent.nextPosition - transform.position).normalized;
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
             if (_inputMove != Vector2.zero)
             {
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  MainCamera.transform.eulerAngles.y;
-                var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-                    rotationSmoothTime);
+                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + 0f;//MainCamera.transform.eulerAngles.y;
+                var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, rotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 
 
-            var targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            // var targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+
 
             // move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            _controller.Move(inputDirection * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+            // _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+            //                   new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
             // update animator if using character
-            if (_hasAnimator)
-            {
-                _animator.SetFloat(_animIDSpeed, _animationBlend);
-                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-            }
+            _animator.SetFloat(_animIDSpeed, _animationBlend);
+            _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
         }
 
         private void JumpAndGravity()
@@ -269,11 +279,8 @@ namespace EtAlii.FracturedPlanet
                 _fallTimeoutDelta = fallTimeout;
 
                 // update animator if using character
-                if (_hasAnimator)
-                {
-                    _animator.SetBool(_animIDJump, false);
-                    _animator.SetBool(_animIDFreeFall, false);
-                }
+                _animator.SetBool(_animIDJump, false);
+                _animator.SetBool(_animIDFreeFall, false);
 
                 // stop our velocity dropping infinitely when grounded
                 if (_verticalVelocity < 0.0f)
@@ -288,10 +295,7 @@ namespace EtAlii.FracturedPlanet
                     _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
                     // update animator if using character
-                    if (_hasAnimator)
-                    {
-                        _animator.SetBool(_animIDJump, true);
-                    }
+                    _animator.SetBool(_animIDJump, true);
                 }
 
                 // jump timeout
@@ -313,10 +317,7 @@ namespace EtAlii.FracturedPlanet
                 else
                 {
                     // update animator if using character
-                    if (_hasAnimator)
-                    {
-                        _animator.SetBool(_animIDFreeFall, true);
-                    }
+                    _animator.SetBool(_animIDFreeFall, true);
                 }
 
                 // if we are not grounded, do not jump

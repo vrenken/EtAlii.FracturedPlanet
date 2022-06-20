@@ -86,23 +86,18 @@ namespace EtAlii.FracturedPlanet.Arcade
                 .OfType<VisiblePlayer>()
                 .ToArray();
 
-            for (var i = 0; i < visiblePlayers.Length; i++)
+            foreach (var visiblePlayer in visiblePlayers)
             {
-                if (visiblePlayers[i].Type == PlayerType.Human)
+                if (visiblePlayer.Type == PlayerType.Human)
                 {
-                    var thirdPersonController = visiblePlayers[i].Instance.GetComponentInChildren<ThirdPersonController>();
-                    thirdPersonController.MainCamera = visiblePlayers[i].Camera;
-                    var playerInput = visiblePlayers[i].Instance.GetComponentInChildren<PlayerInput>();
-                    playerInput.camera = visiblePlayers[i].Camera.GetComponent<Camera>();
+                    var thirdPersonController = visiblePlayer.Instance.GetComponentInChildren<ThirdPersonController>();
+                    thirdPersonController.MainCamera = visiblePlayer.Camera;
+                    var playerInput = visiblePlayer.Instance.GetComponentInChildren<PlayerInput>();
+                    playerInput.camera = visiblePlayer.Camera.GetComponent<Camera>();
                 }
-                else
-                {
-                    var thirdPersonController = visiblePlayers[i].Instance.GetComponentInChildren<ThirdPersonBotController>();
-                    thirdPersonController.MainCamera = visiblePlayers[i].Camera;
-                }
-                var clearShot = visiblePlayers[i].TrackingCamera.GetComponent<CinemachineClearShot>();
-                clearShot.Follow = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
-                clearShot.LookAt = visiblePlayers[i].Instance.GetComponent<PlayerController>().CameraRoot.transform;
+                var clearShot = visiblePlayer.TrackingCamera.GetComponent<CinemachineClearShot>();
+                clearShot.Follow = visiblePlayer.Instance.GetComponent<PlayerController>().CameraRoot.transform;
+                clearShot.LookAt = visiblePlayer.Instance.GetComponent<PlayerController>().CameraRoot.transform;
             }
         }
 
