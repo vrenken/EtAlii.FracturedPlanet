@@ -149,11 +149,11 @@ MonoBehaviour:
   mapName: Level 0
   mapPosition: {x: 0, y: 0, z: 0}
   mapSize: 10
-  holesCount: 6
-  holesSizes: 6
-  heightsCount: 6
-  heightsSizes: 6
-  maxHeight: 6
+  holesCount: 0
+  holesSizes: 0
+  heightsCount: 0
+  heightsSizes: 0
+  maxHeight: 0
   heightSmoothing: 1
   additionalFilling: 1
   treesPrefabs:
@@ -276,17 +276,6 @@ MonoBehaviour:
   - {fileID: 8524526965597934329, guid: 3c4262210b46e7546a8a81b410fea959, type: 3}
   contentOnMap: 0
   poiCount: 3
-  startTile: {fileID: 2947821936702218048, guid: 1f7e3309b6328bc46bcd7b9c0dcb1959,
-    type: 3}
-  endTile: {fileID: 7152912618661380596, guid: 8fdeb355f24700647be0f1a3347d4de8, type: 3}
-  interestPointTiles:
-  - {fileID: 6200282804036820447, guid: e90e02045731b514886dc4944960a201, type: 3}
-  - {fileID: 5043841340389762433, guid: 85a7a509904445f43a56cf03b2090b33, type: 3}
-  - {fileID: 1783859909977654689, guid: 8fc1b226f62066d42b538efb8916e85d, type: 3}
-  - {fileID: 117257652546884649, guid: 1b400d05fba60c844a14e41638f8aaf3, type: 3}
-  - {fileID: 4549291191744739794, guid: 3be091e0354370148bd0269375140507, type: 3}
-  - {fileID: 8720964788326115998, guid: 60f4f5636ba8de944ba5fa63f1ed89bc, type: 3}
-  - {fileID: 6460727932468481660, guid: 760e70d07b3d3b940bf57f3df850e04e, type: 3}
   roads: 0
   roadsBetweenPOI: 50
   roadsFilling: 25
@@ -303,12 +292,6 @@ MonoBehaviour:
   roadBridges:
   - {fileID: 6883316995979822405, guid: 5b3b49edb90f9374786d8dfa6930e8d1, type: 3}
   - {fileID: 4297767803720012062, guid: cd176a92d28dc5248aff500ea38ddff0, type: 3}
-  ladders: 0
-  laddersChance: 25
-  laddersTiles:
-  - {fileID: 3585722098787000442, guid: eb2de1257f7541e4b93900cde54f2586, type: 3}
-  - {fileID: 2516388841491927868, guid: b2de37c43e3209146a695d6c46af2243, type: 3}
-  - {fileID: 6222909105693379286, guid: dbf161d18dcdd554884091be24d39327, type: 3}
   TapToGenerate: 0
 --- !u!114 &7411042474694903579
 MonoBehaviour:

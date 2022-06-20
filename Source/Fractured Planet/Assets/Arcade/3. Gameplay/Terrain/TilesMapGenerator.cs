@@ -36,9 +36,6 @@ public class TilesMapGenerator : MonoBehaviour
     public EnableDisable contentOnMap;
     [Range(2,10)]
     public int poiCount;
-    public GameObject startTile;
-    public GameObject endTile;
-    public List<GameObject> interestPointTiles;
 
     [Header("[Map roads between POI's]")]
     public EnableDisable roads;
@@ -510,62 +507,62 @@ public class TilesMapGenerator : MonoBehaviour
         //-------------------------------------------------------------
 
         //POIS SPAWNING------------------------------------------------
-        if (contentOnMap == EnableDisable.Enabled)
-        {
-            for (var i = 0; i < pointsOfInterest.Count; i++)
-            {
-                var xPos = pointsOfInterest[i][1];
-                var zPos = pointsOfInterest[i][0];
-                GameObject poiObj;
-                if (i == 0)
-                {
-                    poiObj = Instantiate(startTile);
-                }
-                else if (i == 1)
-                {
-                    poiObj = Instantiate(endTile);
-                }
-                else
-                {
-                    poiObj = Instantiate(interestPointTiles[Random.Range(0, interestPointTiles.Count)]);
-                }
-
-                poiObj.transform.position = new Vector3(xPos * 2f, mapPos.y + _tiles[xPos, zPos].Height * 2f, zPos * 2f);
-                poiObj.transform.parent = mapObject.transform;
-
-                xPos = pointsOfInterest[i][0];
-                zPos = pointsOfInterest[i][1];
-
-                if (xPos + 1 < mapSize)
-                {
-                    if (_tiles[xPos + 1, zPos].HasRoad)
-                    {
-                        poiObj.transform.localEulerAngles = new Vector3(0f, -90f, 0f);
-                    }
-                }
-                if (zPos + 1 < mapSize)
-                {
-                    if (_tiles[xPos, zPos + 1].HasRoad)
-                    {
-                        poiObj.transform.localEulerAngles = new Vector3(0f, -180f, 0f);
-                    }
-                }
-                if (xPos - 1 > 0)
-                {
-                    if (_tiles[xPos - 1, zPos].HasRoad)
-                    {
-                        poiObj.transform.localEulerAngles = new Vector3(0f, -270f, 0f);
-                    }
-                }
-                if (zPos - 1 > 0)
-                {
-                    if (_tiles[xPos, zPos - 1].HasRoad)
-                    {
-                        poiObj.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-                    }
-                }
-            }
-        }
+        // if (contentOnMap == EnableDisable.Enabled)
+        // {
+        //     for (var i = 0; i < pointsOfInterest.Count; i++)
+        //     {
+        //         var xPos = pointsOfInterest[i][1];
+        //         var zPos = pointsOfInterest[i][0];
+        //         GameObject poiObj;
+        //         if (i == 0)
+        //         {
+        //             poiObj = Instantiate(startTile);
+        //         }
+        //         else if (i == 1)
+        //         {
+        //             poiObj = Instantiate(endTile);
+        //         }
+        //         else
+        //         {
+        //             poiObj = Instantiate(interestPointTiles[Random.Range(0, interestPointTiles.Count)]);
+        //         }
+        //
+        //         poiObj.transform.position = new Vector3(xPos * 2f, mapPos.y + _tiles[xPos, zPos].Height * 2f, zPos * 2f);
+        //         poiObj.transform.parent = mapObject.transform;
+        //
+        //         xPos = pointsOfInterest[i][0];
+        //         zPos = pointsOfInterest[i][1];
+        //
+        //         if (xPos + 1 < mapSize)
+        //         {
+        //             if (_tiles[xPos + 1, zPos].HasRoad)
+        //             {
+        //                 poiObj.transform.localEulerAngles = new Vector3(0f, -90f, 0f);
+        //             }
+        //         }
+        //         if (zPos + 1 < mapSize)
+        //         {
+        //             if (_tiles[xPos, zPos + 1].HasRoad)
+        //             {
+        //                 poiObj.transform.localEulerAngles = new Vector3(0f, -180f, 0f);
+        //             }
+        //         }
+        //         if (xPos - 1 > 0)
+        //         {
+        //             if (_tiles[xPos - 1, zPos].HasRoad)
+        //             {
+        //                 poiObj.transform.localEulerAngles = new Vector3(0f, -270f, 0f);
+        //             }
+        //         }
+        //         if (zPos - 1 > 0)
+        //         {
+        //             if (_tiles[xPos, zPos - 1].HasRoad)
+        //             {
+        //                 poiObj.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+        //             }
+        //         }
+        //     }
+        // }
         //-------------------------------------------------------------
 
         //ROADS SPAWNING---------------------------------------------
