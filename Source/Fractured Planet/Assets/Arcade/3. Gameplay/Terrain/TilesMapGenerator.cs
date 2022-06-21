@@ -496,7 +496,7 @@ public class TilesMapGenerator : MonoBehaviour
             {
                 if (!_tiles[xPos, zPos].HasHole)
                 {
-                    SpawnTile(xPos, zPos, x, z, mapPosition, mapObject.transform); // , roadsMap[zPos, xPos]
+                    SpawnTile(xPos, zPos, x, z, mapObject.transform);
                 }
 
                 x +=  2f;
@@ -813,7 +813,7 @@ public class TilesMapGenerator : MonoBehaviour
                         {
                             if (_tiles[xPos, zPos].HasHole)
                             {
-                                SpawnTile(xPos, zPos, xPos * 2, zPos * 2, mapPosition, mapObject.transform); // , true
+                                SpawnTile(xPos, zPos, xPos * 2, zPos * 2, mapObject.transform); // , true
                             }
                         }
 
@@ -1061,12 +1061,12 @@ public class TilesMapGenerator : MonoBehaviour
         return roadIsNotPoi;
     }
 
-    private void SpawnTile(int xPos, int zPos, float x, float z, Vector3 mapPos, Transform parent) // , bool isRoad
+    private void SpawnTile(int xPos, int zPos, float x, float z, Transform parent) // , bool isRoad
     {
         var height = _tiles[xPos, zPos].Height;
         var newPart = Instantiate(tiles[Random.Range(0,tiles.Count)], parent, true);
         newPart.name = string.Concat(newPart.name.TakeWhile(c => c != '(')) + $" ({xPos:+00;-00} x {zPos:+00;-00})";
-        var posY = mapPos.y;
+        var posY = mapPosition.y;
 
         var heightForThisTile = height;
 
@@ -1074,7 +1074,7 @@ public class TilesMapGenerator : MonoBehaviour
         {
             posY += heightForThisTile * 2f;
         }
-        newPart.transform.position = new Vector3(mapPos.x + x, posY, mapPos.z + z);
+        newPart.transform.position = new Vector3(mapPosition.x + x, posY, mapPosition.z + z);
 
         if (heightForThisTile > 0)
         {
