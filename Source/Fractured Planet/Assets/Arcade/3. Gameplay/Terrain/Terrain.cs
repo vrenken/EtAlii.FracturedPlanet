@@ -42,7 +42,7 @@ namespace EtAlii.FracturedPlanet.Terrain
                     sector.gameObject.name = $"Sector ({x:+00;-00} x {z:+00;-00})";
                     var generator = sector.GetComponent<TilesMapGenerator>();
                     generator.mapSize = sectorSize;
-                    yield return generator.NewMap();
+                    yield return generator.NewMap(x + z * width);
                     sector.transform.position = position;
                 }
             }
